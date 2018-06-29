@@ -17,11 +17,11 @@ class Video extends Model
      * @param string $lead
      */
     public function __construct(
-        string $body,
+        $body,
         $source,
-        int $order,
+        $order,
         $cover = null,
-        string $lead = ''
+        $lead = ''
     ) {
         $source = $this->filterUriInstance($source);
 

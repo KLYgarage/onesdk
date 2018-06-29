@@ -18,12 +18,12 @@ class Page extends Model
      * @param string $lead
      */
     public function __construct(
-        string $title,
-        string $body,
+        $title,
+        $body,
         $source,
-        int $order,
+        $order,
         $cover,
-        string $lead = ''
+        $lead = ''
     ) {
         $cover = $this->filterUriInstance($cover);
         $source = $this->filterUriInstance($source);

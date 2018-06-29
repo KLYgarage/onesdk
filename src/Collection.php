@@ -6,7 +6,12 @@ class Collection implements \ArrayAccess, \IteratorAggregate, \Countable, ToArra
 {
     protected $props;
 
-    public function __construct(array $props = array())
+    /**
+     * constructor
+     *
+     * @param array $props
+     */
+    public function __construct($props = array())
     {
         $this->props = $props;
     }
@@ -100,7 +105,7 @@ class Collection implements \ArrayAccess, \IteratorAggregate, \Countable, ToArra
     /**
      * @inheritDoc
      */
-    public static function fromJson(string $stream)
+    public static function fromJson($stream)
     {
         $props = json_decode((string) $stream);
 
@@ -118,7 +123,7 @@ class Collection implements \ArrayAccess, \IteratorAggregate, \Countable, ToArra
      * @return mixed|null value of the requested key
      */
 
-    public function get(string $key)
+    public function get($key)
     {
         return isset($this->props[$key]) ? $this->props[$key] : null;
     }
@@ -130,7 +135,7 @@ class Collection implements \ArrayAccess, \IteratorAggregate, \Countable, ToArra
      * @param mixed $value
      * @return self
      */
-    public function set(string $key, $value)
+    public function set($key, $value)
     {
         if (!isset($this->props[$key])) {
             throw new \Exception("Cannot add new property from set. Use add()");
@@ -141,12 +146,26 @@ class Collection implements \ArrayAccess, \IteratorAggregate, \Countable, ToArra
         return $this;
     }
 
+    /**
+     * addNew item on props
+     *
+     * @param string $key
+     * @param mixed $value
+     * @return self
+     */
     private function addNew($key, $value)
     {
         $this->props[$key] = $value;
         return $this;
     }
 
+    /**
+     * add new child array
+     *
+     * @param string $key
+     * @param mixed $value
+     * @return self
+     */
     private function addArray($key, $value)
     {
         $this->props[$key][] = $value;
@@ -154,6 +173,13 @@ class Collection implements \ArrayAccess, \IteratorAggregate, \Countable, ToArra
         return $this;
     }
 
+    /**
+     * appending to already existing array
+     *
+     * @param string $key
+     * @param mixed $value
+     * @return self
+     */
     private function appendToArray($key, $value)
     {
         $this->props[$key] = array($this->props[$key], $value);
@@ -161,6 +187,13 @@ class Collection implements \ArrayAccess, \IteratorAggregate, \Countable, ToArra
         return $this;
     }
 
+    /**
+     * add new item to props
+     *
+     * @param string $key
+     * @param mixed $value
+     * @return self
+     */
     public function add($key, $value)
     {
         if (!array_key_exists($key, $this->props)) {

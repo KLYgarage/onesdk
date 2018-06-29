@@ -290,7 +290,7 @@ class Uri implements UriInterface
      * @return string $scheme
      * @throws InvalidArgumentException if not corret scheme is present
      */
-    protected function filterScheme(string $scheme)
+    protected function filterScheme($scheme)
     {
         static $valid = [
             '' => true,

@@ -31,9 +31,9 @@ class Photo extends Model
      */
     public function __construct(
         $url,
-        string $ratio,
-        string $description = '',
-        string $information = ''
+        $ratio,
+        $description = '',
+        $information = ''
     ) {
         $url = $this->filterUriInstance($url);
         if (!in_array($ratio, self::ALLOWED_RATIO)) {

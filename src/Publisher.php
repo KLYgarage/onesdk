@@ -75,7 +75,7 @@ class Publisher implements LoggerAwareInterface
      * @param string $clientSecret
      * @param array $options
      */
-    public function __construct(string $clientId, string $clientSecret, array $options = array())
+    public function __construct($clientId, $clientSecret, $options = array())
     {
         $this->clientId = $clientId;
         $this->clientSecret = $clientSecret;
@@ -100,7 +100,7 @@ class Publisher implements LoggerAwareInterface
      * @param array $options
      * @return void
      */
-    private function assessOptions(array $options)
+    private function assessOptions($options)
     {
         $defaultOptions = array(
             'rest_server' => self::REST_SERVER,

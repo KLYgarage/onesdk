@@ -18,5 +18,5 @@ interface JsonInterface
      * @param string $stream
      * @return self
      */
-    public static function fromJson(string $stream);
+    public static function fromJson($stream);
 }

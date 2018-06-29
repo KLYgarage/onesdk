@@ -72,7 +72,7 @@ class Model
     protected function filterDateInstance($date)
     {
         if (empty($date)) {
-            $date = new \DateTime();
+            $date = new \DateTime("now", new \DateTimeZone("Asia/Jakarta"));
         }
 
         if (is_string($date) || is_int($date)) {
@@ -99,7 +99,7 @@ class Model
      * @param string $body
      * @return string
      */
-    protected function createLeadFromBody(string $body)
+    protected function createLeadFromBody($body)
     {
         $body = strip_tags($body);
         $sentences = array_filter(

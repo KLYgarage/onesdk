@@ -78,14 +78,14 @@ class Article extends Model
      * @param \DateTimeInterface|string $publishedAt
      */
     public function __construct(
-        string $title,
-        string $body,
+        $title,
+        $body,
         $source,
-        string $uniqueId,
-        int $typeId = self::TYPE_TEXT,
-        int $categoryId = self::CATEGORY_NASIONAL,
-        string $reporter = '',
-        string $lead = '',
+        $uniqueId,
+        $typeId = self::TYPE_TEXT,
+        $categoryId = self::CATEGORY_NASIONAL,
+        $reporter = '',
+        $lead = '',
         $tags = '',
         $publishedAt = null,
         $identifier = null
@@ -131,7 +131,7 @@ class Article extends Model
      * @param string $identifier
      * @return void
      */
-    public function setId(string $identifier)
+    public function setId($identifier)
     {
         $this->identifier = $identifier;
     }
@@ -152,7 +152,7 @@ class Article extends Model
      * @param string $field
      * @return boolean
      */
-    public function hasAttachment(string $field)
+    public function hasAttachment($field)
     {
         return isset($this->attachmentp[$field]);
     }
@@ -163,7 +163,7 @@ class Article extends Model
      * @param string $field
      * @return array|null
      */
-    public function getAttachmentByField(string $field)
+    public function getAttachmentByField($field)
     {
         if (isset($this->attachment[$field])) {
             return $this->attachment[$field];

@@ -20,11 +20,11 @@ class Gallery extends Model
      * @param string $lead
      */
     public function __construct(
-        string $body,
-        int $order,
+        $body,
+        $order,
         $photo,
         $source,
-        string $lead = ''
+        $lead = ''
     ) {
         $photo = $this->filterUriInstance($photo);
         $source = $this->fillSource($source, $photo);
