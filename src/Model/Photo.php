@@ -24,7 +24,7 @@ class Photo extends Model
     /**
      * constructor
      *
-     * @param Psr\Http\Message\UriInterface|string $url
+     * @param \Psr\Http\Message\UriInterface|string $url
      * @param string $ratio
      * @param string $description
      * @param string $information

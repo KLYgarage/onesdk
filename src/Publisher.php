@@ -48,23 +48,23 @@ class Publisher implements LoggerAwareInterface
     private $clientSecret;
 
     /**
-     * Oauth response
+     * Oauth access token response
      *
-     * @var array $authResponse
+     * @var string $accessToken
      */
     private $accessToken = null;
 
     /**
      * publisher custom options
      *
-     * @var One\Collection $options
+     * @var \One\Collection $options
      */
     private $options;
 
     /**
      * http transaction Client
      *
-     * @var Guzzle\Http\Client
+     * @var \Guzzle\Http\Client
      */
     private $httpClient;
 
@@ -160,17 +160,17 @@ class Publisher implements LoggerAwareInterface
     /**
      * actually send request created here, separated for easier attempt count and handling exception
      *
-     * @param Request $request
+     * @param \Guzzle\Http\Message\Request $request
      * @param integer $attempt
-     * @return string|null
-     * @throws Exception
-     * @throws Guzzle\Http\Exception\ClientErrorResponseException
-     * @throws Guzzle\Http\Exception\BadResponseException
+     * @return \Guzzle\Http\EntityBodyInterface|string|null
+     * @throws \Exception
+     * @throws \Guzzle\Http\Exception\ClientErrorResponseException
+     * @throws \Guzzle\Http\Exception\BadResponseException
      */
     private function sendRequest(Request $request, $attempt = 0)
     {
         if ($attempt >= $this->options->get('max_attempt')) {
-            throw new \Exception("MAX attempt reached for ". $request->getUrl() . " with payload " . (string) $request);
+            throw new \Exception("MAX attempt reached for " . $request->getUrl() . " with payload " . (string) $request);
         }
 
         try {
@@ -199,7 +199,7 @@ class Publisher implements LoggerAwareInterface
      * renewing access_token
      *
      * @return self
-     * @throws Exception
+     * @throws \Exception
      */
     private function renewAuthToken()
     {
@@ -241,7 +241,7 @@ class Publisher implements LoggerAwareInterface
             array_merge(
                 $this->options->get('default_headers'),
                 array(
-                    "Authorization" => "Bearer ". $accessToken
+                    "Authorization" => "Bearer " . $accessToken
                 )
             )
         );
@@ -252,7 +252,7 @@ class Publisher implements LoggerAwareInterface
     /**
      * get Attachment Submission url Endpoint at rest API
      *
-     * @param int $idArticle
+     * @param string $idArticle
      * @param string $field
      * @return string
      */
@@ -267,7 +267,7 @@ class Publisher implements LoggerAwareInterface
     /**
      * get article endpoint for deleting api
      *
-     * @param int $identifier
+     * @param string $identifier
      * @return string
      */
     private function getArticleWithIdEndPoint($identifier)
@@ -278,7 +278,7 @@ class Publisher implements LoggerAwareInterface
     /**
      * function that actually replace article_id inside endpoint pattern
      *
-     * @param int $identifier
+     * @param string $identifier
      * @param string $url
      * @return string
      */
@@ -294,7 +294,7 @@ class Publisher implements LoggerAwareInterface
     /**
      * normalizing payload. not yet implemented totally, currently just bypass a toArray() function from collection.
      *
-     * @param Collection $collection
+     * @param \One\Collection $collection
      * @return array
      */
     private function normalizePayload(Collection $collection)
@@ -304,9 +304,10 @@ class Publisher implements LoggerAwareInterface
 
     /**
      * submitting article here, return new Object cloned from original
+     * IMMUTABLE
      *
-     * @param Article $article
-     * @return Article
+     * @param \One\Model\Article $article
+     * @return \One\Model\Article
      */
     public function submitArticle(Article $article)
     {
@@ -345,8 +346,8 @@ class Publisher implements LoggerAwareInterface
     /**
      * submit each attachment of an article here
      *
-     * @param int $idArticle
-     * @param Model $attachment
+     * @param string $idArticle
+     * @param \One\Model\Model $attachment
      * @param string $field
      * @return array
      */
@@ -366,7 +367,7 @@ class Publisher implements LoggerAwareInterface
     /**
      * get article from rest API
      *
-     * @param int $idArticle
+     * @param string $idArticle
      * @return string json
      */
     public function getArticle($idArticle)
@@ -391,7 +392,7 @@ class Publisher implements LoggerAwareInterface
     /**
      * delete article based on id
      *
-     * @param int $idArticle
+     * @param string $idArticle
      * @return string
      */
     public function deleteArticle($idArticle)
@@ -429,10 +430,10 @@ class Publisher implements LoggerAwareInterface
     /**
      * delete attachment of an article
      *
-     * @param int $idArticle
+     * @param string $idArticle
      * @param string $field
      * @param string $order
-     * @return void
+     * @return string
      */
     public function deleteAttachment($idArticle, $field, $order)
     {
@@ -464,8 +465,8 @@ class Publisher implements LoggerAwareInterface
      * post proxy
      *
      * @param string $path
-     * @param string $body
-     * @param array $header
+     * @param \One\Collection|array $body
+     * @param \One\Collection|array $header
      * @param array $options
      * @return string
      */
@@ -484,8 +485,8 @@ class Publisher implements LoggerAwareInterface
      * delete proxy
      *
      * @param string $path
-     * @param array $body
-     * @param array $header
+     * @param \One\Collection|array $body
+     * @param \One\Collection|array $header
      * @param array $options
      * @return string
      */

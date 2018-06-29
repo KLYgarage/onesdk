@@ -209,10 +209,11 @@ class Collection implements \ArrayAccess, \IteratorAggregate, \Countable, ToArra
 
     /**
      * map each props item against the callback and return the resulting object
+     * IMMUTABLE
      *
      * @param \Closure $callback
-     * @param optional parameter to be used as $context inside the callback
-     * @return void
+     * @param array $context parameter context to be used inside callback
+     * @return self that already mapped. Return new clone
      */
     public function map(\Closure $callback, $context = array())
     {
@@ -227,6 +228,7 @@ class Collection implements \ArrayAccess, \IteratorAggregate, \Countable, ToArra
 
     /**
      * filter the props againt rule on callback
+     * IMMUTABLE
      *
      * @param \Closure $callback
      * @return self with filtered properties
