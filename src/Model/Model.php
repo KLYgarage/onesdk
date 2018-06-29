@@ -8,6 +8,7 @@ use One\Collection;
 
 /**
  * Model base class
+ * @method self add()
  */
 class Model
 {
@@ -16,14 +17,14 @@ class Model
     /**
      * data variable to that work as One\Collection
      *
-     * @var One\Collection
+     * @var \One\Collection
      */
     protected $collection = null;
 
     /**
      * get Data Collection
      *
-     * @return One\Collection
+     * @return \One\Collection
      */
     public function getCollection()
     {
@@ -33,7 +34,7 @@ class Model
     /**
      * immutable, return CLONE of original object with changed collection
      *
-     * @param Collection $collection
+     * @param \One\Collection $collection
      * @return self
      */
     public function withCollection(Collection $collection)
@@ -47,8 +48,8 @@ class Model
     /**
      * Make Sure Uri is a Psr\Http\Message\UriInterface instance
      *
-     * @param Psr\Http\Message\UriInterface|string|null $uri
-     * @return One\Uri
+     * @param \Psr\Http\Message\UriInterface|string|null $uri
+     * @return \Psr\Http\Message\UriInterface
      */
     protected function filterUriInstance($uri)
     {
@@ -66,7 +67,7 @@ class Model
     /**
      * Make Sure Date in string with correct format state
      *
-     * @param DateTimeInterface|string|int|null $date
+     * @param \DateTimeInterface|string|int|null $date
      * @return string
      */
     protected function filterDateInstance($date)
@@ -124,7 +125,7 @@ class Model
      *
      * @param string $name
      * @param array $arguments
-     * @throws Exception
+     * @throws \Exception
      */
     public function __call($name, $arguments)
     {

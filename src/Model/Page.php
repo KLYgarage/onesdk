@@ -13,8 +13,8 @@ class Page extends Model
      * @param string $title
      * @param string $body
      * @param integer $order
-     * @param Psr\Http\Message\UriInterface|string $cover
-     * @param Psr\Http\Message\UriInterface|string $source
+     * @param \Psr\Http\Message\UriInterface|string $cover
+     * @param \Psr\Http\Message\UriInterface|string $source
      * @param string $lead
      */
     public function __construct(

@@ -6,7 +6,7 @@ namespace One;
  * createUriFromString
  *
  * @param string $uri
- * @return Psr\Http\Message\UriInterface
+ * @return \Psr\Http\Message\UriInterface
  */
 function createUriFromString($uri)
 {
@@ -34,7 +34,7 @@ function createUriFromString($uri)
 /**
  * createuriFromServer
  *
- * @return Psr\Http\Message\UriInterface
+ * @return \Psr\Http\Message\UriInterface
  */
 
 function createuriFromServer()

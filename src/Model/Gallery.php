@@ -15,8 +15,8 @@ class Gallery extends Model
      *
      * @param string $body
      * @param integer $order
-     * @param Psr\Http\Message\UriInterface|string $photo
-     * @param Psr\Http\Message\UriInterface|string $source
+     * @param \Psr\Http\Message\UriInterface|string $photo
+     * @param \Psr\Http\Message\UriInterface|string $source
      * @param string $lead
      */
     public function __construct(
@@ -47,9 +47,9 @@ class Gallery extends Model
     /**
      * source taken from photo url if not available
      *
-     * @param Psr\Http\Message\UriInterface|string $source
-     * @param Psr\Http\Message\UriInterface|string|null $photo
-     * @return void
+     * @param \Psr\Http\Message\UriInterface|string $source
+     * @param \Psr\Http\Message\UriInterface|string|null $photo
+     * @return \Psr\Http\Message\UriInterface
      */
     private function fillSource($source, $photo)
     {

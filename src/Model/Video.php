@@ -11,9 +11,9 @@ class Video extends Model
      * constructor
      *
      * @param string $body
-     * @param Psr\Http\Message\UriInterface|string $source
+     * @param \Psr\Http\Message\UriInterface|string $source
      * @param integer $order
-     * @param Psr\Http\Message\UriInterface|string $cover
+     * @param \Psr\Http\Message\UriInterface|string $cover
      * @param string $lead
      */
     public function __construct(

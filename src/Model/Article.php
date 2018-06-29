@@ -68,7 +68,7 @@ class Article extends Model
      *
      * @param string $title
      * @param string $body
-     * @param Psr\Http\Message\UriInterface|string $source
+     * @param \Psr\Http\Message\UriInterface|string $source
      * @param string $uniqueId
      * @param integer $typeId
      * @param integer $categoryId
@@ -98,11 +98,11 @@ class Article extends Model
         }
 
         if (!in_array($typeId, self::ALLOWED_TYPE)) {
-            throw new \InvalidArgumentException("Invalid typeId : $typeId, allowed typeId are ". implode(', ', self::ALLOWED_TYPE));
+            throw new \InvalidArgumentException("Invalid typeId : $typeId, allowed typeId are " . implode(', ', self::ALLOWED_TYPE));
         }
 
         if (!in_array($categoryId, self::ALLOWED_CATEGORY)) {
-            throw new \InvalidArgumentException("Invalid categoryId : $categoryId, allowed category are ". implode(', ', self::ALLOWED_CATEGORY));
+            throw new \InvalidArgumentException("Invalid categoryId : $categoryId, allowed category are " . implode(', ', self::ALLOWED_CATEGORY));
         }
 
         $this->collection = new Collection(

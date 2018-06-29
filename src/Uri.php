@@ -250,9 +250,6 @@ class Uri implements UriInterface
      */
     protected function withString($string, $name = 'query')
     {
-        if (!is_string($string) && !method_exists($string, '__toString')) {
-            throw new InvalidArgumentException('Uri fragment must be a string');
-        }
         $string = ltrim((string) $string, '#');
         $clone = clone $this;
         $clone->$name = $this->filterQuery($string);
