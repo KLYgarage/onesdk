@@ -1,0 +1,32 @@
+{
+    "name": "kly/onesdk",
+    "description": "One SDK Publisher php package",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Charis",
+            "email": "me@chars.me",
+            "homepage": "https://chars.me",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "guzzlehttp/guzzle": "~3.8",
+        "psr/log": "^1.0",
+        "psr/http-message": "^1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "One\\": "src/",
+            "One\\Test\\": "test/"
+        },
+        "files": ["src/helpers.php"]
+    },
+    "scripts": {
+        "test": "./phpunit --bootstrap vendor/autoload.php test/",
+        "test:verbose": "./phpunit -v --debug --bootstrap vendor/autoload.php test/"
+    },
+    "support": {
+    }
+}
