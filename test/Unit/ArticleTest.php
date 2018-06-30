@@ -7,6 +7,7 @@ use One\Model\Photo;
 use One\Model\Page;
 use One\Model\Gallery;
 use One\Model\Video;
+use One\Model\Model;
 
 class ArticleTest extends \PHPUnit\Framework\TestCase
 {
@@ -53,8 +54,8 @@ class ArticleTest extends \PHPUnit\Framework\TestCase
         $this->assertCount(1, $article->getAttachmentByField(Article::ATTACHMENT_FIELD_PHOTO));
 
         $photoAttachment = $article->getAttachmentByField(Article::ATTACHMENT_FIELD_PHOTO)[0];
-        $this->assertTrue(is_subclass_of($photoAttachment, 'One\Model\Model'));
-        $this->assertTrue(get_class($photoAttachment) == 'One\Model\Photo');
+        $this->assertTrue($photoAttachment instanceof Model);
+        $this->assertTrue($photoAttachment instanceof Photo);
 
         $article->attachPhoto(new Photo(
             'http://heydrich.com/',
@@ -107,6 +108,9 @@ class ArticleTest extends \PHPUnit\Framework\TestCase
 
         $this->assertCount(1, $article->getAttachmentByField(Article::ATTACHMENT_FIELD_VIDEO));
 
-        $this->assertEquals(count(Article::POSSIBLE_ATTACHMENT), count($article->getAttachments()));
+        $this->assertEquals(
+            count(Article::getPossibleAttachment()),
+            count($article->getAttachments())
+        );
     }
 }

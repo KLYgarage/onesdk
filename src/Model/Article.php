@@ -3,7 +3,6 @@
 namespace One\Model;
 
 use Psr\Http\Message\UriInterface;
-use One\Uri;
 use One\Collection;
 
 /**
@@ -38,16 +37,6 @@ class Article extends Model
     const ATTACHMENT_FIELD_PAGE = 'page';
     const ATTACHMENT_FIELD_VIDEO = 'video';
     const ATTACHMENT_FIELD_GALLERY = 'gallery';
-
-    const POSSIBLE_ATTACHMENT = array(
-        self::ATTACHMENT_FIELD_GALLERY,
-        self::ATTACHMENT_FIELD_PAGE,
-        self::ATTACHMENT_FIELD_PHOTO,
-        self::ATTACHMENT_FIELD_VIDEO
-    );
-
-    const ALLOWED_TYPE = array(1, 2, 3);
-    const ALLOWED_CATEGORY = array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18);
 
     /**
      * attachment property
@@ -97,12 +86,39 @@ class Article extends Model
             $lead = $this->createLeadFromBody($body);
         }
 
-        if (!in_array($typeId, self::ALLOWED_TYPE)) {
-            throw new \InvalidArgumentException("Invalid typeId : $typeId, allowed typeId are " . implode(', ', self::ALLOWED_TYPE));
+        $allowedType = array(
+            self::TYPE_PHOTO,
+            self::TYPE_TEXT,
+            self::TYPE_VIDEO
+        );
+
+        if (!in_array($typeId, $allowedType)) {
+            throw new \InvalidArgumentException("Invalid typeId : $typeId, allowed typeId are " . implode(', ', $allowedType));
         }
 
-        if (!in_array($categoryId, self::ALLOWED_CATEGORY)) {
-            throw new \InvalidArgumentException("Invalid categoryId : $categoryId, allowed category are " . implode(', ', self::ALLOWED_CATEGORY));
+        $allowedCategory = array(
+            self::CATEGORY_NASIONAL,
+            self::CATEGORY_INTERNASIONAL,
+            self::CATEGORY_BISNIS,
+            self::CATEGORY_SEPAK_BOLA,
+            self::CATEGORY_OLAHRAGA,
+            self::CATEGORY_HIBURAN,
+            self::CATEGORY_TEKNOLOGI,
+            self::CATEGORY_TRAVEL,
+            self::CATEGORY_LIFESTYLE,
+            self::CATEGORY_WANITA,
+            self::CATEGORY_HIJAB,
+            self::CATEGORY_KULINER,
+            self::CATEGORY_SEHAT,
+            self::CATEGORY_OTOMOTIF,
+            self::CATEGORY_INSPIRASI,
+            self::CATEGORY_UNIK,
+            self::CATEGORY_EVENT,
+            self::CATEGORY_KOMUNITAS,
+        );
+
+        if (!in_array($categoryId, $allowedCategory)) {
+            throw new \InvalidArgumentException("Invalid categoryId : $categoryId, allowed category are " . implode(', ', $allowedCategory));
         }
 
         $this->collection = new Collection(
@@ -123,6 +139,36 @@ class Article extends Model
         if ($identifier) {
             $this->setId($identifier);
         }
+    }
+
+    /**
+     * get ALL Possible attachment for an article, return arrays of field name. Used for consistency accross sdk
+     * leveraging php version 5.3 cannot use array constant
+     *
+     * @return array
+     */
+    public static function getPossibleAttachment()
+    {
+        return array_merge(
+            self::getDeleteableAttachment(),
+            array(
+                self::ATTACHMENT_FIELD_PHOTO
+            )
+        );
+    }
+
+    /**
+     * get deleteable attachment for constant usage across sdk
+     *
+     * @return array
+     */
+    public static function getDeleteableAttachment()
+    {
+        return array(
+            self::ATTACHMENT_FIELD_GALLERY,
+            self::ATTACHMENT_FIELD_PAGE,
+            self::ATTACHMENT_FIELD_VIDEO
+        );
     }
 
     /**
@@ -154,14 +200,14 @@ class Article extends Model
      */
     public function hasAttachment($field)
     {
-        return isset($this->attachmentp[$field]);
+        return isset($this->attachment[$field]);
     }
 
     /**
      * getAttachment based on fields
      *
      * @param string $field
-     * @return array|null
+     * @return array
      */
     public function getAttachmentByField($field)
     {
@@ -186,8 +232,8 @@ class Article extends Model
      * add attach an attachment to this model
      *
      * @param string $field
-     * @param One\Model\Model $item
-     * @return One\Model\Article
+     * @param Model $item
+     * @return Article
      */
     public function attach($field, Model $item)
     {
@@ -261,6 +307,13 @@ class Article extends Model
         );
     }
 
+    /**
+     * ensuring order
+     *
+     * @param Model|Collection $attachment
+     * @param string $type
+     * @return Model|Collection
+     */
     private function ensureOrder($attachment, $type)
     {
         if (empty($attachment->get('order'))) {

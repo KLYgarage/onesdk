@@ -7,9 +7,9 @@ use Psr\Log\LoggerInterface;
 use One\Model\Article;
 use Guzzle\Http\Client;
 use Guzzle\Http\Message\Request;
-use Guzzle\Http\Message\Response;
 use Guzzle\Http\Exception\BadResponseException;
 use Guzzle\Http\Exception\ClientErrorResponseException;
+use Guzzle\Http\Message\RequestInterface;
 
 /**
  * Publisher class
@@ -132,8 +132,8 @@ class Publisher implements LoggerAwareInterface
      *
      * @param string $method
      * @param string $path
-     * @param array $header
-     * @param array $body
+     * @param \One\Collection|array $header
+     * @param \One\Collection|array $body
      * @param array $options
      * @return string
      */
@@ -160,14 +160,14 @@ class Publisher implements LoggerAwareInterface
     /**
      * actually send request created here, separated for easier attempt count and handling exception
      *
-     * @param \Guzzle\Http\Message\Request $request
+     * @param \Guzzle\Http\Message\RequestInterface $request
      * @param integer $attempt
      * @return \Guzzle\Http\EntityBodyInterface|string|null
      * @throws \Exception
      * @throws \Guzzle\Http\Exception\ClientErrorResponseException
      * @throws \Guzzle\Http\Exception\BadResponseException
      */
-    private function sendRequest(Request $request, $attempt = 0)
+    private function sendRequest(RequestInterface $request, $attempt = 0)
     {
         if ($attempt >= $this->options->get('max_attempt')) {
             throw new \Exception("MAX attempt reached for " . $request->getUrl() . " with payload " . (string) $request);
@@ -304,7 +304,6 @@ class Publisher implements LoggerAwareInterface
 
     /**
      * submitting article here, return new Object cloned from original
-     * IMMUTABLE
      *
      * @param \One\Model\Article $article
      * @return \One\Model\Article
@@ -321,12 +320,10 @@ class Publisher implements LoggerAwareInterface
         $responseArticle = json_decode($responseArticle, true);
         $article->setId($responseArticle['data']['id']);
 
-        $processedArticle = clone $article;
-
-        foreach (Article::POSSIBLE_ATTACHMENT as $field) {
+        foreach (Article::getPossibleAttachment() as $field) {
             if ($article->hasAttachment($field)) {
                 foreach ($article->getAttachmentByField($field) as $attachment) {
-                    $result = $this->submitAttachment(
+                    $this->submitAttachment(
                         $this->getAttachmentEndPoint(
                             $article->getId(),
                             $field
@@ -334,13 +331,11 @@ class Publisher implements LoggerAwareInterface
                         $attachment,
                         $field
                     );
-
-                    $processedArticle->add($field, $result);
                 }
             }
         }
 
-        return $processedArticle;
+        return $article;
     }
 
     /**
@@ -403,14 +398,7 @@ class Publisher implements LoggerAwareInterface
             $articleOnRest = json_decode($articleOnRest, true);
 
             if (isset($articleOnRest['data'])) {
-                $deleteAbleAttachment = array_diff(
-                    Article::POSSIBLE_ATTACHMENT,
-                    array(
-                        Article::ATTACHMENT_FIELD_PHOTO
-                    )
-                );
-
-                foreach ($deleteAbleAttachment as $field) {
+                foreach (Article::getDeleteableAttachment() as $field) {
                     if (isset($articleOnRest['data'][$field])) {
                         foreach ($articleOnRest['data'][$field] as $attachment) {
                             if (isset($attachment[$field . '_order'])) {
@@ -446,7 +434,7 @@ class Publisher implements LoggerAwareInterface
      * get proxy
      *
      * @param string $path
-     * @param array $header
+     * @param \One\Collection|array $header
      * @param array $options
      * @return string
      */

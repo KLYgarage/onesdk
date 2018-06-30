@@ -13,14 +13,6 @@ class Photo extends Model
     const RATIO_VERTICAL = '9:16';
     const RATIO_COVER = 'cover';
 
-    const ALLOWED_RATIO = array(
-        self::RATIO_SQUARE,
-        self::RATIO_RECTANGLE,
-        self::RATIO_HEADLINE,
-        self::RATIO_VERTICAL,
-        self::RATIO_VERTICAL
-    );
-
     /**
      * constructor
      *
@@ -36,8 +28,17 @@ class Photo extends Model
         $information = ''
     ) {
         $url = $this->filterUriInstance($url);
-        if (!in_array($ratio, self::ALLOWED_RATIO)) {
-            throw new \Exception("Ratio $ratio not allowed, allowed ratio are " . implode(', ', self::ALLOWED_RATIO));
+
+        $allowedRatio = array(
+            self::RATIO_SQUARE,
+            self::RATIO_RECTANGLE,
+            self::RATIO_HEADLINE,
+            self::RATIO_VERTICAL,
+            self::RATIO_VERTICAL
+        );
+
+        if (!in_array($ratio, $allowedRatio)) {
+            throw new \Exception("ratio $ratio not allowed, allowed ratio are " . implode(', ', $allowedRatio));
         }
 
         $this->collection = new Collection(

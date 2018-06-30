@@ -5,6 +5,7 @@ namespace One\Model;
 use function One\createUriFromString;
 use function One\createuriFromServer;
 use One\Collection;
+use Psr\Http\Message\UriInterface;
 
 /**
  * Model base class
@@ -53,7 +54,7 @@ class Model
      */
     protected function filterUriInstance($uri)
     {
-        if (is_subclass_of($uri, 'Psr\Http\Message\UriInterface')) {
+        if ($uri instanceof UriInterface) {
             return $uri;
         }
 
@@ -133,6 +134,6 @@ class Model
             return call_user_func_array([$this->getCollection(), $name], $arguments);
         }
 
-        throw new \Exception("Method $name not exist");
+        throw new \Exception("method $name not exist");
     }
 }

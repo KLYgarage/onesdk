@@ -48,7 +48,7 @@ class Gallery extends Model
      * source taken from photo url if not available
      *
      * @param \Psr\Http\Message\UriInterface|string $source
-     * @param \Psr\Http\Message\UriInterface|string|null $photo
+     * @param \Psr\Http\Message\UriInterface $photo
      * @return \Psr\Http\Message\UriInterface
      */
     private function fillSource($source, $photo)
