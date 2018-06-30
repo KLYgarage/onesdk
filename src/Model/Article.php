@@ -310,13 +310,15 @@ class Article extends Model
     /**
      * ensuring order
      *
-     * @param Model|Collection $attachment
+     * @param Model $attachment
      * @param string $type
-     * @return Model|Collection
+     * @return Model
      */
     private function ensureOrder($attachment, $type)
     {
-        if (empty($attachment->get('order'))) {
+        $attachmentOrder = $attachment->get('order');
+
+        if (empty($attachmentOrder)) {
             $attachment->set(
                 'order',
                 count($this->getAttachmentByField($type)) + 1

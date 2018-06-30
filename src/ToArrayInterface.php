@@ -4,6 +4,8 @@ namespace One;
 
 /**
  * Interface to facilitate array conversion on object
+ *
+ * @method array toArray()
  */
 interface ToArrayInterface
 {

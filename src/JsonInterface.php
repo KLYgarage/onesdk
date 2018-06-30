@@ -2,6 +2,12 @@
 
 namespace One;
 
+/**
+ * JSON usage interface
+ *
+ * @method string toJson()
+ * @method self fromJson(string $stream)
+ */
 interface JsonInterface
 {
     /**

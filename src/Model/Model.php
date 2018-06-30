@@ -9,7 +9,13 @@ use Psr\Http\Message\UriInterface;
 
 /**
  * Model base class
- * @method self add()
+ * @method \One\Collection getCollection()
+ * @method self withCollection(Collection $collection)
+ * @method mixed|null get()
+ * @method self set(string $key, mixed $value)
+ * @method self add(string $key, mixed $value)
+ * @method self map(\Closure $callback, array $context)
+ * @method self filter filter(\Closure $callback)
  */
 class Model
 {
