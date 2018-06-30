@@ -5,7 +5,7 @@ namespace One;
 /**
  * Collection class
  *
- * @method mixed|null get()
+ * @method mixed|null get(string $key)
  * @method self set(string $key, mixed $value)
  * @method self add(string $key, mixed $value)
  * @method self map(\Closure $callback, array $context)

@@ -145,7 +145,7 @@ class Article extends Model
      * get ALL Possible attachment for an article, return arrays of field name. Used for consistency accross sdk
      * leveraging php version 5.3 cannot use array constant
      *
-     * @return array
+     * @return string[]
      */
     public static function getPossibleAttachment()
     {
@@ -160,7 +160,7 @@ class Article extends Model
     /**
      * get deleteable attachment for constant usage across sdk
      *
-     * @return array
+     * @return string[]
      */
     public static function getDeleteableAttachment()
     {
