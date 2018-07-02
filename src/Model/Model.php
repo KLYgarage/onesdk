@@ -2,8 +2,8 @@
 
 namespace One\Model;
 
-use function One\createUriFromString;
-use function One\createuriFromServer;
+//use function One\createUriFromString;
+//use function One\createuriFromServer;
 use One\Collection;
 use Psr\Http\Message\UriInterface;
 
@@ -65,10 +65,10 @@ class Model
         }
 
         if (is_string($uri)) {
-            return createUriFromString($uri);
+            return \One\createUriFromString($uri);
         }
 
-        return createuriFromServer();
+        return \One\createuriFromServer();
     }
 
     /**
@@ -96,7 +96,8 @@ class Model
      * @param \DateTimeInterface $date
      * @return string
      */
-    protected function formatDate(\DateTimeInterface $date)
+    //protected function formatDate(\DateTimeInterface $date)
+    protected function formatDate($date)
     {
         return $date->format("Y-m-d H:i:s");
     }
@@ -137,7 +138,8 @@ class Model
     public function __call($name, $arguments)
     {
         if (method_exists($this->getCollection(), $name)) {
-            return call_user_func_array([$this->getCollection(), $name], $arguments);
+            //return call_user_func_array([$this->getCollection(), $name], $arguments);
+            return call_user_func_array(array($this->getCollection(), $name), $arguments);
         }
 
         throw new \Exception("method $name not exist");
