@@ -24,12 +24,14 @@ class Publisher implements LoggerAwareInterface
     const ARTICLE_CHECK_ENDPOINT = '/api/article';
     const ARTICLE_ENDPOINT = '/api/publisher/article';
 
-    const ATTACHMENT_URL = array(
+    private $attachmentUrl = null;
+    
+    /*const ATTACHMENT_URL = array(
         Article::ATTACHMENT_FIELD_GALLERY => self::ARTICLE_ENDPOINT . '/{article_id}/gallery',
-        Article::ATTACHMENT_FIELD_PAGE => self::ARTICLE_ENDPOINT . '/{article_id}/page',
-        Article::ATTACHMENT_FIELD_PHOTO => self::ARTICLE_ENDPOINT . '/{article_id}/photo',
-        Article::ATTACHMENT_FIELD_VIDEO => self::ARTICLE_ENDPOINT . '/{article_id}/video'
-    );
+        Article::ATTACHMENT_FIELD_PAGE    => self::ARTICLE_ENDPOINT . '/{article_id}/page',
+        Article::ATTACHMENT_FIELD_PHOTO   => self::ARTICLE_ENDPOINT . '/{article_id}/photo',
+        Article::ATTACHMENT_FIELD_VIDEO   => self::ARTICLE_ENDPOINT . '/{article_id}/video'
+    );*/
 
     /**
      * Logger variable, if set log activity to this obejct each time sending request and receiving response
@@ -67,7 +69,7 @@ class Publisher implements LoggerAwareInterface
      * @var \Guzzle\Http\Client
      */
     private $httpClient;
-
+    
     /**
      * constructor
      *
@@ -81,6 +83,13 @@ class Publisher implements LoggerAwareInterface
         $this->clientSecret = $clientSecret;
 
         $this->assessOptions($options);
+        
+        $attachmentUrl = array(
+            Article::ATTACHMENT_FIELD_GALLERY => self::ARTICLE_ENDPOINT . '/{article_id}/gallery',
+            Article::ATTACHMENT_FIELD_PAGE    => self::ARTICLE_ENDPOINT . '/{article_id}/page',
+            Article::ATTACHMENT_FIELD_PHOTO   => self::ARTICLE_ENDPOINT . '/{article_id}/photo',
+            Article::ATTACHMENT_FIELD_VIDEO   => self::ARTICLE_ENDPOINT . '/{article_id}/video'
+        );
     }
 
     /**
@@ -258,9 +267,14 @@ class Publisher implements LoggerAwareInterface
      */
     private function getAttachmentEndPoint($idArticle, $field)
     {
-        return $this->replaceEndPointId(
+        /*return $this->replaceEndPointId(
             $idArticle,
             self::ATTACHMENT_URL[$field]
+        );*/
+        
+        return $this->replaceEndPointId(
+           $idArticle,
+           $this->attachmentUrl[$field]
         );
     }
 

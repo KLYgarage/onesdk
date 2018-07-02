@@ -289,12 +289,18 @@ class Uri implements UriInterface
      */
     protected function filterScheme($scheme)
     {
-        static $valid = [
+        /*static $valid = [
             '' => true,
             'https' => true,
             'http' => true,
-        ];
+        ];*/
 
+        static $valid = array(
+            '' => true,
+            'https' => true,
+            'http' => true,
+        );
+        
         $scheme = str_replace('://', '', strtolower($scheme));
         if (!isset($valid[$scheme])) {
             throw new InvalidArgumentException('Uri scheme must be one of: "", "https", "http"');
