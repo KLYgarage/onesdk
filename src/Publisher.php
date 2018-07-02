@@ -84,7 +84,7 @@ class Publisher implements LoggerAwareInterface
 
         $this->assessOptions($options);
         
-        $attachmentUrl = array(
+        $this->attachmentUrl = array(
             Article::ATTACHMENT_FIELD_GALLERY => self::ARTICLE_ENDPOINT . '/{article_id}/gallery',
             Article::ATTACHMENT_FIELD_PAGE    => self::ARTICLE_ENDPOINT . '/{article_id}/page',
             Article::ATTACHMENT_FIELD_PHOTO   => self::ARTICLE_ENDPOINT . '/{article_id}/photo',
@@ -267,11 +267,6 @@ class Publisher implements LoggerAwareInterface
      */
     private function getAttachmentEndPoint($idArticle, $field)
     {
-        /*return $this->replaceEndPointId(
-            $idArticle,
-            self::ATTACHMENT_URL[$field]
-        );*/
-        
         return $this->replaceEndPointId(
            $idArticle,
            $this->attachmentUrl[$field]

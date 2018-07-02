@@ -289,12 +289,6 @@ class Uri implements UriInterface
      */
     protected function filterScheme($scheme)
     {
-        /*static $valid = [
-            '' => true,
-            'https' => true,
-            'http' => true,
-        ];*/
-
         static $valid = array(
             '' => true,
             'https' => true,
