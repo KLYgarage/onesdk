@@ -417,17 +417,11 @@ class Publisher implements LoggerAwareInterface {
 	}
 
 	/**
-	 * Log some messages out
-	 * @param  string $message message that will be output
-	 * @param  stirng $from    From source ?
-	 * @return void          only echoes
+	 * Checks if Logger instance exists
+	 * @return boolean
 	 */
-	private function doLogging($message, $from) {
-		if (isset($this->logger) && !is_null($this->logger)) {
-			$output = $from . " --> " . $message . "\n";
-
-			$this->logger->info($output);
-		}
+	private function hasLogger() {
+		return isset($this->logger) && !is_null($this->logger);
 	}
 
 	/**
