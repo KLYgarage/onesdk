@@ -7,7 +7,6 @@ use Psr\Log\LoggerInterface;
 use One\Model\Article;
 use One\Model\Model;
 use Guzzle\Http\Client;
-use Guzzle\Http\Message\Request;
 use Guzzle\Http\Exception\BadResponseException;
 use Guzzle\Http\Exception\ClientErrorResponseException;
 use Guzzle\Http\Message\RequestInterface;
