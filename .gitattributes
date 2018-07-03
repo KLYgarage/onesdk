@@ -7,3 +7,5 @@
 /.scrutinizer.yml export-ignore
 /README.md export-ignore
 /phpunit export-ignore
+/docs export-ignore
+/.editorconfig export-ignore

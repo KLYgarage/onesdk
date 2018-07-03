@@ -7,3 +7,7 @@ composer.phar
 /.vscode/
 .env
 mix-manifest.json
+/vendor/
+/.nyc_output/
+/coverage/
+/node_modules/
