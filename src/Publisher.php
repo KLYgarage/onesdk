@@ -433,7 +433,6 @@ class Publisher implements LoggerAwareInterface {
 	 * @return string
 	 */
 	final public function get($path, $header = array(), $options = array()) {
-		$this->doLogging($path, 'Method get ');
 
 		return $this->requestGate(
 			'GET',
@@ -454,7 +453,6 @@ class Publisher implements LoggerAwareInterface {
 	 * @return string
 	 */
 	final public function post($path, $body, $header = array(), $options = array()) {
-		$this->doLogging($path, 'Method post ');
 
 		return $this->requestGate(
 			'POST',
