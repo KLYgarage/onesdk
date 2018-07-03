@@ -45,7 +45,7 @@ class PublisherTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testAuthentication() {
-		# code...
+
 		$json_response = $this->publisher->listArticle();
 
 		$data = json_decode($json_response, TRUE);
@@ -59,7 +59,6 @@ class PublisherTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testRecycleToken() {
-		# code...
 
 		$envPath = realpath(__DIR__ . '/../.env');
 
