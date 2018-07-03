@@ -247,6 +247,6 @@ class PublisherTest extends \PHPUnit\Framework\TestCase {
 
 		$this->assertTrue($articleCreated->hasAttachment(Article::ATTACHMENT_FIELD_PAGE));
 
-		$this->assertTrue(!empty($this->publisher->deleteArticle($articleCreatedId));
+		$this->assertTrue(!empty($this->publisher->deleteArticle($articleCreatedId)));
 	}
 }
