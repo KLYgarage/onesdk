@@ -454,6 +454,10 @@ class Publisher implements LoggerAwareInterface {
 	 */
 	final public function post($path, $body, $header = array(), $options = array()) {
 
+		if ($this->hasLogger()) {
+			$this->logger->info("Post to " . $path);
+		}
+
 		return $this->requestGate(
 			'POST',
 			$path,
