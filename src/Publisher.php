@@ -2,14 +2,14 @@
 
 namespace One;
 
-use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerInterface;
-use One\Model\Article;
-use One\Model\Model;
 use Guzzle\Http\Client;
 use Guzzle\Http\Exception\BadResponseException;
 use Guzzle\Http\Exception\ClientErrorResponseException;
 use Guzzle\Http\Message\RequestInterface;
+use One\Model\Article;
+use One\Model\Model;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerInterface;
 
 /**
  * Publisher class
@@ -84,9 +84,9 @@ class Publisher implements LoggerAwareInterface
 
         $this->attachmentUrl = array(
             Article::ATTACHMENT_FIELD_GALLERY => self::ARTICLE_ENDPOINT . '/{article_id}/gallery',
-            Article::ATTACHMENT_FIELD_PAGE    => self::ARTICLE_ENDPOINT . '/{article_id}/page',
-            Article::ATTACHMENT_FIELD_PHOTO   => self::ARTICLE_ENDPOINT . '/{article_id}/photo',
-            Article::ATTACHMENT_FIELD_VIDEO   => self::ARTICLE_ENDPOINT . '/{article_id}/video'
+            Article::ATTACHMENT_FIELD_PAGE => self::ARTICLE_ENDPOINT . '/{article_id}/page',
+            Article::ATTACHMENT_FIELD_PHOTO => self::ARTICLE_ENDPOINT . '/{article_id}/photo',
+            Article::ATTACHMENT_FIELD_VIDEO => self::ARTICLE_ENDPOINT . '/{article_id}/video',
         );
     }
 
@@ -114,8 +114,8 @@ class Publisher implements LoggerAwareInterface
             'auth_url' => self::AUTHENTICATION,
             'max_attempt' => self::DEFAULT_MAX_ATTEMPT,
             'default_headers' => array(
-                "Accept" => "application/json"
-            )
+                "Accept" => "application/json",
+            ),
         );
 
         $this->options = new Collection(
@@ -217,7 +217,7 @@ class Publisher implements LoggerAwareInterface
                 array(
                     "grant_type" => "client_credentials",
                     "client_id" => $this->clientId,
-                    "client_secret" => $this->clientSecret
+                    "client_secret" => $this->clientSecret,
                 )
             )
         );
@@ -248,7 +248,7 @@ class Publisher implements LoggerAwareInterface
             array_merge(
                 $this->options->get('default_headers'),
                 array(
-                    "Authorization" => "Bearer " . $accessToken
+                    "Authorization" => "Bearer " . $accessToken,
                 )
             )
         );
@@ -435,6 +435,15 @@ class Publisher implements LoggerAwareInterface
     }
 
     /**
+     * Checks if Logger instance exists
+     * @return boolean
+     */
+    private function hasLogger()
+    {
+        return isset($this->logger) && !is_null($this->logger);
+    }
+
+    /**
      * get proxy
      *
      * @param string $path
@@ -464,6 +473,10 @@ class Publisher implements LoggerAwareInterface
      */
     final public function post($path, $body, $header = array(), $options = array())
     {
+        if ($this->hasLogger()) {
+            $this->logger->info("Post to " . $path);
+        }
+
         return $this->requestGate(
             'POST',
             $path,
