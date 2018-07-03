@@ -29,12 +29,7 @@ class Publisher implements LoggerAwareInterface
      *
      * @var array
      */
-    private $attachmentUrl = array(
-        Article::ATTACHMENT_FIELD_GALLERY => self::ARTICLE_ENDPOINT . '/{article_id}/gallery',
-        Article::ATTACHMENT_FIELD_PAGE    => self::ARTICLE_ENDPOINT . '/{article_id}/page',
-        Article::ATTACHMENT_FIELD_PHOTO   => self::ARTICLE_ENDPOINT . '/{article_id}/photo',
-        Article::ATTACHMENT_FIELD_VIDEO   => self::ARTICLE_ENDPOINT . '/{article_id}/video'
-    );
+    private $attachmentUrl;
 
     /**
      * Logger variable, if set log activity to this obejct each time sending request and receiving response
@@ -86,6 +81,13 @@ class Publisher implements LoggerAwareInterface
         $this->clientSecret = $clientSecret;
 
         $this->assessOptions($options);
+
+        $this->attachmentUrl = array(
+            Article::ATTACHMENT_FIELD_GALLERY => self::ARTICLE_ENDPOINT . '/{article_id}/gallery',
+            Article::ATTACHMENT_FIELD_PAGE    => self::ARTICLE_ENDPOINT . '/{article_id}/page',
+            Article::ATTACHMENT_FIELD_PHOTO   => self::ARTICLE_ENDPOINT . '/{article_id}/photo',
+            Article::ATTACHMENT_FIELD_VIDEO   => self::ARTICLE_ENDPOINT . '/{article_id}/video'
+        );
     }
 
     /**
