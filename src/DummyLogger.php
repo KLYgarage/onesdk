@@ -16,61 +16,71 @@ use Psr\Log\LoggerInterface;
  * @method void debug($message, array $context)
  * @method void log($level, $message, array $context)
  */
-class DummyLogger implements LoggerInterface {
-	/**
-	 * {@inheritdoc}
-	 */
-	public function emergency($message, array $context = array()) {
-		echo $message . "\n";
-	}
+class DummyLogger implements LoggerInterface
+{
+    /**
+     * {@inheritdoc}
+     */
+    public function emergency($message, array $context = array())
+    {
+        echo $message . "\n";
+    }
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function alert($message, array $context = array()) {
-		echo $message . "\n";
-	}
+    /**
+     * {@inheritdoc}
+     */
+    public function alert($message, array $context = array())
+    {
+        echo $message . "\n";
+    }
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function critical($message, array $context = array()) {
-		echo $message . "\n";
-	}
-	/**
-	 * {@inheritdoc}
-	 */
-	public function error($message, array $context = array()) {
-		echo $message . "\n";
-	}
-	/**
-	 * {@inheritdoc}
-	 */
-	public function warning($message, array $context = array()) {
-		echo $message . "\n";
-	}
-	/**
-	 * {@inheritdoc}
-	 */
-	public function notice($message, array $context = array()) {
-		echo $message . "\n";
-	}
-	/**
-	 * {@inheritdoc}
-	 */
-	public function info($message, array $context = array()) {
-		echo $message . "\n";
-	}
-	/**
-	 * {@inheritdoc}
-	 */
-	public function debug($message, array $context = array()) {
-		echo $message . "\n";
-	}
-	/**
-	 * {@inheritdoc}
-	 */
-	public function log($level, $message, array $context = array()) {
-		echo $message . "\n";
-	}
+    /**
+     * {@inheritdoc}
+     */
+    public function critical($message, array $context = array())
+    {
+        echo $message . "\n";
+    }
+    /**
+     * {@inheritdoc}
+     */
+    public function error($message, array $context = array())
+    {
+        echo $message . "\n";
+    }
+    /**
+     * {@inheritdoc}
+     */
+    public function warning($message, array $context = array())
+    {
+        echo $message . "\n";
+    }
+    /**
+     * {@inheritdoc}
+     */
+    public function notice($message, array $context = array())
+    {
+        echo $message . "\n";
+    }
+    /**
+     * {@inheritdoc}
+     */
+    public function info($message, array $context = array())
+    {
+        echo $message . "\n";
+    }
+    /**
+     * {@inheritdoc}
+     */
+    public function debug($message, array $context = array())
+    {
+        echo $message . "\n";
+    }
+    /**
+     * {@inheritdoc}
+     */
+    public function log($level, $message, array $context = array())
+    {
+        echo $message . "\n";
+    }
 }

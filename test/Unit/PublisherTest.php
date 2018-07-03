@@ -60,9 +60,31 @@ class PublisherTest extends \PHPUnit\Framework\TestCase {
 
 	public function testRecycleToken() {
 		# code...
-		$token_producer = function () {
 
-			return 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6ImZkNDc5YzljYTljNjZhMjQyN2Q0MTE1MzVkODg4OTRkNTM3M2E1OTYyOTI1ODczMjIwZWViOGUzZTIxNjIwZjk5YmYyMDUxN2M3YmEzZmNjIn0.eyJhdWQiOiIxIiwianRpIjoiZmQ0NzljOWNhOWM2NmEyNDI3ZDQxMTUzNWQ4ODg5NGQ1MzczYTU5NjI5MjU4NzMyMjBlZWI4ZTNlMjE2MjBmOTliZjIwNTE3YzdiYTNmY2MiLCJpYXQiOjE1MzA1OTI0ODIsIm5iZiI6MTUzMDU5MjQ4MiwiZXhwIjoxNTYyMTI4NDgyLCJzdWIiOiIiLCJzY29wZXMiOltdfQ.fVs6ftztGItM5LC3axTW-u0jhX9v2aIyrPpYSMyQ1JfbgyyL8WjO9lDh9kCi95uzSXZhteIDEOIzJTUF2aSzsoiJepMhEJAGM7E98GWiIhGSLiKh7H-fL1t7lmoCVNIBVfO3Rd08zHksnjhfOFbhVfmwPJSMN5afspJr8bAsNH-9u0_xHmJQ7H3qyEgJwufBuOD5w0_xNJAShvXr93V3oBBSOKrpAluO8eB_ZZxF01yL7_5UtqgTchjDUXp4mzjUYMy5pwdG2AsSnF2Mt8M4zAC1qtk8u7sajlE31ZLLvaf15JvNpbo3SR4K_iRjmtkz833gC0REOsV_6h26gC9FtrYNhNkVOrBsx1sapB7UO4vhJ3kPJIUvO8fqAHg4cRVsdPUrNeUab35A5bEJD7JnusiF_GV4spsej2bArHI00G-K5QosY4G3BrROGUE6iQRcva9GpDyIuhMKB3SAIatXFD2BlyMs2quRxmT6SQk0qqdlWTWfcnVOt2pC4O0erw1IB76kMOOwKfS3ujNCricvZurQpNCdcPbJAkH0lAUVxYQkiz-jzXsu91L3UFpF9qYYbRou29JoTnw9yPOxjFqIlpD7dOUTKkF4cJztJhbTLUBQEYHwnlfxUtpkjiyulnwIDoOjygEEqIr-SzhXJp4NN6PRWn3NKq8IeHMM8Cll5cA';
+		$envPath = realpath(__DIR__ . '/../.env');
+
+		if (!file_exists($envPath)) {
+			$this->markTestSkipped("no .env defined. Need client ID and secret to continue this test, modify .env.example to .env on $envPath to run test");
+		}
+
+		$token_producer = function () use ($envPath) {
+
+			$env = array_reduce(
+				array_filter(
+					explode(
+						"\n",
+						file_get_contents($envPath)
+					)
+				),
+				function ($carry, $item) {
+					list($key, $value) = explode('=', $item, 2);
+					$carry[$key] = $value;
+					return $carry;
+				},
+				array()
+			);
+
+			return $env['ACCESS_TOKEN'];
 
 		};
 
