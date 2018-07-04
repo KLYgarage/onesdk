@@ -39,9 +39,9 @@ Example Usage:
 6. Modify the .env.example file, to reflect correct credentials. 
 
    ```
-   CLIENT_ID=1
+   CLIENT_ID=$CLIENT_ID
    
-   CLIENT_SECRET=7WQu63hPonW6M2BLggl5SdraGfCuwzuEn5Cn9Sk7
+   CLIENT_SECRET=$CLIENT_SECRET
 
    To get ACCESS_TOKEN, run the following commands using curl :
 
