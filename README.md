@@ -64,3 +64,9 @@ Example Usage:
    to make it clearer.
 
 10. Watch for feedbacks. 
+
+## PHP CS Fixer
+
+PHP CS Fixer is intended to fix coding standard. So, **Remember!** to always run PHP CS Fixer before you create pull request.
+  
+  ``` composer run cs-fix ```
