@@ -18,7 +18,6 @@ class FormatMapping
             $dataArticle = $this->jsonToArray($singleJsonArticle)['data'];
 
             $article = new Article(
-
                 $title = $this->filterString($this->getValue('title', $dataArticle)),
 
                 $body = $this->filterString($this->getValue('body', $dataArticle)),
@@ -37,7 +36,7 @@ class FormatMapping
 
                 $tags = $this->getValue('tag_name', $dataArticle['tags']),
 
-                $publishedAt = $this->filterDate($this->getValue('published_at', $dataArticle)),
+                $publishedAt = $this->filterString($this->getValue('published_at', $dataArticle)),
 
                 $identifier = $this->filterInteger($this->getValue('id', $dataArticle))
             );
@@ -45,7 +44,7 @@ class FormatMapping
             return $article;
         }
 
-        throw new \Exception("Invalid JSON Response", 1);
+        throw new \Exception("Empty or invalid JSON Response", 1);
     }
 
     /**
@@ -55,7 +54,7 @@ class FormatMapping
      */
     private function filterInteger($int)
     {
-        if (is_int($int)) {
+        if (is_int((int) $int)) {
             return $int;
         }
         throw new \Exception("Invalid Integer", 1);
@@ -68,29 +67,10 @@ class FormatMapping
      */
     private function filterString($str)
     {
-        if (strlen($str) > 0 && !is_null($str)) {
+        if (is_string($str) && strlen($str) > 0 && !is_null($str)) {
             return $str;
         }
         throw new \Exception("String required", 1);
-    }
-
-    /**
-     * Make Sure Date in string with correct format state
-     *
-     * @param \DateTimeInterface|string|int|null $date
-     * @return string
-     */
-    private function filterDate($date)
-    {
-        if (empty($date)) {
-            $date = new \DateTime("now", new \DateTimeZone("Asia/Jakarta"));
-        }
-
-        if (is_string($date) || is_int($date)) {
-            $date = new \DateTime($date);
-        }
-
-        return $this->formatDate($date);
     }
 
     /**
@@ -101,21 +81,7 @@ class FormatMapping
      */
     private function getValue($attribute, $data)
     {
-        if (isset($data[$attribute])) {
-            return $data[$attribute];
-        }
-        return null;
-    }
-
-    /**
-     * format date into required format
-     *
-     * @param \DateTimeInterface $date
-     * @return string
-     */
-    private function formatDate($date)
-    {
-        return $date->format("Y-m-d H:i:s");
+        return isset($data[$attribute]) ? $data[$attribute] : null;
     }
 
     /**
