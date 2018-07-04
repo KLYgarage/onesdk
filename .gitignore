@@ -19,3 +19,5 @@ mix-manifest.json
 
 ## Directory-based project format:
 .idea/
+
+tmp/
