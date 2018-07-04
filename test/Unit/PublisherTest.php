@@ -146,4 +146,107 @@ class PublisherTest extends \PHPUnit\Framework\TestCase {
 
 		$this->assertTrue(!empty($this->publisher->deleteArticle($resultingArticle->getId())));
 	}
+
+	public function testSubmitArticleWithoutAttachment() {
+		$article = new Article(
+			'Publisher dummy article',
+			'Tenetur doloremque impedit id quaerat beatae. Nulla labore earum. Perspiciatis odio nostrum molestias voluptatem quidem error. Laudantium mollitia voluptate velit. Fuga nesciunt in repudiandae voluptate harum quia. Voluptatibus quasi iusto officia omnis nulla illo possimus.',
+			'http://example.com/url-detail.html',
+			'dummy-1-ctr',
+			Article::TYPE_TEXT,
+			Article::CATEGORY_NASIONAL,
+			'dummy-1-ctr',
+			'dummy-1-ctr',
+			'dummy-1-ctr',
+			'2018-07-03',
+			null
+		);
+
+		$articleCreated = $this->publisher->submitArticle($article);
+		$articleCreatedId = $articleCreated->getId();
+
+		$this->assertTrue(!empty($articleCreatedId));
+
+		$this->assertTrue(!empty($this->publisher->getArticle($articleCreatedId)));
+
+		$this->assertTrue(!empty($this->publisher->deleteArticle($articleCreatedId)));
+	}
+
+	public function testSubmitArticleWithPhotos() {
+		$article = new Article(
+			'Publisher dummy article',
+			'Tenetur doloremque impedit id quaerat beatae. Nulla labore earum. Perspiciatis odio nostrum molestias voluptatem quidem error. Laudantium mollitia voluptate velit. Fuga nesciunt in repudiandae voluptate harum quia. Voluptatibus quasi iusto officia omnis nulla illo possimus.',
+			'http://example.com/url-detail.html',
+			'dummy-1-ctr',
+			Article::TYPE_TEXT,
+			Article::CATEGORY_NASIONAL,
+			'dummy-1-ctr',
+			'dummy-1-ctr',
+			'dummy-1-ctr',
+			'2018-07-03',
+			null
+		);
+
+		$max_photos = 5;
+
+		for ($i = 0; $i < $max_photos; $i++) {
+			$article->attach(Article::ATTACHMENT_FIELD_PHOTO, new Photo(
+				'http://heydrich.com/',
+				Photo::RATIO_SQUARE,
+				'Repellat nesciunt ipsum.',
+				'Quos atque quaerat recusandae modi reprehenderit magnam expedita.'
+			));
+		}
+
+		$articleCreated = $this->publisher->submitArticle($article);
+		$articleCreatedId = $articleCreated->getId();
+
+		$this->assertTrue(!empty($articleCreatedId));
+
+		$this->assertTrue(!empty($this->publisher->getArticle($articleCreatedId)));
+
+		$this->assertTrue($articleCreated->hasAttachment(Article::ATTACHMENT_FIELD_PHOTO));
+
+		$this->assertEquals($max_photos, count($articleCreated->getAttachments()['photo']));
+
+		$this->assertTrue(!empty($this->publisher->deleteArticle($articleCreatedId)));
+	}
+
+	public function testSubmitArticleWithPage() {
+		$article = new Article(
+			'Publisher dummy article',
+			'Tenetur doloremque impedit id quaerat beatae. Nulla labore earum. Perspiciatis odio nostrum molestias voluptatem quidem error. Laudantium mollitia voluptate velit. Fuga nesciunt in repudiandae voluptate harum quia. Voluptatibus quasi iusto officia omnis nulla illo possimus.',
+			'http://example.com/url-detail.html',
+			'dummy-1-ctr',
+			Article::TYPE_TEXT,
+			Article::CATEGORY_NASIONAL,
+			'dummy-1-ctr',
+			'dummy-1-ctr',
+			'dummy-1-ctr',
+			'2018-07-03',
+			null
+		);
+
+		$page = new Page(
+			'Dummy Page',
+			'Rsumissop olli allun sinmo aiciffo otsui isauq subitatpuloV .aiuq murah etatpulov eadnaiduper ni tnuicsen aguF .tilev etatpulov aitillom muitnaduaL .rorre mediuq metatpulov saitselom murtson oido sitaicipsreP .murae erobal alluN .eataeb tareauq di tidepmi euqmerolod ruten',
+			'http://example.com/dummy1.html',
+			1,
+			'http://kshlerin.org/cumque-deleniti-ea-qui',
+			'dummy-1-ctr'
+		);
+
+		$article->attach(Article::ATTACHMENT_FIELD_PAGE, $page);
+
+		$articleCreated = $this->publisher->submitArticle($article);
+		$articleCreatedId = $articleCreated->getId();
+
+		$this->assertTrue(!empty($articleCreatedId));
+
+		$this->assertTrue(!empty($this->publisher->getArticle($articleCreatedId)));
+
+		$this->assertTrue($articleCreated->hasAttachment(Article::ATTACHMENT_FIELD_PAGE));
+
+		$this->assertTrue(!empty($this->publisher->deleteArticle($articleCreatedId)));
+	}
 }
