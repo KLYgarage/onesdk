@@ -27,7 +27,8 @@
         "test": "./phpunit --bootstrap vendor/autoload.php test/",
         "test:verbose": "./phpunit -v --debug --bootstrap vendor/autoload.php test/",
         "test:windows": "php ./phpunit -v --debug --bootstrap ./vendor/autoload.php ./test/",
-        "cs-fix": "php ./php-cs-fixer fix ./src -vvv --rules=@PSR2"
+        "cs-fix": "php ./php-cs-fixer fix ./src -vvv --rules=@PSR2",
+        "cs-fix:test": "php ./php-cs-fixer fix ./test -vvv --rules=@PSR2"
     },
     "support": {
     }
