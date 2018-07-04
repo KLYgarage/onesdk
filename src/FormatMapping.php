@@ -10,14 +10,16 @@ class FormatMapping
     /**
      * map a single article to main attributes in Article Class
      * @param  string $singleJsonArticle JSON response
-     * @return Article\Exception
+     * @return Article
+     * @throws Exception
      */
     public function article($singleJsonArticle)
     {
-        if ($this->jsonToArray($singleJsonArticle)) {
-            $dataArticle = $this->jsonToArray($singleJsonArticle)['data'];
+        if (json_decode($singleJsonArticle, true)) {
+            $dataArticle = json_decode($singleJsonArticle, true)['data'];
 
             $article = new Article(
+
                 $title = $this->filterString($this->getValue('title', $dataArticle)),
 
                 $body = $this->filterString($this->getValue('body', $dataArticle)),
@@ -28,7 +30,10 @@ class FormatMapping
 
                 $typeId = $this->filterInteger($this->getValue('type_id', $dataArticle['type'])),
 
-                $categoryId = $this->filterInteger($this->getValue('category_id', $dataArticle['category'])),
+                $categoryId = $this->filterInteger($this->getValue(
+                    'category_id',
+                    $dataArticle['category']
+                )),
 
                 $reporter = $this->getValue('reporter', $dataArticle),
 
@@ -39,6 +44,7 @@ class FormatMapping
                 $publishedAt = $this->filterString($this->getValue('published_at', $dataArticle)),
 
                 $identifier = $this->filterInteger($this->getValue('id', $dataArticle))
+
             );
 
             return $article;
@@ -49,8 +55,9 @@ class FormatMapping
 
     /**
      * Make sure value is integer
-     * @param  int $int
+     * @param  mixed $int
      * @return boolean
+     * @throws Exception
      */
     private function filterInteger($int)
     {
@@ -64,6 +71,7 @@ class FormatMapping
      * Make sure string is not null or empty
      * @param   mixed $str
      * @return string if it is valid or exception
+     * @throws Exception
      */
     private function filterString($str)
     {
@@ -82,19 +90,5 @@ class FormatMapping
     private function getValue($attribute, $data)
     {
         return isset($data[$attribute]) ? $data[$attribute] : null;
-    }
-
-    /**
-     * Convert JSON string to associative array
-     * @param  string $jsonResponse
-     * @return array if it is valid json, null otherwise
-     */
-    public function jsonToArray($jsonResponse)
-    {
-        try {
-            return json_decode($jsonResponse, true);
-        } catch (\Exception $e) {
-            return null;
-        }
     }
 }
