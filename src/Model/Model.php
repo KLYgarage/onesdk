@@ -82,7 +82,7 @@ class Model
         }
 
         if (is_string($date) || is_int($date)) {
-            $date = new \DateTime($date);
+            $date = new \DateTime($date, new \DateTimeZone("Asia/Jakarta"));
         }
 
         return $this->formatDate($date);
