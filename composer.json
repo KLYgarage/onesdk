@@ -18,15 +18,19 @@
     },
     "autoload": {
         "psr-4": {
-            "One\\": "src/",
-            "One\\Test\\": "test/"
+            "One\\": "src/"
         },
         "files": ["src/helpers.php"]
     },
+    "autoload-dev": {
+        "psr-4": {
+            "One\\Test\\": "test/"
+        }
+    },
     "scripts": {
-        "test": "./phpunit --bootstrap vendor/autoload.php test/",
-        "test:verbose": "./phpunit -v --debug --bootstrap vendor/autoload.php test/",
-        "test:windows": "php ./phpunit -v --debug --bootstrap ./vendor/autoload.php ./test/",
+        "test": "php ./phpunit --bootstrap ./test/bootstrap.php ./test/",
+        "test:verbose": "php ./phpunit --bootstrap ./test/bootstrap.php ./test/ -vvv --debug ",
+        "test:windows": "@test",
         "cs-fix": "php ./php-cs-fixer fix ./src -vvv --rules=@PSR2",
         "cs-fix:test": "php ./php-cs-fixer fix ./test -vvv --rules=@PSR2"
     },
