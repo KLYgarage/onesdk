@@ -63,7 +63,7 @@ class FormatMapping
 
     /**
      * Get value of array based on attributes(keys)
-     * @param  string,int $attribute
+     * @param  supported php variables $attribute
      * @param  array $data
      * @return supported php variables
      */
