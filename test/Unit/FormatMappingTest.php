@@ -5,80 +5,79 @@ namespace One\Test\Unit;
 use One\FormatMapping;
 use One\Publisher;
 
-class FormatMappingTest extends \PHPUnit\Framework\TestCase {
+class FormatMappingTest extends \PHPUnit\Framework\TestCase
+{
+    protected $formatMapping;
 
-	protected $formatMapping;
+    private $publisher;
 
-	private $publisher;
+    public function setUp()
+    {
+        $envPath = realpath(__DIR__ . '/../.env');
+        if (!file_exists($envPath)) {
+            $this->markTestSkipped("no .env defined. Need client ID and secret to continue this test, modify .env.example to .env on $envPath to run test");
+        }
 
-	public function setUp() {
+        $env = array_reduce(
+            array_filter(
+                explode(
+                    "\n",
+                    file_get_contents($envPath)
+                )
+            ),
+            function ($carry, $item) {
+                list($key, $value) = explode('=', $item, 2);
+                $carry[$key] = $value;
+                return $carry;
+            },
+            array()
+        );
 
-		$envPath = realpath(__DIR__ . '/../.env');
-		if (!file_exists($envPath)) {
-			$this->markTestSkipped("no .env defined. Need client ID and secret to continue this test, modify .env.example to .env on $envPath to run test");
-		}
+        $this->publisher = new Publisher(
+            $env['CLIENT_ID'],
+            $env['CLIENT_SECRET'],
+            !empty($env['ACCESS_TOKEN']) ?
+            array(
+                'access_token' => $env['ACCESS_TOKEN'],
+            ) : array()
+        );
 
-		$env = array_reduce(
-			array_filter(
-				explode(
-					"\n",
-					file_get_contents($envPath)
-				)
-			),
-			function ($carry, $item) {
-				list($key, $value) = explode('=', $item, 2);
-				$carry[$key] = $value;
-				return $carry;
-			},
-			array()
-		);
+        $this->formatMapping = new FormatMapping();
+    }
 
-		$this->publisher = new Publisher(
-			$env['CLIENT_ID'],
-			$env['CLIENT_SECRET'],
-			!empty($env['ACCESS_TOKEN']) ?
-			array(
-				'access_token' => $env['ACCESS_TOKEN'],
-			) : array()
-		);
+    public function testMapMainArticle()
+    {
+        $idArticle = 2859;
 
-		$this->formatMapping = new FormatMapping();
-	}
+        $jsonArticle = $this->publisher->getArticle($idArticle);
 
-	public function testMapMainArticle() {
+        $this->assertArrayHasKey('data', json_decode($jsonArticle, true));
 
-		$id_article = 2859;
+        $article = $this->formatMapping->mapMainArticle($jsonArticle);
 
-		$json_article = $this->publisher->getArticle($id_article);
+        $this->assertNotNull($article);
 
-		$this->assertArrayHasKey('data', json_decode($json_article, TRUE));
+        $this->assertEquals($idArticle, $article->getId());
+    }
 
-		$article = $this->formatMapping->mapMainArticle($json_article);
-
-		$this->assertNotNull($article);
-
-		$this->assertEquals($id_article, $article->getId());
-
-	}
-
-	public function testJsonToArray() {
-		# code...
-		$json = '
+    public function testJsonToArray()
+    {
+        $json = '
 				{
   				"nama":"kenny karnama"
   				}
   				';
 
-		$isValid = $this->formatMapping->jsonToArray($json);
+        $isValid = $this->formatMapping->jsonToArray($json);
 
-		$this->assertNotNull($isValid);
+        $this->assertNotNull($isValid);
 
-		$json = array(
-			'nama' => 'kenny karnama',
-		);
+        $json = array(
+            'nama' => 'kenny karnama',
+        );
 
-		$isValid = $this->formatMapping->jsonToArray($json);
+        $isValid = $this->formatMapping->jsonToArray($json);
 
-		$this->assertNull($isValid);
-	}
+        $this->assertNull($isValid);
+    }
 }

@@ -14,120 +14,65 @@ class FormatMapping
      */
     public function mapMainArticle($singleJsonArticle)
     {
-        $decoded_article = $singleJsonArticle;
+        $decodedArticle = $this->jsonToArray($singleJsonArticle) ? $this->jsonToArray($singleJsonArticle) : $singleJsonArticle;
 
         if (!is_null($this->jsonToArray($singleJsonArticle))) {
-            $decoded_article = $this->jsonToArray($singleJsonArticle);
+            $decodedArticle = $this->jsonToArray($singleJsonArticle);
         }
 
-        $data_article = $decoded_article['data'];
+        $dataArticle = $decodedArticle['data'];
 
-        $title = function () use ($data_article) {
-            if (isset($data_article['title'])) {
-                return $data_article['title'];
-            }
-            return null;
-        };
+        $title = $this->getValue('title', $dataArticle);
 
-        $body = function () use ($data_article) {
-            if (isset($data_article['body'])) {
-                return $data_article['body'];
-            }
-            return null;
-        };
+        $body = $this->getValue('body', $dataArticle);
 
-        $source = function () use ($data_article) {
-            if (isset($data_article['source'])) {
-                return $data_article['source'];
-            }
-            return null;
-        };
+        $source = $this->getValue('source', $dataArticle);
 
-        $uniqueId = function () use ($data_article) {
-            if (isset($data_article['uniqueId'])) {
-                return $data_article['uniqueId'];
-            }
-            return null;
-        };
+        $uniqueId = $this->getValue('unique_id', $dataArticle);
 
-        $typeId = function () use ($data_article) {
-            if (isset($data_article['type']['type_id'])) {
-                return $data_article['type']['type_id'];
-            }
-            return null;
-        };
+        $typeId = $this->getValue('type_id', $dataArticle['type']);
 
-        $categoryId = function () use ($data_article) {
-            if (isset($data_article['category']['category_id'])) {
-                return $data_article['category']['category_id'];
-            }
-            return null;
-        };
+        $categoryId = $this->getValue('category_id', $dataArticle['category']);
 
-        $reporter = function () use ($data_article) {
-            if (isset($data_article['reporter'])) {
-                return $data_article['reporter'];
-            }
-            return null;
-        };
+        $reporter = $this->getValue('reporter', $dataArticle);
 
-        $lead = function () use ($data_article) {
-            if (isset($data_article['lead'])) {
-                return $data_article['lead'];
-            }
-            return null;
-        };
+        $lead = $this->getValue('lead', $dataArticle);
 
-        $tags = function () use ($data_article) {
-            if (isset($data_article['tags']['tag_name'])) {
-                return $data_article['tags']['tag_name'];
-            }
-            return null;
-        };
+        $tags = $this->getValue('tag_name', $dataArticle['tags']);
 
-        $publishedAt = function () use ($data_article) {
-            if (isset($data_article['published_at'])) {
-                return $data_article['published_at'];
-            }
-            return null;
-        };
+        $publishedAt = $this->getValue('published_at', $dataArticle);
 
-        $identifier = function () use ($data_article) {
-            if (isset($data_article['id'])) {
-                return $data_article['id'];
-            }
-            return null;
-        };
-
-        $article = array();
+        $identifier = $this->getValue('id', $dataArticle);
 
         $article = new Article(
-
-            $title(),
-
-            $body(),
-
-            $source(),
-
-            $uniqueId(),
-
-            $typeId(),
-
-            $categoryId(),
-
-            $reporter(),
-
-            $lead(),
-
-            $tags(),
-
-            $publishedAt(),
-
-            $identifier()
-
+            $title,
+            $body,
+            $source,
+            $uniqueId,
+            $typeId,
+            $categoryId,
+            $reporter,
+            $lead,
+            $tags,
+            $publishedAt,
+            $identifier
         );
 
         return $article;
+    }
+
+    /**
+     * Get value of array based on attributes(keys)
+     * @param  string,int $attribute
+     * @param  array $data
+     * @return supported php variables
+     */
+    private function getValue($attribute, $data)
+    {
+        if (isset($data[$attribute])) {
+            return $data[$attribute];
+        }
+        return null;
     }
 
     /**
