@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+
+	<title>Class One\Publisher</title>
+
+	<link rel="stylesheet" href="resources/style.css?e99947befd7bf673c6b43ff75e9e0f170c88a60e">
+
+</head>
+
+<body>
+<div id="left">
+	<div id="menu">
+		<a href="index.html" title="Overview"><span>Overview</span></a>
+
+
+		<div id="groups">
+				<h3>Namespaces</h3>
+			<ul>
+				<li class="active">
+					<a href="namespace-One.html">
+						One<span></span>
+					</a>
+
+						<ul>
+				<li>
+					<a href="namespace-One.Model.html">
+						Model					</a>
+
+						</li>
+							</ul></li>
+			</ul>
+		</div>
+
+		<hr>
+
+
+		<div id="elements">
+			<h3>Classes</h3>
+			<ul>
+				<li><a href="class-One.Collection.html">Collection</a></li>
+				<li><a href="class-One.DummyLogger.html">DummyLogger</a></li>
+				<li class="active"><a href="class-One.Publisher.html">Publisher</a></li>
+				<li><a href="class-One.Uri.html">Uri</a></li>
+			</ul>
+
+			<h3>Interfaces</h3>
+			<ul>
+				<li><a href="class-One.JsonInterface.html">JsonInterface</a></li>
+				<li><a href="class-One.ToArrayInterface.html">ToArrayInterface</a></li>
+			</ul>
+
+
+
+
+			<h3>Functions</h3>
+			<ul>
+				<li><a href="function-One.createuriFromServer.html">createuriFromServer</a></li>
+				<li><a href="function-One.createUriFromString.html">createUriFromString</a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+
+<div id="splitter"></div>
+
+<div id="right">
+<div id="rightInner">
+	<form id="search">
+		<input type="hidden" name="cx" value="">
+		<input type="hidden" name="ie" value="UTF-8">
+		<input type="text" name="q" class="text" placeholder="Search">
+	</form>
+
+	<div id="navigation">
+		<ul>
+			<li>
+				<a href="index.html" title="Overview"><span>Overview</span></a>
+			</li>
+			<li>
+				<a href="namespace-One.html" title="Summary of One"><span>Namespace</span></a>
+			</li>
+			<li class="active">
+<span>Class</span>			</li>
+		</ul>
+		<ul>
+		</ul>
+		<ul>
+		</ul>
+	</div>
+
+<div id="content" class="class">
+	<h1>Class Publisher</h1>
+
+
+	<div class="description">
+	<p>Publisher class
+main class to be used that interfacing to the API</p>
+	</div>
+
+	<dl class="tree">
+		<dd style="padding-left:0px">
+<b><span>One\Publisher</span></b>			
+			 implements 
+<span>Psr\Log\LoggerAwareInterface</span>
+			
+			
+		</dd>
+	</dl>
+
+
+
+
+
+
+
+
+	<div class="info">
+		
+		
+		<b>Namespace:</b> <a href="namespace-One.html">One</a><br>
+		
+
+			<b>Located at</b> <a href="source-class-One.Publisher.html#14-516" title="Go to source code">Publisher.php</a>
+		<br>
+	</div>
+
+
+
+	<table class="summary methods" id="methods">
+	<caption>Methods summary</caption>
+	<tr data-order="__construct" id="___construct">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#___construct">#</a>
+		<code><a href="source-class-One.Publisher.html#71-91" title="Go to source code">__construct</a>( <span>string <var>$clientId</var></span>, <span>string <var>$clientSecret</var></span>, <span>array <var>$options</var> = <span class="php-keyword1">array</span>()</span> )</code>
+
+		<div class="description short">
+			<p>constructor</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>constructor</p>
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$clientId</var></dt>
+					<dd></dd>
+					<dt><var>$clientSecret</var></dt>
+					<dd></dd>
+					<dt><var>$options</var></dt>
+					<dd></dd>
+				</dl></div>
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="recycleToken" id="_recycleToken">
+
+		<td class="attributes"><code>
+			 public 
+
+			<code><a href="class-One.Publisher.html">One\Publisher</a></code>
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_recycleToken">#</a>
+		<code><a href="source-class-One.Publisher.html#93-102" title="Go to source code">recycleToken</a>( <span>Closure <var>$tokenProducer</var></span> )</code>
+
+		<div class="description short">
+			<p>recycleToken from callback. If use external token storage could leveraged on this</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>recycleToken from callback. If use external token storage could leveraged on this</p>
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$tokenProducer</var></dt>
+					<dd></dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code><a href="class-One.Publisher.html">One\Publisher</a></code>
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="submitArticle" id="_submitArticle">
+
+		<td class="attributes"><code>
+			 public 
+
+			<code><a href="class-One.Model.Article.html">One\Model\Article</a></code>
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_submitArticle">#</a>
+		<code><a href="source-class-One.Publisher.html#312-343" title="Go to source code">submitArticle</a>( <span><code><a href="class-One.Model.Article.html">One\Model\Article</a></code> <var>$article</var></span> )</code>
+
+		<div class="description short">
+			<p>submitting article here, return new Object cloned from original</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>submitting article here, return new Object cloned from original</p>
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$article</var></dt>
+					<dd></dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code><a href="class-One.Model.Article.html">One\Model\Article</a></code>
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="submitAttachment" id="_submitAttachment">
+
+		<td class="attributes"><code>
+			 public 
+
+			array
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_submitAttachment">#</a>
+		<code><a href="source-class-One.Publisher.html#345-364" title="Go to source code">submitAttachment</a>( <span>string <var>$idArticle</var></span>, <span><code><a href="class-One.Model.Model.html">One\Model\Model</a></code> <var>$attachment</var></span>, <span>string <var>$field</var></span> )</code>
+
+		<div class="description short">
+			<p>submit each attachment of an article here</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>submit each attachment of an article here</p>
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$idArticle</var></dt>
+					<dd></dd>
+					<dt><var>$attachment</var></dt>
+					<dd></dd>
+					<dt><var>$field</var></dt>
+					<dd></dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					array
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="getArticle" id="_getArticle">
+
+		<td class="attributes"><code>
+			 public 
+
+			string
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_getArticle">#</a>
+		<code><a href="source-class-One.Publisher.html#366-377" title="Go to source code">getArticle</a>( <span>string <var>$idArticle</var></span> )</code>
+
+		<div class="description short">
+			<p>get article from rest API</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>get article from rest API</p>
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$idArticle</var></dt>
+					<dd></dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					string<br>json
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="listArticle" id="_listArticle">
+
+		<td class="attributes"><code>
+			 public 
+
+			string
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_listArticle">#</a>
+		<code><a href="source-class-One.Publisher.html#379-389" title="Go to source code">listArticle</a>( )</code>
+
+		<div class="description short">
+			<p>get list article by publisher</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>get list article by publisher</p>
+
+
+
+				<h4>Returns</h4>
+				<div class="list">
+					string<br>json
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="deleteArticle" id="_deleteArticle">
+
+		<td class="attributes"><code>
+			 public 
+
+			string
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_deleteArticle">#</a>
+		<code><a href="source-class-One.Publisher.html#391-420" title="Go to source code">deleteArticle</a>( <span>string <var>$idArticle</var></span> )</code>
+
+		<div class="description short">
+			<p>delete article based on id</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>delete article based on id</p>
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$idArticle</var></dt>
+					<dd></dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					string
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="deleteAttachment" id="_deleteAttachment">
+
+		<td class="attributes"><code>
+			 public 
+
+			string
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_deleteAttachment">#</a>
+		<code><a href="source-class-One.Publisher.html#422-435" title="Go to source code">deleteAttachment</a>( <span>string <var>$idArticle</var></span>, <span>string <var>$field</var></span>, <span>string <var>$order</var></span> )</code>
+
+		<div class="description short">
+			<p>delete attachment of an article</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>delete attachment of an article</p>
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$idArticle</var></dt>
+					<dd></dd>
+					<dt><var>$field</var></dt>
+					<dd></dd>
+					<dt><var>$order</var></dt>
+					<dd></dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					string
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="get" id="_get">
+
+		<td class="attributes"><code>
+			final public 
+
+			string
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_get">#</a>
+		<code><a href="source-class-One.Publisher.html#446-463" title="Go to source code">get</a>( <span>string <var>$path</var></span>, <span><code><a href="class-One.Collection.html">One\Collection</a></code>|array <var>$header</var> = <span class="php-keyword1">array</span>()</span>, <span>array <var>$options</var> = <span class="php-keyword1">array</span>()</span> )</code>
+
+		<div class="description short">
+			<p>get proxy</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>get proxy</p>
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$path</var></dt>
+					<dd></dd>
+					<dt><var>$header</var></dt>
+					<dd></dd>
+					<dt><var>$options</var></dt>
+					<dd></dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					string
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="post" id="_post">
+
+		<td class="attributes"><code>
+			final public 
+
+			string
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_post">#</a>
+		<code><a href="source-class-One.Publisher.html#465-487" title="Go to source code">post</a>( <span>string <var>$path</var></span>, <span><code><a href="class-One.Collection.html">One\Collection</a></code>|array <var>$body</var></span>, <span><code><a href="class-One.Collection.html">One\Collection</a></code>|array <var>$header</var> = <span class="php-keyword1">array</span>()</span>, <span>array <var>$options</var> = <span class="php-keyword1">array</span>()</span> )</code>
+
+		<div class="description short">
+			<p>post proxy</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>post proxy</p>
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$path</var></dt>
+					<dd></dd>
+					<dt><var>$body</var></dt>
+					<dd></dd>
+					<dt><var>$header</var></dt>
+					<dd></dd>
+					<dt><var>$options</var></dt>
+					<dd></dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					string
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="delete" id="_delete">
+
+		<td class="attributes"><code>
+			final public 
+
+			string
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_delete">#</a>
+		<code><a href="source-class-One.Publisher.html#489-507" title="Go to source code">delete</a>( <span>string <var>$path</var></span>, <span><code><a href="class-One.Collection.html">One\Collection</a></code>|array <var>$body</var> = <span class="php-keyword1">array</span>()</span>, <span><code><a href="class-One.Collection.html">One\Collection</a></code>|array <var>$header</var> = <span class="php-keyword1">array</span>()</span>, <span>array <var>$options</var> = <span class="php-keyword1">array</span>()</span> )</code>
+
+		<div class="description short">
+			<p>delete proxy</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>delete proxy</p>
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$path</var></dt>
+					<dd></dd>
+					<dt><var>$body</var></dt>
+					<dd></dd>
+					<dt><var>$header</var></dt>
+					<dd></dd>
+					<dt><var>$options</var></dt>
+					<dd></dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					string
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="setLogger" id="_setLogger">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_setLogger">#</a>
+		<code><a href="source-class-One.Publisher.html#509-515" title="Go to source code">setLogger</a>( <span>Psr\Log\LoggerInterface <var>$logger</var></span> )</code>
+
+		<div class="description short">
+			
+		</div>
+
+		<div class="description detailed hidden">
+			
+
+
+
+
+
+				<h4>Inheritdoc</h4>
+				<div class="list">
+				</div>
+
+
+		</div>
+		</div></td>
+	</tr>
+	</table>
+
+
+
+
+
+
+
+
+	<table class="summary constants" id="constants">
+	<caption>Constants summary</caption>
+	<tr data-order="DEFAULT_MAX_ATTEMPT" id="DEFAULT_MAX_ATTEMPT">
+
+		<td class="attributes"><code>integer</code></td>
+		<td class="name">
+			<code>
+				<a href="source-class-One.Publisher.html#20" title="Go to source code"><b>DEFAULT_MAX_ATTEMPT</b></a>
+			</code>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+			</div>
+		</td>
+		<td class="value">
+			<div>
+				<a href="#DEFAULT_MAX_ATTEMPT" class="anchor">#</a>
+				<code><span class="php-num">4</span></code>
+			</div>
+		</td>
+	</tr>
+	<tr data-order="REST_SERVER" id="REST_SERVER">
+
+		<td class="attributes"><code>string</code></td>
+		<td class="name">
+			<code>
+				<a href="source-class-One.Publisher.html#22" title="Go to source code"><b>REST_SERVER</b></a>
+			</code>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+			</div>
+		</td>
+		<td class="value">
+			<div>
+				<a href="#REST_SERVER" class="anchor">#</a>
+				<code><span class="php-quote">'https://dev.one.co.id'</span></code>
+			</div>
+		</td>
+	</tr>
+	<tr data-order="AUTHENTICATION" id="AUTHENTICATION">
+
+		<td class="attributes"><code>string</code></td>
+		<td class="name">
+			<code>
+				<a href="source-class-One.Publisher.html#23" title="Go to source code"><b>AUTHENTICATION</b></a>
+			</code>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+			</div>
+		</td>
+		<td class="value">
+			<div>
+				<a href="#AUTHENTICATION" class="anchor">#</a>
+				<code><span class="php-quote">'/oauth/token'</span></code>
+			</div>
+		</td>
+	</tr>
+	<tr data-order="ARTICLE_CHECK_ENDPOINT" id="ARTICLE_CHECK_ENDPOINT">
+
+		<td class="attributes"><code>string</code></td>
+		<td class="name">
+			<code>
+				<a href="source-class-One.Publisher.html#24" title="Go to source code"><b>ARTICLE_CHECK_ENDPOINT</b></a>
+			</code>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+			</div>
+		</td>
+		<td class="value">
+			<div>
+				<a href="#ARTICLE_CHECK_ENDPOINT" class="anchor">#</a>
+				<code><span class="php-quote">'/api/article'</span></code>
+			</div>
+		</td>
+	</tr>
+	<tr data-order="ARTICLE_ENDPOINT" id="ARTICLE_ENDPOINT">
+
+		<td class="attributes"><code>string</code></td>
+		<td class="name">
+			<code>
+				<a href="source-class-One.Publisher.html#25" title="Go to source code"><b>ARTICLE_ENDPOINT</b></a>
+			</code>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+			</div>
+		</td>
+		<td class="value">
+			<div>
+				<a href="#ARTICLE_ENDPOINT" class="anchor">#</a>
+				<code><span class="php-quote">'/api/publisher/article'</span></code>
+			</div>
+		</td>
+	</tr>
+	</table>
+
+
+
+
+
+
+
+
+
+
+</div>
+
+	<div id="footer">
+		 API documentation generated by <a href="http://apigen.org">ApiGen</a>
+	</div>
+</div>
+</div>
+<script src="resources/combined.js"></script>
+<script src="elementlist.js"></script>
+</body>
+</html>
