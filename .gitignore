@@ -1,4 +1,3 @@
-composer.phar
 *.lock
 *.cache
 *.ignore
@@ -11,3 +10,7 @@ mix-manifest.json
 /.nyc_output/
 /coverage/
 /node_modules/
+*.phar
+*.iml
+.idea/
+tmp/
