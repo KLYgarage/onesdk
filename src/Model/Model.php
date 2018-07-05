@@ -51,6 +51,19 @@ class Model
     }
 
     /**
+     * Clean non parseable char from string
+     *
+     * @param \Psr\Http\Message\UriInterface|string|null $uri
+     * @return string
+     */
+    protected function filterStringInstance($string)
+    {
+        if (!empty($string)) {
+            return htmlentities($string);
+        }
+    }
+
+    /**
      * Make Sure Uri is a Psr\Http\Message\UriInterface instance
      *
      * @param \Psr\Http\Message\UriInterface|string|null $uri
