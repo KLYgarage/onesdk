@@ -324,15 +324,13 @@ class PublisherTest extends \PHPUnit\Framework\TestCase
         $responseArticlePages = array_map(function ($page) {
             return $page['page_order'];
         }, $responseArticleDecoded['data']['pages']);
-        asort($responseArticlePages);
 
         $articlePages = $article->getAttachmentByField(Article::ATTACHMENT_FIELD_PAGE);
         $articlePagesMapped = array_map(function ($page) {
             return (int) $page->getCollection()->toArray()['order'];
         }, $articlePages);
-        asort($articlePagesMapped);
 
-        $this->assertEquals($articlePagesMapped, $responseArticlePages);
+        $this->assertTrue(empty(array_diff($articlePagesMapped, $responseArticlePages)));
 
         $articleDeleted = $this->publisher->deleteArticle($articleCreatedId);
 
@@ -394,15 +392,13 @@ class PublisherTest extends \PHPUnit\Framework\TestCase
         $responseArticleGalleries = array_map(function ($gallery) {
             return $gallery['gallery_order'];
         }, $responseArticleDecoded['data']['galleries']);
-        asort($responseArticleGalleries);
 
         $articleGalleries = $article->getAttachmentByField(Article::ATTACHMENT_FIELD_GALLERY);
         $articleGalleriesMapped = array_map(function ($gallery) {
             return (int) $gallery->getCollection()->toArray()['order'];
         }, $articleGalleries);
-        asort($articleGalleriesMapped);
 
-        $this->assertEquals($articleGalleriesMapped, $responseArticleGalleries);
+        $this->assertTrue(empty(array_diff($articleGalleriesMapped, $responseArticleGalleries)));
 
         $articleDeleted = $this->publisher->deleteArticle($articleCreatedId);
 
@@ -467,15 +463,13 @@ class PublisherTest extends \PHPUnit\Framework\TestCase
         $responseArticleVideos = array_map(function ($video) {
             return $video['video_order'];
         }, $responseArticleDecoded['data']['videos']);
-        asort($responseArticleVideos);
 
         $articleVideos = $article->getAttachmentByField(Article::ATTACHMENT_FIELD_VIDEO);
         $articleVideosMapped = array_map(function ($video) {
             return (int) $video->getCollection()->toArray()['order'];
         }, $articleVideos);
-        asort($articleVideos);
 
-        $this->assertEquals($articleVideosMapped, $responseArticleVideos);
+        $this->assertTrue(empty(array_diff($articleVideosMapped, $responseArticleVideos)));
 
         $articleDeleted = $this->publisher->deleteArticle($articleCreatedId);
 
