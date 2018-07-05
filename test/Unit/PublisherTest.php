@@ -3,8 +3,10 @@
 namespace One\Test\Unit;
 
 use One\Model\Article;
+use One\Model\Gallery;
 use One\Model\Page;
 use One\Model\Photo;
+use One\Model\Video;
 use One\Publisher;
 
 class PublisherTest extends \PHPUnit\Framework\TestCase
@@ -110,5 +112,335 @@ class PublisherTest extends \PHPUnit\Framework\TestCase
         $this->assertTrue(!empty($this->publisher->getArticle($resultingArticle->getId())));
 
         $this->assertTrue(!empty($this->publisher->deleteArticle($resultingArticle->getId())));
+    }
+
+    public function testSubmitArticleWithoutAttachment()
+    {
+        $article = new Article(
+            'Publisher dummy article',
+            'Tenetur doloremque impedit id quaerat beatae. Nulla labore earum. Perspiciatis odio nostrum molestias voluptatem quidem error. Laudantium mollitia voluptate velit. Fuga nesciunt in repudiandae voluptate harum quia. Voluptatibus quasi iusto officia omnis nulla illo possimus.',
+            'http://example.com/url-detail.html',
+            'dummy-1-ctr',
+            Article::TYPE_TEXT,
+            Article::CATEGORY_NASIONAL,
+            'dummy-1-ctr',
+            'dummy-1-ctr',
+            'dummy-1-ctr',
+            '2018-07-03',
+            null
+        );
+
+        $articleCreated = $this->publisher->submitArticle($article);
+        $articleCreatedId = $articleCreated->getId();
+
+        $this->assertTrue(!empty($articleCreatedId));
+
+        $responseArticle = $this->publisher->getArticle($articleCreatedId);
+        $responseArticleDecoded = json_decode($responseArticle, true);
+        $keys = ['title', 'reporter', 'lead', 'body', 'source', 'uniqueId', 'type_id', 'category_id', 'tags', 'published_at'];
+        $subArticle = array_combine($keys, $article->toArray());
+        $subArticleFiltered = array_filter($subArticle, function ($key) {
+            return $key == 'lead' || $key == 'body' || $key == 'title' || $key == 'source';
+        }, ARRAY_FILTER_USE_KEY);
+
+        $this->assertArraySubset($subArticleFiltered, $responseArticleDecoded['data']);
+
+        $this->assertTrue(!empty($responseArticle));
+
+        $articleDeleted = $this->publisher->deleteArticle($articleCreatedId);
+
+        $this->assertTrue(!empty($articleDeleted));
+
+        $this->assertTrue(in_array('Article deleted', json_decode($articleDeleted, true)));
+    }
+
+    public function testSubmitArticleWithPhotos()
+    {
+        $article = new Article(
+            'Publisher dummy article',
+            'Tenetur doloremque impedit id quaerat beatae. Nulla labore earum. Perspiciatis odio nostrum molestias voluptatem quidem error. Laudantium mollitia voluptate velit. Fuga nesciunt in repudiandae voluptate harum quia. Voluptatibus quasi iusto officia omnis nulla illo possimus.',
+            'http://example.com/url-detail.html',
+            'dummy-1-ctr',
+            Article::TYPE_TEXT,
+            Article::CATEGORY_NASIONAL,
+            'dummy-1-ctr',
+            'dummy-1-ctr',
+            'dummy-1-ctr',
+            '2018-07-03',
+            null
+        );
+
+        $max_photos = 5;
+        $ratio = Photo::RATIO_SQUARE;
+        for ($i = 0; $i < $max_photos; $i++) {
+            switch ($i) {
+                case 1:
+                    $ratio = Photo::RATIO_COVER;
+                    break;
+                
+                case 2:
+                    $ratio = Photo::RATIO_VERTICAL;
+                    break;
+
+                case 3:
+                    $ratio = Photo::RATIO_HEADLINE;
+                    break;
+
+                case 4:
+                    $ratio = Photo::RATIO_RECTANGLE;
+                    break;
+
+                default:
+                    $ratio = Photo::RATIO_SQUARE;
+                    break;
+            }
+            $article->attach(Article::ATTACHMENT_FIELD_PHOTO, new Photo(
+                'http://heydrich.com/' . ($i * rand(23, 99)) . '.jpg',
+                $ratio,
+                'Repellat nesciunt ipsum.',
+                'Quos atque quaerat recusandae modi reprehenderit magnam expedita.'
+            ));
+        }
+
+        $articleCreated = $this->publisher->submitArticle($article);
+        $articleCreatedId = $articleCreated->getId();
+
+        $responseArticle = $this->publisher->getArticle($articleCreatedId);
+
+        $this->assertTrue(!empty($articleCreatedId));
+
+        $this->assertTrue(!empty($responseArticle));
+
+        $responseArticleDecoded = json_decode($responseArticle, true);
+        $keys = ['title', 'reporter', 'lead', 'body', 'source', 'uniqueId', 'type_id', 'category_id', 'tags', 'published_at'];
+        $subArticle = array_combine($keys, $article->toArray());
+        $subArticleFiltered = array_filter($subArticle, function ($key) {
+            return $key == 'lead' || $key == 'body' || $key == 'title' || $key == 'source';
+        }, ARRAY_FILTER_USE_KEY);
+
+        $this->assertArraySubset($subArticleFiltered, $responseArticleDecoded['data']);
+
+        $this->assertEquals($max_photos, count($responseArticleDecoded['data']['photos']));
+
+        $responseArticlePhotos = array_map(function ($photo) {
+            return $photo['photo_url'];
+        }, $responseArticleDecoded['data']['photos']);
+
+        $articlePhotos = $article->getAttachmentByField(Article::ATTACHMENT_FIELD_PHOTO);
+        $articlePhotosMapped = array_map(function ($photo) {
+            return $photo->getCollection()->toArray()['url'];
+        }, $articlePhotos);
+
+        $this->assertTrue(empty(array_diff($articlePhotosMapped, $responseArticlePhotos)));
+
+        $articleDeleted = $this->publisher->deleteArticle($articleCreatedId);
+
+        $this->assertTrue(!empty($articleDeleted));
+
+        $this->assertTrue(in_array('Article deleted', json_decode($articleDeleted, true)));
+    }
+
+    public function testSubmitArticleWithPage()
+    {
+        $article = new Article(
+            'Publisher dummy article',
+            'Tenetur doloremque impedit id quaerat beatae. Nulla labore earum. Perspiciatis odio nostrum molestias voluptatem quidem error. Laudantium mollitia voluptate velit. Fuga nesciunt in repudiandae voluptate harum quia. Voluptatibus quasi iusto officia omnis nulla illo possimus.',
+            'http://example.com/url-detail.html',
+            'dummy-1-ctr',
+            Article::TYPE_TEXT,
+            Article::CATEGORY_NASIONAL,
+            'dummy-1-ctr',
+            'dummy-1-ctr',
+            'dummy-1-ctr',
+            '2018-07-03',
+            null
+        );
+
+        $page = new Page(
+            'Dummy Page',
+            'Rsumissop olli allun sinmo aiciffo otsui isauq subitatpuloV .aiuq murah etatpulov eadnaiduper ni tnuicsen aguF .tilev etatpulov aitillom muitnaduaL .rorre mediuq metatpulov saitselom murtson oido sitaicipsreP .murae erobal alluN .eataeb tareauq di tidepmi euqmerolod ruten',
+            'http://example.com/dummy1.html',
+            1,
+            'http://kshlerin.org/cumque-deleniti-ea-qui',
+            'dummy-1-ctr'
+        );
+
+        $article->attach(Article::ATTACHMENT_FIELD_PAGE, $page);
+
+        $articleCreated = $this->publisher->submitArticle($article);
+        $articleCreatedId = $articleCreated->getId();
+
+        $responseArticle = $this->publisher->getArticle($articleCreatedId);
+
+        $this->assertTrue(!empty($articleCreatedId));
+
+        $this->assertTrue(!empty($responseArticle));
+
+        $responseArticleDecoded = json_decode($responseArticle, true);
+        $keys = ['title', 'reporter', 'lead', 'body', 'source', 'uniqueId', 'type_id', 'category_id', 'tags', 'published_at'];
+        $subArticle = array_combine($keys, $article->toArray());
+        $subArticleFiltered = array_filter($subArticle, function ($key) {
+            return $key == 'lead' || $key == 'body' || $key == 'title' || $key == 'source';
+        }, ARRAY_FILTER_USE_KEY);
+
+        $this->assertArraySubset($subArticleFiltered, $responseArticleDecoded['data']);
+
+        $this->assertTrue(!empty($responseArticleDecoded['data']['pages']));
+
+        $responseArticlePages = array_map(function ($page) {
+            return $page['page_order'];
+        }, $responseArticleDecoded['data']['pages']);
+
+        $articlePages = $article->getAttachmentByField(Article::ATTACHMENT_FIELD_PAGE);
+        $articlePagesMapped = array_map(function ($page) {
+            return (int) $page->getCollection()->toArray()['order'];
+        }, $articlePages);
+
+        $this->assertTrue(empty(array_diff($articlePagesMapped, $responseArticlePages)));
+
+        $articleDeleted = $this->publisher->deleteArticle($articleCreatedId);
+
+        $this->assertTrue(!empty($articleDeleted));
+
+        $this->assertTrue(in_array('Article deleted', json_decode($articleDeleted, true)));
+    }
+
+    public function testSubmitArticleWithGallery()
+    {
+        $article = new Article(
+            'Publisher dummy article',
+            'Tenetur doloremque impedit id quaerat beatae. Nulla labore earum. Perspiciatis odio nostrum molestias voluptatem quidem error. Laudantium mollitia voluptate velit. Fuga nesciunt in repudiandae voluptate harum quia. Voluptatibus quasi iusto officia omnis nulla illo possimus.',
+            'http://example.com/url-detail.html',
+            'dummy-1-ctr',
+            Article::TYPE_TEXT,
+            Article::CATEGORY_NASIONAL,
+            'dummy-1-ctr',
+            'dummy-1-ctr',
+            'dummy-1-ctr',
+            '2018-07-03',
+            null
+        );
+
+        $max_photos = 3;
+
+        for ($i = 0; $i < $max_photos; $i++) {
+            $gallery = new Gallery(
+                'dummy' . rand(0, 999),
+                (string) ($i * rand(12, 76) * rand(1, 99)),
+                'http://www.kovacek.org/magni-omnis-consequuntur-sapiente-magni-architecto-soluta-voluptas-corrupti'.$i,
+                'http://www.kovacek.org/magni-omnis-consequuntur-sapiente-magni-architecto-soluta-voluptas-corrupti'.$i
+            );
+            $article->attachGallery($gallery);
+        }
+
+        $articleCreated = $this->publisher->submitArticle($article);
+        $articleCreatedId = $articleCreated->getId();
+
+        $responseArticle = $this->publisher->getArticle($articleCreatedId);
+
+        $this->assertTrue(!empty($articleCreatedId));
+
+        $this->assertTrue(!empty($responseArticle));
+
+        $responseArticleDecoded = json_decode($responseArticle, true);
+        $keys = ['title', 'reporter', 'lead', 'body', 'source', 'uniqueId', 'type_id', 'category_id', 'tags', 'published_at'];
+        $subArticle = array_combine($keys, $article->toArray());
+        $subArticleFiltered = array_filter($subArticle, function ($key) {
+            return $key == 'lead' || $key == 'body' || $key == 'title' || $key == 'source';
+        }, ARRAY_FILTER_USE_KEY);
+
+        $this->assertArraySubset($subArticleFiltered, $responseArticleDecoded['data']);
+
+        $this->assertTrue(!empty($responseArticleDecoded['data']['galleries']));
+
+        $this->assertEquals($max_photos, count($responseArticleDecoded['data']['galleries']));
+
+        $responseArticleGalleries = array_map(function ($gallery) {
+            return $gallery['gallery_order'];
+        }, $responseArticleDecoded['data']['galleries']);
+
+        $articleGalleries = $article->getAttachmentByField(Article::ATTACHMENT_FIELD_GALLERY);
+        $articleGalleriesMapped = array_map(function ($gallery) {
+            return (int) $gallery->getCollection()->toArray()['order'];
+        }, $articleGalleries);
+
+        $this->assertTrue(empty(array_diff($articleGalleriesMapped, $responseArticleGalleries)));
+
+        $articleDeleted = $this->publisher->deleteArticle($articleCreatedId);
+
+        $this->assertTrue(!empty($articleDeleted));
+
+        $this->assertTrue(in_array('Article deleted', json_decode($articleDeleted, true)));
+    }
+
+    public function testSubmitArticleWithVideo()
+    {
+        $article = new Article(
+            'Publisher dummy article',
+            'Tenetur doloremque impedit id quaerat beatae. Nulla labore earum. Perspiciatis odio nostrum molestias voluptatem quidem error. Laudantium mollitia voluptate velit. Fuga nesciunt in repudiandae voluptate harum quia. Voluptatibus quasi iusto officia omnis nulla illo possimus.',
+            'http://example.com/url-detail.html',
+            'dummy-1-ctr',
+            Article::TYPE_TEXT,
+            Article::CATEGORY_NASIONAL,
+            'dummy-1-ctr',
+            'dummy-1-ctr',
+            'dummy-1-ctr',
+            '2018-07-03',
+            null
+        );
+
+        $video = new Video(
+            'dummy-video',
+            'https://youtuve.com/dummmy',
+            1,
+            'http://example.com/url-detail.html'
+        );
+
+        $video2 = new Video(
+            'dummy-video',
+            'https://youtuve.com/dummmy',
+            2,
+            'http://example.com/url-detail.html'
+        );
+
+        $article->attachVideo($video);
+        $article->attachVideo($video2);
+        
+        $articleCreated = $this->publisher->submitArticle($article);
+        $articleCreatedId = $articleCreated->getId();
+
+        $responseArticle = $this->publisher->getArticle($articleCreatedId);
+
+        $this->assertTrue(!empty($articleCreatedId));
+
+        $this->assertTrue(!empty($responseArticle));
+
+        $responseArticleDecoded = json_decode($responseArticle, true);
+        $keys = ['title', 'reporter', 'lead', 'body', 'source', 'uniqueId', 'type_id', 'category_id', 'tags', 'published_at'];
+        $subArticle = array_combine($keys, $article->toArray());
+        $subArticleFiltered = array_filter($subArticle, function ($key) {
+            return $key == 'lead' || $key == 'body' || $key == 'title' || $key == 'source';
+        }, ARRAY_FILTER_USE_KEY);
+
+        $this->assertArraySubset($subArticleFiltered, $responseArticleDecoded['data']);
+
+        $this->assertTrue(!empty($responseArticleDecoded['data']['videos']));
+
+        $responseArticleVideos = array_map(function ($video) {
+            return $video['video_order'];
+        }, $responseArticleDecoded['data']['videos']);
+
+        $articleVideos = $article->getAttachmentByField(Article::ATTACHMENT_FIELD_VIDEO);
+        $articleVideosMapped = array_map(function ($video) {
+            return (int) $video->getCollection()->toArray()['order'];
+        }, $articleVideos);
+
+        $this->assertTrue(empty(array_diff($articleVideosMapped, $responseArticleVideos)));
+
+        $articleDeleted = $this->publisher->deleteArticle($articleCreatedId);
+
+        $this->assertTrue(!empty($articleDeleted));
+
+        $this->assertTrue(in_array('Article deleted', json_decode($articleDeleted, true)));
     }
 }
