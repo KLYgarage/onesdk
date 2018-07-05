@@ -38,42 +38,71 @@ class FormatMapping
     /**
      * Construct Json attribute variables
      */
+
+    const JSON_PHOTO_FIELD = "photos";
+
+    const JSON_PAGE_FIELD = "pages";
+
+    const JSON_GALLERY_FIELD = "galleries";
+
+    const JSON_VIDEO_FIELD = "videos";
+
+    const JSON_ATTRIBUTES = array(
+        'ID' => "_id",
+        "URL" => '_url',
+        "RATIO" => '_ratio',
+        "DESCRIPTION" => '_description',
+        "INFORMATION" => '_information',
+        "TITLE" => '_title',
+        "LEAD" => '_lead',
+        "BODY" => '_body',
+        "SOURCE" => '_source',
+        "ORDER" => '_order',
+        "COVER" => '_cover',
+        "PHOTO" => '_photo',
+
+    );
+
+    /**
+     * Construct JSON attributes
+     */
     public function __construct()
     {
         $this->photoAttributes = array(
-            "photo_id",
-            "photo_url",
-            "photo_ratio",
-            "photo_description",
-            "photo_information",
+            Article::ATTACHMENT_FIELD_PHOTO . self::JSON_ATTRIBUTES['ID'],
+            Article::ATTACHMENT_FIELD_PHOTO . self::JSON_ATTRIBUTES['URL'],
+            Article::ATTACHMENT_FIELD_PHOTO . self::JSON_ATTRIBUTES['RATIO'],
+            Article::ATTACHMENT_FIELD_PHOTO . self::JSON_ATTRIBUTES['DESCRIPTION'],
+            Article::ATTACHMENT_FIELD_PHOTO . self::JSON_ATTRIBUTES['INFORMATION'],
+
         );
 
         $this->pageAttributes = array(
-            "page_id",
-            "page_title",
-            "page_lead",
-            "page_body",
-            "page_source",
-            "page_order",
-            "page_cover",
+            Article::ATTACHMENT_FIELD_PAGE . self::JSON_ATTRIBUTES['ID'],
+            Article::ATTACHMENT_FIELD_PAGE . self::JSON_ATTRIBUTES['TITLE'],
+            Article::ATTACHMENT_FIELD_PAGE . self::JSON_ATTRIBUTES['LEAD'],
+            Article::ATTACHMENT_FIELD_PAGE . self::JSON_ATTRIBUTES['BODY'],
+            Article::ATTACHMENT_FIELD_PAGE . self::JSON_ATTRIBUTES['SOURCE'],
+            Article::ATTACHMENT_FIELD_PAGE . self::JSON_ATTRIBUTES['ORDER'],
+            Article::ATTACHMENT_FIELD_PAGE . self::JSON_ATTRIBUTES['COVER'],
         );
 
         $this->galleryAttributes = array(
-            "gallery_id",
-            "gallery_lead",
-            "gallery_body",
-            "gallery_source",
-            "gallery_order",
-            "gallery_photo",
+            Article::ATTACHMENT_FIELD_GALLERY . self::JSON_ATTRIBUTES['ID'],
+            Article::ATTACHMENT_FIELD_GALLERY . self::JSON_ATTRIBUTES['LEAD'],
+            Article::ATTACHMENT_FIELD_GALLERY . self::JSON_ATTRIBUTES['BODY'],
+            Article::ATTACHMENT_FIELD_GALLERY . self::JSON_ATTRIBUTES['SOURCE'],
+            Article::ATTACHMENT_FIELD_GALLERY . self::JSON_ATTRIBUTES['ORDER'],
+            Article::ATTACHMENT_FIELD_GALLERY . self::JSON_ATTRIBUTES['PHOTO'],
         );
 
         $this->videoAttributes = array(
-            "video_id",
-            "video_lead",
-            "video_body",
-            "video_source",
-            "video_order",
-            "video_cover",
+            Article::ATTACHMENT_FIELD_VIDEO . self::JSON_ATTRIBUTES['ID'],
+            Article::ATTACHMENT_FIELD_VIDEO . self::JSON_ATTRIBUTES['LEAD'],
+            Article::ATTACHMENT_FIELD_VIDEO . self::JSON_ATTRIBUTES['BODY'],
+            Article::ATTACHMENT_FIELD_VIDEO . self::JSON_ATTRIBUTES['SOURCE'],
+            Article::ATTACHMENT_FIELD_VIDEO . self::JSON_ATTRIBUTES['ORDER'],
+            Article::ATTACHMENT_FIELD_VIDEO . self::JSON_ATTRIBUTES['COVER'],
         );
     }
     /**
@@ -116,34 +145,61 @@ class FormatMapping
 
             );
 
-            $photo_attachments = $this->attachment('photos', $this->photoAttributes, $dataArticle);
+            $this->generalAttachment(
+                $article,
+                Article::ATTACHMENT_FIELD_PHOTO,
+                self::JSON_PHOTO_FIELD,
+                $this->photoAttributes,
+                $dataArticle
+            );
 
-            $page_attachments = $this->attachment('pages', $this->pageAttributes, $dataArticle);
+            $this->generalAttachment(
+                $article,
+                Article::ATTACHMENT_FIELD_PAGE,
+                self::JSON_PAGE_FIELD,
+                $this->pageAttributes,
+                $dataArticle
+            );
 
-            $gallery_attachments = $this->attachment('galleries', $this->galleryAttributes, $dataArticle);
+            $this->generalAttachment($article, Article::ATTACHMENT_FIELD_GALLERY, self::JSON_GALLERY_FIELD, $this->galleryAttributes, $dataArticle);
 
-            $video_attachments = $this->attachment('videos', $this->videoAttributes, $dataArticle);
-
-            for ($i = 0; $i < $photo_attachments['numberOfItems']; $i++) {
-                $article->attachPhoto($photo_attachments['attachments'][$i]);
-            }
-
-            for ($i = 0; $i < $page_attachments['numberOfItems']; $i++) {
-                $article->attachPage($page_attachments['attachments'][$i]);
-            }
-
-            for ($i = 0; $i < $gallery_attachments['numberOfItems']; $i++) {
-                $article->attachGallery($gallery_attachments['attachments'][$i]);
-            }
-
-            for ($i = 0; $i < $video_attachments['numberOfItems']; $i++) {
-                $article->attachVideo($video_attachments['attachments'][$i]);
-            }
+            $this->generalAttachment(
+                $article,
+                Article::ATTACHMENT_FIELD_VIDEO,
+                self::JSON_VIDEO_FIELD,
+                $this->videoAttributes,
+                $dataArticle
+            );
 
             return $article;
         }
 
         throw new \Exception("Empty or invalid JSON Response", 1);
+    }
+
+    /**
+     * Attach attachments to article
+     * @param  Article &$article
+     * @param  string $attachmentConst
+     * @param  string $attachmentype
+     * @param  array $attributes
+     * @param  array $dataArticle
+     * @return void
+     */
+    private function generalAttachment(
+        &$article,
+        $attachmentConst,
+        $attachmentype,
+        $attributes,
+        $dataArticle
+    ) {
+        $attachments = $this->attachment($attachmentype, $attributes, $dataArticle);
+
+        for ($i = 0; $i < $attachments['numberOfItems']; $i++) {
+            $attachment = $attachments['attachments'][$i];
+
+            $article->attach($attachmentConst, $attachment);
+        }
     }
 
     /**
