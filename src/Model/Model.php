@@ -53,7 +53,7 @@ class Model
     /**
      * Clean non parseable char from string
      *
-     * @param \Psr\Http\Message\UriInterface|string|null $uri
+     * @param $string
      * @return string
      */
     protected function filterStringInstance($string)
@@ -76,7 +76,6 @@ class Model
         }
 
         if (is_string($uri)) {
-
             return (string) \One\createUriFromString($uri);
         }
 
