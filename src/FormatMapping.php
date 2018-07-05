@@ -256,41 +256,81 @@ class FormatMapping
         extract($values);
 
         if ($attachmentType == 'photos') {
-            $object = new Photo(
-                $photo_url,
-                $this->photoRatio($photo_ratio),
-                '',
-                ''
-            );
+            $object = $this->createPhoto($photo_url, $photo_ratio, '', '');
         } elseif ($attachmentType == 'pages') {
-            $object = new Page(
-                $page_title,
-                $page_body,
-                $page_source,
-                $page_order,
-                $page_cover,
-                $page_lead
-            );
+            $object = $this->createPage($page_title, $page_body, $page_source, $page_order, $page_cover, $page_lead);
         } elseif ($attachmentType == 'galleries') {
-            $object = new Gallery(
-                $gallery_body,
-                $gallery_order,
-                $gallery_photo,
-                $gallery_source,
-                $gallery_lead
-            );
+            $object = $this->createGallery($gallery_body, $gallery_order, $gallery_photo, $gallery_source, $gallery_lead);
         } elseif ($attachmentType == 'videos') {
-            $object = new Video(
-
-                $video_body,
-                $video_source,
-                $video_order,
-                $video_cover,
-                $video_lead
-            );
+            $object = $this->createVideo($video_body, $video_source, $video_order, $video_cover, $video_lead);
         }
 
         return $this->filterAttachmentObject($object);
+    }
+
+    /**
+     * Create photo object
+     * @param  array $values
+     * @return Photo
+     */
+    private function createPhoto($url, $ratio, $desc, $info)
+    {
+        return new Photo(
+            $url,
+            $this->photoRatio($ratio),
+            $desc,
+            $info
+        );
+    }
+
+    /**
+     * Create page object
+     * @param  array $values
+     * @return Page
+     */
+    private function createPage($title, $body, $source, $order, $cover, $lead)
+    {
+        return new Page(
+            $title,
+            $body,
+            $source,
+            $order,
+            $cover,
+            $lead
+        );
+    }
+
+    /**
+     * Create Gallery object
+     * @param  array $values
+     * @return Gallery
+     */
+    private function createGallery($body, $order, $photo, $source, $lead)
+    {
+        return new Gallery(
+            $body,
+            $order,
+            $photo,
+            $source,
+            $lead
+        );
+    }
+
+    /**
+     * Create Video object
+     * @param  array $values
+     * @return Video
+     */
+    private function createVideo($body, $source, $order, $cover, $lead)
+    {
+        return new Video(
+
+            $body,
+            $source,
+            $order,
+            $cover,
+            $lead
+        );
     }
 
     /**
