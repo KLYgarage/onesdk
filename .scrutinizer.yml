@@ -112,3 +112,11 @@ build:
     environment:
         php:
             version: 5.6
+    nodes:
+        analysis:
+            tests:
+                override:
+                    - php-scrutinizer-run
+    tests:
+        override:
+            - composer run test
