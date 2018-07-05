@@ -41,6 +41,9 @@ class Photo extends Model
             throw new \Exception("ratio $ratio not allowed, allowed ratio are " . implode(', ', $allowedRatio));
         }
 
+        $description = $this->filterStringInstance($description);
+        $information = $this->filterStringInstance($information);
+
         $this->collection = new Collection(
             array(
                 'url' => $url,
