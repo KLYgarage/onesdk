@@ -29,7 +29,7 @@ class FormatMappingTest extends \PHPUnit\Framework\TestCase
         $this->formatMapping = new FormatMapping();
     }
 
-    public function testMapMainArticle()
+    public function testMapMainArticleHasAttachment()
     {
         $idArticle = 10249;
 
@@ -43,12 +43,35 @@ class FormatMappingTest extends \PHPUnit\Framework\TestCase
 
         $this->assertEquals($idArticle, $this->article->getId());
 
-        $this->assertFalse($this->article->hasAttachment(Article::ATTACHMENT_FIELD_PHOTO));
+        $this->assertTrue($this->article->hasAttachment(Article::ATTACHMENT_FIELD_PHOTO));
 
         $this->assertTrue($this->article->hasAttachment(Article::ATTACHMENT_FIELD_PAGE));
 
         $this->assertTrue($this->article->hasAttachment(Article::ATTACHMENT_FIELD_GALLERY));
 
         $this->assertTrue($this->article->hasAttachment(Article::ATTACHMENT_FIELD_VIDEO));
+    }
+
+    public function testMapMainArticleSomeAttachmentMissing()
+    {
+        $idArticle = 10998;
+
+        $jsonArticle = $this->publisher->getArticle($idArticle);
+
+        $this->assertArrayHasKey('data', json_decode($jsonArticle, true));
+
+        $this->article = $this->formatMapping->article($jsonArticle);
+
+        $this->assertNotNull($this->article);
+
+        $this->assertEquals($idArticle, $this->article->getId());
+
+        $this->assertTrue($this->article->hasAttachment(Article::ATTACHMENT_FIELD_PHOTO));
+
+        $this->assertFalse($this->article->hasAttachment(Article::ATTACHMENT_FIELD_PAGE));
+
+        $this->assertFalse($this->article->hasAttachment(Article::ATTACHMENT_FIELD_GALLERY));
+
+        $this->assertFalse($this->article->hasAttachment(Article::ATTACHMENT_FIELD_VIDEO));
     }
 }
