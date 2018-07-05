@@ -145,31 +145,21 @@ class FormatMapping
 
             );
 
-            $this->generalAttachment(
-                $article,
-                Article::ATTACHMENT_FIELD_PHOTO,
-                self::JSON_PHOTO_FIELD,
-                $this->photoAttributes,
-                $dataArticle
+            $attachmentConstants = array(
+                Article::ATTACHMENT_FIELD_PHOTO, Article::ATTACHMENT_FIELD_PAGE,
+                Article::ATTACHMENT_FIELD_GALLERY, Article::ATTACHMENT_FIELD_VIDEO,
             );
 
-            $this->generalAttachment(
-                $article,
-                Article::ATTACHMENT_FIELD_PAGE,
-                self::JSON_PAGE_FIELD,
-                $this->pageAttributes,
-                $dataArticle
-            );
-
-            $this->generalAttachment($article, Article::ATTACHMENT_FIELD_GALLERY, self::JSON_GALLERY_FIELD, $this->galleryAttributes, $dataArticle);
-
-            $this->generalAttachment(
-                $article,
-                Article::ATTACHMENT_FIELD_VIDEO,
+            $attachmentTypes = array(
+                self::JSON_PHOTO_FIELD, self::JSON_PAGE_FIELD, self::JSON_GALLERY_FIELD,
                 self::JSON_VIDEO_FIELD,
-                $this->videoAttributes,
-                $dataArticle
             );
+
+            $attachmentAttributes = array(
+                $this->photoAttributes, $this->pageAttributes, $this->galleryAttributes, $this->videoAttributes,
+            );
+
+            $this->generalAttachment($article, $attachmentConstants, $attachmentTypes, $attachmentAttributes, $dataArticle);
 
             return $article;
         }
@@ -180,8 +170,8 @@ class FormatMapping
     /**
      * Attach attachments to article
      * @param  Article &$article
-     * @param  string $attachmentConst
-     * @param  string $attachmentype
+     * @param  array $attachmentConst
+     * @param  array $attachmentype
      * @param  array $attributes
      * @param  array $dataArticle
      * @return void
@@ -193,12 +183,16 @@ class FormatMapping
         $attributes,
         $dataArticle
     ) {
-        $attachments = $this->attachment($attachmentype, $attributes, $dataArticle);
+        $numOfAttachments = count($attachmentConst);
 
-        for ($i = 0; $i < $attachments['numberOfItems']; $i++) {
-            $attachment = $attachments['attachments'][$i];
+        for ($i = 0; $i < $numOfAttachments; $i++) {
+            $attachments = $this->attachment($attachmentype[$i], $attributes[$i], $dataArticle);
 
-            $article->attach($attachmentConst, $attachment);
+            for ($j = 0; $j < $attachments['numberOfItems']; $j++) {
+                $attachment = $attachments['attachments'][$j];
+
+                $article->attach($attachmentConst[$i], $attachment);
+            }
         }
     }
 
