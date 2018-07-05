@@ -34,7 +34,7 @@ class Photo extends Model
             self::RATIO_RECTANGLE,
             self::RATIO_HEADLINE,
             self::RATIO_VERTICAL,
-            self::RATIO_VERTICAL
+            self::RATIO_COVER
         );
 
         if (!in_array($ratio, $allowedRatio)) {
