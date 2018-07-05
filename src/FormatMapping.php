@@ -12,33 +12,14 @@ class FormatMapping
 {
 
     /**
-     * Json Attributes of Photo
+     * Possible attributes of JSON data
      * @var array
      */
-    private $photoAttributes;
+    private $listAttributes;
 
     /**
-     * Json Attributes of Page
-     * @var array
+     * JSON field constants
      */
-    private $pageAttributes;
-
-    /**
-     * Json Attributes of gallery
-     * @var array
-     */
-    private $galleryAttributes;
-
-    /**
-     * Json Attributes of video
-     * @var array
-     */
-    private $videoAttributes;
-
-    /**
-     * Construct Json attribute variables
-     */
-
     const JSON_PHOTO_FIELD = "photos";
 
     const JSON_PAGE_FIELD = "pages";
@@ -47,64 +28,27 @@ class FormatMapping
 
     const JSON_VIDEO_FIELD = "videos";
 
-    const JSON_ATTRIBUTES = array(
-        'ID' => "_id",
-        "URL" => '_url',
-        "RATIO" => '_ratio',
-        "DESCRIPTION" => '_description',
-        "INFORMATION" => '_information',
-        "TITLE" => '_title',
-        "LEAD" => '_lead',
-        "BODY" => '_body',
-        "SOURCE" => '_source',
-        "ORDER" => '_order',
-        "COVER" => '_cover',
-        "PHOTO" => '_photo',
-
-    );
-
     /**
      * Construct JSON attributes
      */
     public function __construct()
     {
-        $this->photoAttributes = array(
-            Article::ATTACHMENT_FIELD_PHOTO . self::JSON_ATTRIBUTES['ID'],
-            Article::ATTACHMENT_FIELD_PHOTO . self::JSON_ATTRIBUTES['URL'],
-            Article::ATTACHMENT_FIELD_PHOTO . self::JSON_ATTRIBUTES['RATIO'],
-            Article::ATTACHMENT_FIELD_PHOTO . self::JSON_ATTRIBUTES['DESCRIPTION'],
-            Article::ATTACHMENT_FIELD_PHOTO . self::JSON_ATTRIBUTES['INFORMATION'],
-
-        );
-
-        $this->pageAttributes = array(
-            Article::ATTACHMENT_FIELD_PAGE . self::JSON_ATTRIBUTES['ID'],
-            Article::ATTACHMENT_FIELD_PAGE . self::JSON_ATTRIBUTES['TITLE'],
-            Article::ATTACHMENT_FIELD_PAGE . self::JSON_ATTRIBUTES['LEAD'],
-            Article::ATTACHMENT_FIELD_PAGE . self::JSON_ATTRIBUTES['BODY'],
-            Article::ATTACHMENT_FIELD_PAGE . self::JSON_ATTRIBUTES['SOURCE'],
-            Article::ATTACHMENT_FIELD_PAGE . self::JSON_ATTRIBUTES['ORDER'],
-            Article::ATTACHMENT_FIELD_PAGE . self::JSON_ATTRIBUTES['COVER'],
-        );
-
-        $this->galleryAttributes = array(
-            Article::ATTACHMENT_FIELD_GALLERY . self::JSON_ATTRIBUTES['ID'],
-            Article::ATTACHMENT_FIELD_GALLERY . self::JSON_ATTRIBUTES['LEAD'],
-            Article::ATTACHMENT_FIELD_GALLERY . self::JSON_ATTRIBUTES['BODY'],
-            Article::ATTACHMENT_FIELD_GALLERY . self::JSON_ATTRIBUTES['SOURCE'],
-            Article::ATTACHMENT_FIELD_GALLERY . self::JSON_ATTRIBUTES['ORDER'],
-            Article::ATTACHMENT_FIELD_GALLERY . self::JSON_ATTRIBUTES['PHOTO'],
-        );
-
-        $this->videoAttributes = array(
-            Article::ATTACHMENT_FIELD_VIDEO . self::JSON_ATTRIBUTES['ID'],
-            Article::ATTACHMENT_FIELD_VIDEO . self::JSON_ATTRIBUTES['LEAD'],
-            Article::ATTACHMENT_FIELD_VIDEO . self::JSON_ATTRIBUTES['BODY'],
-            Article::ATTACHMENT_FIELD_VIDEO . self::JSON_ATTRIBUTES['SOURCE'],
-            Article::ATTACHMENT_FIELD_VIDEO . self::JSON_ATTRIBUTES['ORDER'],
-            Article::ATTACHMENT_FIELD_VIDEO . self::JSON_ATTRIBUTES['COVER'],
+        $this->listAttributes = array(
+            Article::ATTACHMENT_FIELD_PHOTO => array(
+                '_id', '_url', '_ratio', '_description', '_information',
+            ),
+            Article::ATTACHMENT_FIELD_PAGE => array(
+                '_id', '_title', '_lead', '_body', '_source', '_order', '_cover',
+            ),
+            Article::ATTACHMENT_FIELD_GALLERY => array(
+                '_id', '_lead', '_body', '_source', '_order', '_photo',
+            ),
+            Article::ATTACHMENT_FIELD_VIDEO => array(
+                '_id', '_lead', '_body', '_source', '_order', '_cover',
+            ),
         );
     }
+
     /**
      * map a single article to main attributes in Article Class
      * @param  string $singleJsonArticle JSON response
@@ -155,9 +99,7 @@ class FormatMapping
                 self::JSON_VIDEO_FIELD,
             );
 
-            $attachmentAttributes = array(
-                $this->photoAttributes, $this->pageAttributes, $this->galleryAttributes, $this->videoAttributes,
-            );
+            $attachmentAttributes = $this->lookUp($attachmentConstants);
 
             $this->generalAttachment($article, $attachmentConstants, $attachmentTypes, $attachmentAttributes, $dataArticle);
 
@@ -165,6 +107,32 @@ class FormatMapping
         }
 
         throw new \Exception("Empty or invalid JSON Response", 1);
+    }
+
+    /**
+     * Create list attributes based on Article attachment type
+     * @param  array $articleConstant
+     * @return array
+     */
+    private function lookUp($articleConstant)
+    {
+        $num = count($articleConstant);
+
+        $lists = array();
+
+        for ($i = 0; $i < $num; $i++) {
+            $res = $this->listAttributes[$articleConstant[$i]];
+
+            $jumlah = count($res);
+
+            for ($j = 0; $j < $jumlah; $j++) {
+                $res[$j] = $articleConstant[$i] . $res[$j];
+            }
+
+            array_push($lists, $res);
+        }
+
+        return $lists;
     }
 
     /**

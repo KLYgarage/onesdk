@@ -34,12 +34,16 @@ class Photo extends Model
             self::RATIO_RECTANGLE,
             self::RATIO_HEADLINE,
             self::RATIO_VERTICAL,
+
             self::RATIO_COVER,
         );
 
         if (!in_array($ratio, $allowedRatio)) {
             throw new \Exception("ratio $ratio not allowed, allowed ratio are " . implode(', ', $allowedRatio));
         }
+
+        $description = $this->filterStringInstance($description);
+        $information = $this->filterStringInstance($information);
 
         $this->collection = new Collection(
             array(
