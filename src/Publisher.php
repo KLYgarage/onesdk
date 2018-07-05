@@ -2,14 +2,14 @@
 
 namespace One;
 
-use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerInterface;
-use One\Model\Article;
 use Guzzle\Http\Client;
-use Guzzle\Http\Message\Request;
 use Guzzle\Http\Exception\BadResponseException;
 use Guzzle\Http\Exception\ClientErrorResponseException;
 use Guzzle\Http\Message\RequestInterface;
+use One\Model\Article;
+use One\Model\Model;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerInterface;
 
 /**
  * Publisher class
@@ -24,14 +24,12 @@ class Publisher implements LoggerAwareInterface
     const ARTICLE_CHECK_ENDPOINT = '/api/article';
     const ARTICLE_ENDPOINT = '/api/publisher/article';
 
-    private $attachmentUrl = null;
-    
-    /*const ATTACHMENT_URL = array(
-        Article::ATTACHMENT_FIELD_GALLERY => self::ARTICLE_ENDPOINT . '/{article_id}/gallery',
-        Article::ATTACHMENT_FIELD_PAGE    => self::ARTICLE_ENDPOINT . '/{article_id}/page',
-        Article::ATTACHMENT_FIELD_PHOTO   => self::ARTICLE_ENDPOINT . '/{article_id}/photo',
-        Article::ATTACHMENT_FIELD_VIDEO   => self::ARTICLE_ENDPOINT . '/{article_id}/video'
-    );*/
+    /*
+     * attachment url destination
+     *
+     * @var array
+     */
+    private $attachmentUrl;
 
     /**
      * Logger variable, if set log activity to this obejct each time sending request and receiving response
@@ -83,12 +81,13 @@ class Publisher implements LoggerAwareInterface
         $this->clientSecret = $clientSecret;
 
         $this->assessOptions($options);
-        
+ 
         $this->attachmentUrl = array(
             Article::ATTACHMENT_FIELD_GALLERY => self::ARTICLE_ENDPOINT . '/{article_id}/gallery',
             Article::ATTACHMENT_FIELD_PAGE    => self::ARTICLE_ENDPOINT . '/{article_id}/page',
             Article::ATTACHMENT_FIELD_PHOTO   => self::ARTICLE_ENDPOINT . '/{article_id}/photo',
             Article::ATTACHMENT_FIELD_VIDEO   => self::ARTICLE_ENDPOINT . '/{article_id}/video'
+
         );
     }
 
@@ -116,8 +115,8 @@ class Publisher implements LoggerAwareInterface
             'auth_url' => self::AUTHENTICATION,
             'max_attempt' => self::DEFAULT_MAX_ATTEMPT,
             'default_headers' => array(
-                "Accept" => "application/json"
-            )
+                "Accept" => "application/json",
+            ),
         );
 
         $this->options = new Collection(
@@ -219,7 +218,7 @@ class Publisher implements LoggerAwareInterface
                 array(
                     "grant_type" => "client_credentials",
                     "client_id" => $this->clientId,
-                    "client_secret" => $this->clientSecret
+                    "client_secret" => $this->clientSecret,
                 )
             )
         );
@@ -250,7 +249,7 @@ class Publisher implements LoggerAwareInterface
             array_merge(
                 $this->options->get('default_headers'),
                 array(
-                    "Authorization" => "Bearer " . $accessToken
+                    "Authorization" => "Bearer " . $accessToken,
                 )
             )
         );
@@ -268,8 +267,9 @@ class Publisher implements LoggerAwareInterface
     private function getAttachmentEndPoint($idArticle, $field)
     {
         return $this->replaceEndPointId(
-           $idArticle,
-           $this->attachmentUrl[$field]
+
+            $idArticle,
+            $this->attachmentUrl[$field]
         );
     }
 
@@ -333,10 +333,7 @@ class Publisher implements LoggerAwareInterface
             if ($article->hasAttachment($field)) {
                 foreach ($article->getAttachmentByField($field) as $attachment) {
                     $this->submitAttachment(
-                        $this->getAttachmentEndPoint(
-                            $article->getId(),
-                            $field
-                        ),
+                        $article->getId(),
                         $attachment,
                         $field
                     );
@@ -440,6 +437,15 @@ class Publisher implements LoggerAwareInterface
     }
 
     /**
+     * Checks if Logger instance exists
+     * @return boolean
+     */
+    private function hasLogger()
+    {
+        return isset($this->logger) && !is_null($this->logger);
+    }
+
+    /**
      * get proxy
      *
      * @param string $path
@@ -469,6 +475,10 @@ class Publisher implements LoggerAwareInterface
      */
     final public function post($path, $body, $header = array(), $options = array())
     {
+        if ($this->hasLogger()) {
+            $this->logger->info("Post to " . $path);
+        }
+
         return $this->requestGate(
             'POST',
             $path,

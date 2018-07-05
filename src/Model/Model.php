@@ -2,8 +2,6 @@
 
 namespace One\Model;
 
-//use function One\createUriFromString;
-//use function One\createuriFromServer;
 use One\Collection;
 use Psr\Http\Message\UriInterface;
 
@@ -56,19 +54,20 @@ class Model
      * Make Sure Uri is a Psr\Http\Message\UriInterface instance
      *
      * @param \Psr\Http\Message\UriInterface|string|null $uri
-     * @return \Psr\Http\Message\UriInterface
+     * @return string
      */
     protected function filterUriInstance($uri)
     {
         if ($uri instanceof UriInterface) {
-            return $uri;
+            return (string) $uri;
         }
 
         if (is_string($uri)) {
-            return \One\createUriFromString($uri);
+
+            return (string) \One\createUriFromString($uri);
         }
 
-        return \One\createuriFromServer();
+        return (string) \One\createuriFromServer();
     }
 
     /**
@@ -84,7 +83,7 @@ class Model
         }
 
         if (is_string($date) || is_int($date)) {
-            $date = new \DateTime($date);
+            $date = new \DateTime($date, new \DateTimeZone("Asia/Jakarta"));
         }
 
         return $this->formatDate($date);
