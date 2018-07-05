@@ -107,7 +107,6 @@ coding_style:
                 general: lower
             constants:
                 true_false_null: lower
-
 build:
     environment:
         php:
@@ -117,6 +116,10 @@ build:
             tests:
                 override:
                     - php-scrutinizer-run
+                    -
+                        command: phpcs-run
+                        use_website_config: true
+
     tests:
         override:
             - composer run test
