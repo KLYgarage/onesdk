@@ -72,6 +72,9 @@ class PublisherTest extends \PHPUnit\Framework\TestCase
         $this->assertTrue(!empty($this->publisher->listArticle()));
     }
 
+    /**
+     * @large
+     */
     public function testSubmit()
     {
         $article = new Article(
@@ -154,6 +157,9 @@ class PublisherTest extends \PHPUnit\Framework\TestCase
         $this->assertTrue(in_array('Article deleted', json_decode($articleDeleted, true)));
     }
 
+    /**
+     * @large
+     */
     public function testSubmitArticleWithPhotos()
     {
         $article = new Article(
@@ -240,6 +246,9 @@ class PublisherTest extends \PHPUnit\Framework\TestCase
         $this->assertTrue(in_array('Article deleted', json_decode($articleDeleted, true)));
     }
 
+    /**
+     * @large
+     */
     public function testSubmitArticleWithPage()
     {
         $article = new Article(
@@ -305,6 +314,9 @@ class PublisherTest extends \PHPUnit\Framework\TestCase
         $this->assertTrue(in_array('Article deleted', json_decode($articleDeleted, true)));
     }
 
+    /**
+     * @large
+     */
     public function testSubmitArticleWithGallery()
     {
         $article = new Article(
@@ -373,6 +385,9 @@ class PublisherTest extends \PHPUnit\Framework\TestCase
         $this->assertTrue(in_array('Article deleted', json_decode($articleDeleted, true)));
     }
 
+    /**
+     * @large
+     */
     public function testSubmitArticleWithVideo()
     {
         $article = new Article(
