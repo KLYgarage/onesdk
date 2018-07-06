@@ -63,51 +63,56 @@ class FormatMapping
             $article = new Article(
 
                 $this->filterString(
-                    $this->getValue('title', $dataArticle)
+                  $this->getValue('title', $dataArticle)
                 ),
 
                 $this->filterString(
-                    $this->getValue('body', $dataArticle)
+                  $this->getValue('body', $dataArticle)
                 ),
 
                 $this->filterString(
-                    $this->getValue('source', $dataArticle)
+                  $this->getValue('source', $dataArticle)
                 ),
 
                 $this->getValue('unique_id', $dataArticle),
 
                 $this->filterInteger(
-                    $this->getValue('type_id', $dataArticle['type'])
+                  $this->getValue(
+                    'type_id',
+                    $dataArticle['type']
+                  )
                 ),
 
                 $this->filterInteger(
-                    $this->getValue(
-                        'category_id',
-                        $dataArticle['category']
-                    )
+                  $this->getValue(
+                    'category_id',
+                    $dataArticle['category']
+                  )
                 ),
 
                 $this->getValue('reporter', $dataArticle),
 
                 $this->filterString(
-                    $this->getValue('lead', $dataArticle)
+                  $this->getValue('lead', $dataArticle)
                 ),
 
                 $this->getValue('tag_name', $dataArticle['tags']),
 
                 $this->filterString(
-                    $this->getValue('published_at', $dataArticle)
+                  $this->getValue('published_at', $dataArticle)
                 ),
 
                 $this->filterInteger(
-                    $this->getValue('id', $dataArticle)
+                  $this->getValue('id', $dataArticle)
                 )
 
             );
 
             $attachmentConstants = array(
-                Article::ATTACHMENT_FIELD_PHOTO, Article::ATTACHMENT_FIELD_PAGE,
-                Article::ATTACHMENT_FIELD_GALLERY, Article::ATTACHMENT_FIELD_VIDEO,
+                Article::ATTACHMENT_FIELD_PHOTO,
+                Article::ATTACHMENT_FIELD_PAGE,
+                Article::ATTACHMENT_FIELD_GALLERY,
+                Article::ATTACHMENT_FIELD_VIDEO,
             );
 
             $attachmentTypes = array(
@@ -117,7 +122,13 @@ class FormatMapping
 
             $attachmentAttributes = $this->lookUp($attachmentConstants);
 
-            $article = $this->generalAttachment($article, $attachmentConstants, $attachmentTypes, $attachmentAttributes, $dataArticle);
+            $article = $this->generalAttachment(
+                $article,
+                $attachmentConstants,
+                $attachmentTypes,
+                $attachmentAttributes,
+                $dataArticle
+            );
 
             return $article;
         }
@@ -280,9 +291,9 @@ class FormatMapping
     {
         return new Photo(
             $url,
-            $this->photoRatio($ratio),
-            $desc,
-            $info
+            $ratio,
+            $this->handleString($desc),
+            $this->handleString($info)
         );
     }
 
@@ -337,29 +348,6 @@ class FormatMapping
     }
 
     /**
-     * Map ratio to photo ratio constants
-     * @param   string $ratio
-     * @return   string
-     * @throws Exception
-     */
-    private function photoRatio($ratio)
-    {
-        if ($ratio == "1:1") {
-            return Photo::RATIO_SQUARE;
-        } elseif ($ratio == "2:1") {
-            return Photo::RATIO_RECTANGLE;
-        } elseif ($ratio == "3:2") {
-            return Photo::RATIO_HEADLINE;
-        } elseif ($ratio == "9:16") {
-            return Photo::RATIO_VERTICAL;
-        } elseif ($ratio == 'cover') {
-            return Photo::RATIO_COVER;
-        } else {
-            throw new \Exception("Unknown ratio", 1);
-        }
-    }
-
-    /**
      * Make sure value is integer
      * @param  mixed $int
      * @return int
@@ -387,6 +375,18 @@ class FormatMapping
         throw new \Exception("String required", 1);
     }
 
+    /**
+     * Handle string when it will throw exception
+     * @param  mixed $str
+     * @return string
+     */
+    private function handleString($str)
+    {
+        return (is_string($str) &&
+            strlen($str) > 0
+            && !is_null($str)) ? $str : "";
+    }
+    
     /**
      * Make sure variable is type of array
      * @param  mixed $array
