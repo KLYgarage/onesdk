@@ -2,8 +2,8 @@
 
 namespace One\Model;
 
-use Psr\Http\Message\UriInterface;
 use One\Collection;
+use Psr\Http\Message\UriInterface;
 
 class Photo extends Model
 {
@@ -34,7 +34,7 @@ class Photo extends Model
             self::RATIO_RECTANGLE,
             self::RATIO_HEADLINE,
             self::RATIO_VERTICAL,
-            self::RATIO_COVER
+            self::RATIO_COVER,
         );
 
         if (!in_array($ratio, $allowedRatio)) {
@@ -49,7 +49,7 @@ class Photo extends Model
                 'url' => $url,
                 'ratio' => $ratio,
                 'description' => $description,
-                'information' => $information
+                'information' => $information,
             )
         );
     }
