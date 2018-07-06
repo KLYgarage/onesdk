@@ -120,8 +120,7 @@ class FormatMapping
 
         $lists = array_map(function ($singleConst) use ($copyListAttributes) {
             $res = $copyListAttributes[$singleConst];
-
-            return $res = array_map(function ($str) use ($singleConst) {
+            return array_map(function ($str) use ($singleConst) {
                 return $singleConst . $str;
             }, $res);
         }, $articleConstant);
