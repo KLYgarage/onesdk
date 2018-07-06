@@ -39,7 +39,7 @@ class FormatMappingTest extends \PHPUnit\Framework\TestCase
 
         $jsonArticle = $this->publisher->getArticle($newArticleId);
 
-        if(is_null($jsonArticle) && empty($jsonArticle)){
+        if (is_null($jsonArticle) && empty($jsonArticle)) {
             $this->markTestSkipped('Test skipped');
         }
 
@@ -56,6 +56,4 @@ class FormatMappingTest extends \PHPUnit\Framework\TestCase
         $this->assertFalse($this->article->hasAttachment(Article::ATTACHMENT_FIELD_GALLERY));
         $this->assertFalse($this->article->hasAttachment(Article::ATTACHMENT_FIELD_VIDEO));
     }
-
-  
 }
