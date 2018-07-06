@@ -63,47 +63,47 @@ class FormatMapping
             $article = new Article(
 
                 $this->filterString(
-                  $this->getValue('title', $dataArticle)
+                    $this->getValue('title', $dataArticle)
                 ),
 
                 $this->filterString(
-                  $this->getValue('body', $dataArticle)
+                    $this->getValue('body', $dataArticle)
                 ),
 
                 $this->filterString(
-                  $this->getValue('source', $dataArticle)
+                    $this->getValue('source', $dataArticle)
                 ),
 
                 $this->getValue('unique_id', $dataArticle),
 
                 $this->filterInteger(
-                  $this->getValue(
-                    'type_id',
-                    $dataArticle['type']
-                  )
+                    $this->getValue(
+                        'type_id',
+                        $dataArticle['type']
+                    )
                 ),
 
                 $this->filterInteger(
-                  $this->getValue(
-                    'category_id',
-                    $dataArticle['category']
-                  )
+                    $this->getValue(
+                        'category_id',
+                        $dataArticle['category']
+                    )
                 ),
 
                 $this->getValue('reporter', $dataArticle),
 
                 $this->filterString(
-                  $this->getValue('lead', $dataArticle)
+                    $this->getValue('lead', $dataArticle)
                 ),
 
                 $this->getValue('tag_name', $dataArticle['tags']),
 
                 $this->filterString(
-                  $this->getValue('published_at', $dataArticle)
+                    $this->getValue('published_at', $dataArticle)
                 ),
 
                 $this->filterInteger(
-                  $this->getValue('id', $dataArticle)
+                    $this->getValue('id', $dataArticle)
                 )
 
             );
@@ -386,7 +386,7 @@ class FormatMapping
             strlen($str) > 0
             && !is_null($str)) ? $str : "";
     }
-    
+
     /**
      * Make sure variable is type of array
      * @param  mixed $array
