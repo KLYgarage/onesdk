@@ -151,7 +151,7 @@ class FormatMapping
      * @param  array $attachmentype
      * @param  array $attributes
      * @param  array $dataArticle
-     * @return void
+     * @return Article
      */
     private function generalAttachment(
         $article,
