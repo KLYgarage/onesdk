@@ -116,21 +116,15 @@ class FormatMapping
      */
     private function lookUp($articleConstant)
     {
-        $num = count($articleConstant);
+        $copyListAttributes = $this->listAttributes;
 
-        $lists = array();
+        $lists = array_map(function ($singleConst) use ($copyListAttributes) {
+            $res = $copyListAttributes[$singleConst];
 
-        for ($i = 0; $i < $num; $i++) {
-            $res = $this->listAttributes[$articleConstant[$i]];
-
-            $jumlah = count($res);
-
-            for ($j = 0; $j < $jumlah; $j++) {
-                $res[$j] = $articleConstant[$i] . $res[$j];
-            }
-
-            array_push($lists, $res);
-        }
+            return $res = array_map(function ($str) use ($singleConst) {
+                return $singleConst . $str;
+            }, $res);
+        }, $articleConstant);
 
         return $lists;
     }
@@ -187,7 +181,7 @@ class FormatMapping
             for ($i = 0; $i < $numberOfItems; $i++) {
                 $item = $decodedData[$i];
 
-                $attachment = $this->makeAttachmentObject($attachmentType, $attributes, $item);
+                $attachment = $this->filterAttachmentObject($this->makeAttachmentObject($attachmentType, $attributes, $item));
 
                 array_push($attachments, $attachment);
             }
@@ -214,8 +208,6 @@ class FormatMapping
 
         $values = array();
 
-        $object = null;
-
         for ($i = 0; $i < $numOfAttributes; $i++) {
             $val = $this->getValue($attributes[$i], $item);
             $values[$attributes[$i]] = $val;
@@ -224,16 +216,15 @@ class FormatMapping
         extract($values);
 
         if ($attachmentType == 'photos') {
-            $object = $this->createPhoto($photo_url, $photo_ratio, '', '');
+            return $this->createPhoto($photo_url, $photo_ratio, '', '');
         } elseif ($attachmentType == 'pages') {
-            $object = $this->createPage($page_title, $page_body, $page_source, $page_order, $page_cover, $page_lead);
+            return $this->createPage($page_title, $page_body, $page_source, $page_order, $page_cover, $page_lead);
         } elseif ($attachmentType == 'galleries') {
-            $object = $this->createGallery($gallery_body, $gallery_order, $gallery_photo, $gallery_source, $gallery_lead);
+            return $this->createGallery($gallery_body, $gallery_order, $gallery_photo, $gallery_source, $gallery_lead);
         } elseif ($attachmentType == 'videos') {
-            $object = $this->createVideo($video_body, $video_source, $video_order, $video_cover, $video_lead);
+            return $this->createVideo($video_body, $video_source, $video_order, $video_cover, $video_lead);
         }
-
-        return $this->filterAttachmentObject($object);
+        return null;
     }
 
     /**
