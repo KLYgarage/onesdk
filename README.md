@@ -70,3 +70,63 @@ Example Usage:
 PHP CS Fixer is intended to fix coding standard. So, **Remember!** to always run PHP CS Fixer before you create pull request.
   
   ``` composer run cs-fix ```
+
+## Testing
+### How to Run Tests
+Open a command prompt and navigate to project directory
+~~~
+C:\path\to>cd onesdk
+C:\path\to\onesdk>
+~~~
+Run command `composer run test`
+~~~
+C:\path\to\onesdk>composer run test
+> php ./phpunit --bootstrap ./test/bootstrap.php ./test/
+PHPUnit 4.8.36 by Sebastian Bergmann and contributors.
+
+..................
+
+Time: 14 seconds, Memory: 10.00MB
+
+OK (18 tests, 98 assertions)
+~~~
+To see what test is running you can use command `composer run test:verbose`
+~~~
+C:\path\to\onesdk>composer run test:verbose
+> php ./phpunit --bootstrap ./test/bootstrap.php ./test/
+PHPUnit 4.8.36 by Sebastian Bergmann and contributors.
+
+Starting test 'One\Test\Unit\PublisherTest::testSubmitArticleWithoutAttachment'.
+.
+Starting test 'One\Test\Unit\PublisherTest::testSubmitArticleWithPhotos'.
+.
+Starting test 'One\Test\Unit\PublisherTest::testSubmitArticleWithPage'.
+.
+Starting test 'One\Test\Unit\PublisherTest::testSubmitArticleWithGallery'.
+.
+Starting test 'One\Test\Unit\PublisherTest::testSubmitArticleWithVideo'.
+
+Time: 12.34 seconds, Memory: 10.00MB
+
+OK (18 tests, 98 assertions)
+~~~
+### What to Remember When Writing a Test
+1. Make sure to create test case for every core function on the class.
+2. Always compare data you expected or created before you make a request with the actual data that you get from a response.
+3. Use the correct assertion.
+Avoid using assertEquals to compare arrays because sometimes you will get array (response from server) values sorted in different   order from your expected array. In example:
+~~~
+$array = [
+  '0'=>'500',
+  '1'=>'A'
+];
+
+$arrayFromResponse = [
+  '0'=>'A',
+  '1'=>'500
+];
+~~~
+Rather than sorting `$arrayFromResponse` to make the order equal, we can use `assertTrue` combine with `array_diff`
+~~~
+assertTrue(empty(array_diff($array, $arrayFromResponse)));
+~~~
