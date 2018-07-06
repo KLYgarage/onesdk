@@ -231,7 +231,8 @@ class PublisherTest extends \PHPUnit\Framework\TestCase
             return $photo->getCollection()->toArray()['url'];
         }, $articlePhotos);
 
-        $this->assertTrue(empty(array_diff($articlePhotosMapped, $resArticlePhotos)));
+        $dataDifferences = array_diff($articlePhotosMapped, $resArticlePhotos);
+        $this->assertTrue(empty($dataDifferences));
 
         $articleDeleted = $this->publisher->deleteArticle($articleCreatedId);
 
@@ -296,7 +297,8 @@ class PublisherTest extends \PHPUnit\Framework\TestCase
             return (int) $page->getCollection()->toArray()['order'];
         }, $articlePages);
 
-        $this->assertTrue(empty(array_diff($articlePagesMapped, $resArticlePages)));
+        $dataDifferences = array_diff($articlePagesMapped, $resArticlePages);
+        $this->assertTrue(empty($dataDifferences));
 
         $articleDeleted = $this->publisher->deleteArticle($articleCreatedId);
 
@@ -364,7 +366,8 @@ class PublisherTest extends \PHPUnit\Framework\TestCase
             return (int) $gallery->getCollection()->toArray()['order'];
         }, $articleGalleries);
 
-        $this->assertTrue(empty(array_diff($artclGalleriesMapped, $resArticleGalleries)));
+        $dataDifferences = array_diff($artclGalleriesMapped, $resArticleGalleries);
+        $this->assertTrue(empty($dataDifferences));
 
         $articleDeleted = $this->publisher->deleteArticle($articleCreatedId);
 
@@ -435,7 +438,8 @@ class PublisherTest extends \PHPUnit\Framework\TestCase
             return (int) $video->getCollection()->toArray()['order'];
         }, $articleVideos);
 
-        $this->assertTrue(empty(array_diff($articleVideosMapped, $resArticleVideos)));
+        $dataDifferences = array_diff($articleVideosMapped, $resArticleVideos);
+        $this->assertTrue(empty($dataDifferences));
 
         $articleDeleted = $this->publisher->deleteArticle($articleCreatedId);
 

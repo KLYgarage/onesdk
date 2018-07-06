@@ -73,14 +73,8 @@ PHP CS Fixer is intended to fix coding standard. So, **Remember!** to always run
 
 ## Testing
 ### How to Run Tests
-Open a command prompt and navigate to project directory
+Open a command prompt or terminal, navigate to project directory and run command `composer run test`
 ~~~
-C:\path\to>cd onesdk
-C:\path\to\onesdk>
-~~~
-Run command `composer run test`
-~~~
-C:\path\to\onesdk>composer run test
 > php ./phpunit --bootstrap ./test/bootstrap.php ./test/
 PHPUnit 4.8.36 by Sebastian Bergmann and contributors.
 
@@ -92,7 +86,6 @@ OK (18 tests, 98 assertions)
 ~~~
 To see what test is running you can use command `composer run test:verbose`
 ~~~
-C:\path\to\onesdk>composer run test:verbose
 > php ./phpunit --bootstrap ./test/bootstrap.php ./test/
 PHPUnit 4.8.36 by Sebastian Bergmann and contributors.
 
