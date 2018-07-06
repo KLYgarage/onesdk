@@ -34,16 +34,16 @@ class FormatMapping
     public function __construct()
     {
         $this->listAttributes = array(
-            Article::ATTACHMENT_FIELD_PHOTO => array(
+            Article::ATTACHMENT_FIELD_PHOTO   => array(
                 '_id', '_url', '_ratio', '_description', '_information',
             ),
-            Article::ATTACHMENT_FIELD_PAGE => array(
+            Article::ATTACHMENT_FIELD_PAGE    => array(
                 '_id', '_title', '_lead', '_body', '_source', '_order', '_cover',
             ),
             Article::ATTACHMENT_FIELD_GALLERY => array(
                 '_id', '_lead', '_body', '_source', '_order', '_photo',
             ),
-            Article::ATTACHMENT_FIELD_VIDEO => array(
+            Article::ATTACHMENT_FIELD_VIDEO   => array(
                 '_id', '_lead', '_body', '_source', '_order', '_cover',
             ),
         );
@@ -62,30 +62,46 @@ class FormatMapping
 
             $article = new Article(
 
-                $title = $this->filterString($this->getValue('title', $dataArticle)),
+                $this->filterString(
+                    $this->getValue('title', $dataArticle)
+                ),
 
-                $body = $this->filterString($this->getValue('body', $dataArticle)),
+                $this->filterString(
+                    $this->getValue('body', $dataArticle)
+                ),
 
-                $source = $this->filterString($this->getValue('source', $dataArticle)),
+                $this->filterString(
+                    $this->getValue('source', $dataArticle)
+                ),
 
-                $uniqueId = $this->getValue('unique_id', $dataArticle),
+                $this->getValue('unique_id', $dataArticle),
 
-                $typeId = $this->filterInteger($this->getValue('type_id', $dataArticle['type'])),
+                $this->filterInteger(
+                    $this->getValue('type_id', $dataArticle['type'])
+                ),
 
-                $categoryId = $this->filterInteger($this->getValue(
-                    'category_id',
-                    $dataArticle['category']
-                )),
+                $this->filterInteger(
+                    $this->getValue(
+                        'category_id',
+                        $dataArticle['category']
+                    )
+                ),
 
-                $reporter = $this->getValue('reporter', $dataArticle),
+                $this->getValue('reporter', $dataArticle),
 
-                $lead = $this->filterString($this->getValue('lead', $dataArticle)),
+                $this->filterString(
+                    $this->getValue('lead', $dataArticle)
+                ),
 
-                $tags = $this->getValue('tag_name', $dataArticle['tags']),
+                $this->getValue('tag_name', $dataArticle['tags']),
 
-                $publishedAt = $this->filterString($this->getValue('published_at', $dataArticle)),
+                $this->filterString(
+                    $this->getValue('published_at', $dataArticle)
+                ),
 
-                $identifier = $this->filterInteger($this->getValue('id', $dataArticle))
+                $this->filterInteger(
+                    $this->getValue('id', $dataArticle)
+                )
 
             );
 
@@ -95,13 +111,13 @@ class FormatMapping
             );
 
             $attachmentTypes = array(
-                self::JSON_PHOTO_FIELD, self::JSON_PAGE_FIELD, self::JSON_GALLERY_FIELD,
-                self::JSON_VIDEO_FIELD,
+                self::JSON_PHOTO_FIELD, self::JSON_PAGE_FIELD,
+                self::JSON_GALLERY_FIELD, self::JSON_VIDEO_FIELD,
             );
 
             $attachmentAttributes = $this->lookUp($attachmentConstants);
 
-            $this->generalAttachment($article, $attachmentConstants, $attachmentTypes, $attachmentAttributes, $dataArticle);
+            $article = $this->generalAttachment($article, $attachmentConstants, $attachmentTypes, $attachmentAttributes, $dataArticle);
 
             return $article;
         }
@@ -130,7 +146,7 @@ class FormatMapping
 
     /**
      * Attach attachments to article
-     * @param  Article &$article
+     * @param  Article $article
      * @param  array $attachmentConst
      * @param  array $attachmentype
      * @param  array $attributes
@@ -138,7 +154,7 @@ class FormatMapping
      * @return void
      */
     private function generalAttachment(
-        &$article,
+        $article,
         $attachmentConst,
         $attachmentype,
         $attributes,
@@ -155,6 +171,8 @@ class FormatMapping
                 $article->attach($attachmentConst[$i], $attachment);
             }
         }
+
+        return $article;
     }
 
     /**
@@ -194,7 +212,7 @@ class FormatMapping
 
         $structure = array(
             'numberOfItems' => count($attachments),
-            'attachments' => $attachments,
+            'attachments'   => $attachments,
         );
 
         return $structure;
@@ -207,49 +225,49 @@ class FormatMapping
      * @param  assoc array $item
      * @return object
      */
-    private function makeAttachmentObject($attachmentType, $attributes, $item)
+    private function makeAttachmentObject($attachmentType, $attrReferences, $item)
     {
-        $numOfAttributes = count($attributes);
+        $attrValues = array();
 
-        $values = array();
-
-        for ($i = 0; $i < $numOfAttributes; $i++) {
-            $val = $this->getValue($attributes[$i], $item);
-            $values[$attributes[$i]] = $val;
+        foreach ($attrReferences as $attrReference) {
+            $attrValues[$attrReference] = $this->getValue($attrReference, $item);
         }
 
-        extract($values);
-
         switch ($attachmentType) {
-        case self::JSON_PHOTO_FIELD:
-            return $this->createPhoto($photo_url, $photo_ratio, '', '');
-        case self::JSON_PAGE_FIELD:
-            return $this->createPage(
-                $page_title,
-                $page_body,
-                $page_source,
-                $page_order,
-                $page_cover,
-                $page_lead
-            );
-        case self::JSON_GALLERY_FIELD:
-            return $this->createGallery(
-                $gallery_body,
-                $gallery_order,
-                $gallery_photo,
-                $gallery_source,
-                $gallery_lead
-            );
-        case self::JSON_VIDEO_FIELD:
-            return $this->createVideo(
-                $video_body,
-                $video_source,
-                $video_order,
-                $video_cover,
-                $video_lead
-            );
-        default:
-            return null;
+            case self::JSON_PHOTO_FIELD:
+                return $this->createPhoto(
+                    $attrValues['photo_url'],
+                    $attrValues['photo_ratio'],
+                    '',
+                    ''
+                );
+            case self::JSON_PAGE_FIELD:
+                return $this->createPage(
+                    $attrValues['page_title'],
+                    $attrValues['page_body'],
+                    $attrValues['page_source'],
+                    $attrValues['page_order'],
+                    $attrValues['page_cover'],
+                    $attrValues['page_lead']
+                );
+            case self::JSON_GALLERY_FIELD:
+                return $this->createGallery(
+                    $attrValues['gallery_body'],
+                    $attrValues['gallery_order'],
+                    $attrValues['gallery_photo'],
+                    $attrValues['gallery_source'],
+                    $attrValues['gallery_lead']
+                );
+            case self::JSON_VIDEO_FIELD:
+                return $this->createVideo(
+                    $attrValues['video_body'],
+                    $attrValues['video_source'],
+                    $attrValues['video_order'],
+                    $attrValues['video_cover'],
+                    $attrValues['video_lead']
+                );
+            default:
+                return null;
         }
     }
 
