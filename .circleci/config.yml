@@ -11,9 +11,16 @@ jobs:
           - v1-dependencies-{{ checksum "composer.json" }}
           - v1-dependencies-
       - run: composer install -n --prefer-dist
+      - run:
+            name: Update PATH and Define Environment Variable at Runtime
+            command: |
+                echo 'CLIENT_ID=${CLIENT_ID}' >> $BASH_ENV
+                echo 'CLIENT_SECRET=${CLIENT_SECRET}' >> $BASH_ENV
+                echo 'ACCESS_TOKEN=${ACCESS_TOKEN}' >> $BASH_ENV
+                source $BASH_ENV
       - save_cache:
           paths:
             - ./vendor
           key: v1-dependencies-{{ checksum "composer.json" }}
-      - run: composer run test
       - run: composer run cs-fix
+      - run: composer run test

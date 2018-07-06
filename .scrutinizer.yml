@@ -156,5 +156,7 @@ build:
         analysis:
             tests:
                 override:
+                    -
+                        command: composer run test
+                        idle_timeout: 300
                     - php-scrutinizer-run
-                    - composer run test
