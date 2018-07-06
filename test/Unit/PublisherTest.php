@@ -136,14 +136,14 @@ class PublisherTest extends \PHPUnit\Framework\TestCase
         $this->assertTrue(!empty($articleCreatedId));
 
         $responseArticle = $this->publisher->getArticle($articleCreatedId);
-        $responseArticleDecoded = json_decode($responseArticle, true);
+        $resArticleDecoded = json_decode($responseArticle, true);
         $keys = ['title', 'reporter', 'lead', 'body', 'source', 'uniqueId', 'type_id', 'category_id', 'tags', 'published_at'];
         $subArticle = array_combine($keys, $article->toArray());
         $subArticleFiltered = array_filter($subArticle, function ($key) {
             return $key == 'lead' || $key == 'body' || $key == 'title' || $key == 'source';
         }, ARRAY_FILTER_USE_KEY);
 
-        $this->assertArraySubset($subArticleFiltered, $responseArticleDecoded['data']);
+        $this->assertArraySubset($subArticleFiltered, $resArticleDecoded['data']);
 
         $this->assertTrue(!empty($responseArticle));
 
@@ -170,9 +170,9 @@ class PublisherTest extends \PHPUnit\Framework\TestCase
             null
         );
 
-        $max_photos = 5;
+        $maxPhotos = 5;
         $ratio = Photo::RATIO_SQUARE;
-        for ($i = 0; $i < $max_photos; $i++) {
+        for ($i = 0; $i < $maxPhotos; $i++) {
             switch ($i) {
                 case 1:
                     $ratio = Photo::RATIO_COVER;
@@ -211,27 +211,27 @@ class PublisherTest extends \PHPUnit\Framework\TestCase
 
         $this->assertTrue(!empty($responseArticle));
 
-        $responseArticleDecoded = json_decode($responseArticle, true);
+        $resArticleDecoded = json_decode($responseArticle, true);
         $keys = ['title', 'reporter', 'lead', 'body', 'source', 'uniqueId', 'type_id', 'category_id', 'tags', 'published_at'];
         $subArticle = array_combine($keys, $article->toArray());
         $subArticleFiltered = array_filter($subArticle, function ($key) {
             return $key == 'lead' || $key == 'body' || $key == 'title' || $key == 'source';
         }, ARRAY_FILTER_USE_KEY);
 
-        $this->assertArraySubset($subArticleFiltered, $responseArticleDecoded['data']);
+        $this->assertArraySubset($subArticleFiltered, $resArticleDecoded['data']);
 
-        $this->assertEquals($max_photos, count($responseArticleDecoded['data']['photos']));
+        $this->assertEquals($maxPhotos, count($resArticleDecoded['data']['photos']));
 
-        $responseArticlePhotos = array_map(function ($photo) {
+        $resArticlePhotos = array_map(function ($photo) {
             return $photo['photo_url'];
-        }, $responseArticleDecoded['data']['photos']);
+        }, $resArticleDecoded['data']['photos']);
 
         $articlePhotos = $article->getAttachmentByField(Article::ATTACHMENT_FIELD_PHOTO);
         $articlePhotosMapped = array_map(function ($photo) {
             return $photo->getCollection()->toArray()['url'];
         }, $articlePhotos);
 
-        $this->assertTrue(empty(array_diff($articlePhotosMapped, $responseArticlePhotos)));
+        $this->assertTrue(empty(array_diff($articlePhotosMapped, $resArticlePhotos)));
 
         $articleDeleted = $this->publisher->deleteArticle($articleCreatedId);
 
@@ -276,27 +276,27 @@ class PublisherTest extends \PHPUnit\Framework\TestCase
 
         $this->assertTrue(!empty($responseArticle));
 
-        $responseArticleDecoded = json_decode($responseArticle, true);
+        $resArticleDecoded = json_decode($responseArticle, true);
         $keys = ['title', 'reporter', 'lead', 'body', 'source', 'uniqueId', 'type_id', 'category_id', 'tags', 'published_at'];
         $subArticle = array_combine($keys, $article->toArray());
         $subArticleFiltered = array_filter($subArticle, function ($key) {
             return $key == 'lead' || $key == 'body' || $key == 'title' || $key == 'source';
         }, ARRAY_FILTER_USE_KEY);
 
-        $this->assertArraySubset($subArticleFiltered, $responseArticleDecoded['data']);
+        $this->assertArraySubset($subArticleFiltered, $resArticleDecoded['data']);
 
-        $this->assertTrue(!empty($responseArticleDecoded['data']['pages']));
+        $this->assertTrue(!empty($resArticleDecoded['data']['pages']));
 
-        $responseArticlePages = array_map(function ($page) {
+        $resArticlePages = array_map(function ($page) {
             return $page['page_order'];
-        }, $responseArticleDecoded['data']['pages']);
+        }, $resArticleDecoded['data']['pages']);
 
         $articlePages = $article->getAttachmentByField(Article::ATTACHMENT_FIELD_PAGE);
         $articlePagesMapped = array_map(function ($page) {
             return (int) $page->getCollection()->toArray()['order'];
         }, $articlePages);
 
-        $this->assertTrue(empty(array_diff($articlePagesMapped, $responseArticlePages)));
+        $this->assertTrue(empty(array_diff($articlePagesMapped, $resArticlePages)));
 
         $articleDeleted = $this->publisher->deleteArticle($articleCreatedId);
 
@@ -321,9 +321,9 @@ class PublisherTest extends \PHPUnit\Framework\TestCase
             null
         );
 
-        $max_photos = 3;
+        $maxPhotos = 3;
 
-        for ($i = 0; $i < $max_photos; $i++) {
+        for ($i = 0; $i < $maxPhotos; $i++) {
             $gallery = new Gallery(
                 'dummy' . rand(0, 999),
                 (string) ($i * rand(12, 76) * rand(1, 99)),
@@ -342,29 +342,29 @@ class PublisherTest extends \PHPUnit\Framework\TestCase
 
         $this->assertTrue(!empty($responseArticle));
 
-        $responseArticleDecoded = json_decode($responseArticle, true);
+        $resArticleDecoded = json_decode($responseArticle, true);
         $keys = ['title', 'reporter', 'lead', 'body', 'source', 'uniqueId', 'type_id', 'category_id', 'tags', 'published_at'];
         $subArticle = array_combine($keys, $article->toArray());
         $subArticleFiltered = array_filter($subArticle, function ($key) {
             return $key == 'lead' || $key == 'body' || $key == 'title' || $key == 'source';
         }, ARRAY_FILTER_USE_KEY);
 
-        $this->assertArraySubset($subArticleFiltered, $responseArticleDecoded['data']);
+        $this->assertArraySubset($subArticleFiltered, $resArticleDecoded['data']);
 
-        $this->assertTrue(!empty($responseArticleDecoded['data']['galleries']));
+        $this->assertTrue(!empty($resArticleDecoded['data']['galleries']));
 
-        $this->assertEquals($max_photos, count($responseArticleDecoded['data']['galleries']));
+        $this->assertEquals($maxPhotos, count($resArticleDecoded['data']['galleries']));
 
-        $responseArticleGalleries = array_map(function ($gallery) {
+        $resArticleGalleries = array_map(function ($gallery) {
             return $gallery['gallery_order'];
-        }, $responseArticleDecoded['data']['galleries']);
+        }, $resArticleDecoded['data']['galleries']);
 
         $articleGalleries = $article->getAttachmentByField(Article::ATTACHMENT_FIELD_GALLERY);
-        $articleGalleriesMapped = array_map(function ($gallery) {
+        $artclGalleriesMapped = array_map(function ($gallery) {
             return (int) $gallery->getCollection()->toArray()['order'];
         }, $articleGalleries);
 
-        $this->assertTrue(empty(array_diff($articleGalleriesMapped, $responseArticleGalleries)));
+        $this->assertTrue(empty(array_diff($artclGalleriesMapped, $resArticleGalleries)));
 
         $articleDeleted = $this->publisher->deleteArticle($articleCreatedId);
 
@@ -415,27 +415,27 @@ class PublisherTest extends \PHPUnit\Framework\TestCase
 
         $this->assertTrue(!empty($responseArticle));
 
-        $responseArticleDecoded = json_decode($responseArticle, true);
+        $resArticleDecoded = json_decode($responseArticle, true);
         $keys = ['title', 'reporter', 'lead', 'body', 'source', 'uniqueId', 'type_id', 'category_id', 'tags', 'published_at'];
         $subArticle = array_combine($keys, $article->toArray());
         $subArticleFiltered = array_filter($subArticle, function ($key) {
             return $key == 'lead' || $key == 'body' || $key == 'title' || $key == 'source';
         }, ARRAY_FILTER_USE_KEY);
 
-        $this->assertArraySubset($subArticleFiltered, $responseArticleDecoded['data']);
+        $this->assertArraySubset($subArticleFiltered, $resArticleDecoded['data']);
 
-        $this->assertTrue(!empty($responseArticleDecoded['data']['videos']));
+        $this->assertTrue(!empty($resArticleDecoded['data']['videos']));
 
-        $responseArticleVideos = array_map(function ($video) {
+        $resArticleVideos = array_map(function ($video) {
             return $video['video_order'];
-        }, $responseArticleDecoded['data']['videos']);
+        }, $resArticleDecoded['data']['videos']);
 
         $articleVideos = $article->getAttachmentByField(Article::ATTACHMENT_FIELD_VIDEO);
         $articleVideosMapped = array_map(function ($video) {
             return (int) $video->getCollection()->toArray()['order'];
         }, $articleVideos);
 
-        $this->assertTrue(empty(array_diff($articleVideosMapped, $responseArticleVideos)));
+        $this->assertTrue(empty(array_diff($articleVideosMapped, $resArticleVideos)));
 
         $articleDeleted = $this->publisher->deleteArticle($articleCreatedId);
 
