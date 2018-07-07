@@ -1,11 +1,11 @@
 <?php
 
-namespace one;
+namespace One;
 
 use One\Model\Article;
-use one\Model\Gallery;
+use One\Model\Gallery;
 use One\Model\Page;
-use one\Model\Photo;
+use One\Model\Photo;
 use One\Model\Video;
 
 class FormatMapping

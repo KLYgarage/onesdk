@@ -3,12 +3,8 @@
 namespace One\Test\Unit;
 
 use One\FormatMapping;
-use One\Model\Article;
-use One\Model\Gallery;
-use One\Model\Page;
-use One\Model\Photo;
-use One\Model\Video;
 use One\Publisher;
+use One\Model\Article;
 
 class FormatMappingTest extends \PHPUnit\Framework\TestCase
 {
