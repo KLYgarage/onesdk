@@ -33,6 +33,9 @@ class Gallery extends Model
             $lead = $this->createLeadFromBody($body);
         }
 
+        $lead = $this->filterStringInstance($lead);
+        $body = $this->filterStringInstance($body);
+
         $this->collection = new Collection(
             array(
                 'lead' =>  $lead,

@@ -32,6 +32,10 @@ class Page extends Model
             $lead = $this->createLeadFromBody($body);
         }
 
+        $title  = $this->filterStringInstance($title);
+        $lead   = $this->filterStringInstance($lead);
+        $body   = $this->filterStringInstance($body);
+
         $this->collection = new Collection(
             array(
                 'title' => $title,

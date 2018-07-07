@@ -121,6 +121,12 @@ class Article extends Model
             throw new \InvalidArgumentException("Invalid categoryId : $categoryId, allowed category are " . implode(', ', $allowedCategory));
         }
 
+        $title    = $this->filterStringInstance($title);
+        $reporter = $this->filterStringInstance($reporter);
+        $lead     = $this->filterStringInstance($lead);
+        $body     = $this->filterStringInstance($body);
+        $tags     = $this->filterStringInstance($tags);
+
         $this->collection = new Collection(
             array(
                 'title' => $title,
