@@ -1,27 +1,45 @@
 <?php
 
-namespace One;
+namespace One\Psr7;
 
 /**
- * Psr\ResponseInterface implementation
+ * MessageInterface Implementation
+ * Structure of HTTP Message
+ * Request line
+ * Header(s)
+ * Empty line
+ * Body
  */
-class Response implements \Psr\Http\Message\ResponseInterface
+class Message implements \Psr\Http\Message\MessageInterface
 {
+    /**
+     * Header of message
+     * @var array
+     */
+    private $headers = array();
 
     /**
-     * Psr7 Response
-     * @var \Psr\Http\Message\ResponseInterface
+     * Body content
+     * @var \one\Psr7\Stream
      */
-    private $resp;
+    private $body;
+    /**
+     * Type of message (request or response)
+     * @var string
+     */
+    private $typeOfMessage;
 
     /**
-     * Response constructor
-     * @param null|\Psr\Http\Message\ResponseInterface $responseInterface
+     * Http Protocol version
+     * @var string
      */
-    public function __construct($responseInterface = null)
-    {
-        $this->resp = $responseInterface;
-    }
+    private $protocolVersion;
+
+    /**
+     * Header line
+     * @var string
+     */
+    private $headerLine;
 
     /**
      * @inheritDoc
@@ -29,84 +47,74 @@ class Response implements \Psr\Http\Message\ResponseInterface
     public function getProtocolVersion()
     {
     }
+
     /**
      * @inheritDoc
      */
     public function withProtocolVersion($version)
     {
     }
+
     /**
      * @inheritDoc
      */
     public function getHeaders()
     {
     }
+
     /**
      * @inheritDoc
      */
     public function hasHeader($name)
     {
     }
+
     /**
      * @inheritDoc
      */
     public function getHeader($name)
     {
     }
+
     /**
      * @inheritDoc
      */
     public function getHeaderLine($name)
     {
     }
+
     /**
      * @inheritDoc
      */
     public function withHeader($name, $value)
     {
     }
+
     /**
      * @inheritDoc
      */
     public function withAddedHeader($name, $value)
     {
     }
+
     /**
      * @inheritDoc
      */
     public function withoutHeader($name)
     {
     }
+
     /**
      * @inheritDoc
      */
     public function getBody()
     {
     }
+
     /**
      * @inheritDoc
      */
     public function withBody(\Psr\Http\Message\StreamInterface $body)
-    {
-    }
-    /**
-     * @inheritDoc
-     */
-    public function getStatusCode()
-    {
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function withStatus($code, $reasonPhrase = '')
-    {
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getReasonPhrase()
     {
     }
 }
