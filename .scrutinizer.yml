@@ -157,4 +157,3 @@ build:
             tests:
                 override:
                     - php-scrutinizer-run
-                    - composer run test
