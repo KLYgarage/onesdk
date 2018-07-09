@@ -32,13 +32,10 @@ class PublisherTest extends \PHPUnit\Framework\TestCase
     public function testAuthentication()
     {
         $jsonResponse = $this->publisher->listArticle();
-
         $data = json_decode($jsonResponse, true);
-
+      
         $this->assertArrayNotHasKey('message', $data);
-
         $this->assertArrayHasKey('data', $data);
-
         $this->assertArrayHasKey('meta', $data);
     }
 
@@ -57,13 +54,10 @@ class PublisherTest extends \PHPUnit\Framework\TestCase
         $this->publisher->recycleToken($tokenProducer);
 
         $jsonResponse = $this->publisher->listArticle();
-
         $data = json_decode($jsonResponse, true);
 
         $this->assertArrayNotHasKey('message', $data);
-
         $this->assertArrayHasKey('data', $data);
-
         $this->assertArrayHasKey('meta', $data);
     }
 
@@ -110,11 +104,23 @@ class PublisherTest extends \PHPUnit\Framework\TestCase
 
         $resultingArticle = $this->publisher->submitArticle($article);
 
-        $this->assertTrue(!empty($resultingArticle->getId()));
-
-        $this->assertTrue(!empty($this->publisher->getArticle($resultingArticle->getId())));
-
-        $this->assertTrue(!empty($this->publisher->deleteArticle($resultingArticle->getId())));
+        $this->assertTrue(!empty(
+          $resultingArticle->getId()
+        ));
+        $this->assertTrue(
+          !empty(
+            $this->publisher->getArticle(
+              $resultingArticle->getId()
+            )
+          )
+        );
+        $this->assertTrue(
+          !empty(
+            $this->publisher->deleteArticle(
+              $resultingArticle->getId()
+            )
+          )
+        );
     }
 
     public function testSubmitArticleWithoutAttachment()
@@ -147,13 +153,11 @@ class PublisherTest extends \PHPUnit\Framework\TestCase
         }, ARRAY_FILTER_USE_KEY);
 
         $this->assertArraySubset($subArticleFiltered, $resArticleDecoded['data']);
-
         $this->assertTrue(!empty($responseArticle));
 
         $articleDeleted = $this->publisher->deleteArticle($articleCreatedId);
 
         $this->assertTrue(!empty($articleDeleted));
-
         $this->assertTrue(in_array('Article deleted', json_decode($articleDeleted, true)));
     }
 
@@ -214,7 +218,6 @@ class PublisherTest extends \PHPUnit\Framework\TestCase
         $responseArticle = $this->publisher->getArticle($articleCreatedId);
 
         $this->assertTrue(!empty($articleCreatedId));
-
         $this->assertTrue(!empty($responseArticle));
 
         $resArticleDecoded = json_decode($responseArticle, true);
@@ -225,7 +228,6 @@ class PublisherTest extends \PHPUnit\Framework\TestCase
         }, ARRAY_FILTER_USE_KEY);
 
         $this->assertArraySubset($subArticleFiltered, $resArticleDecoded['data']);
-
         $this->assertEquals($maxPhotos, count($resArticleDecoded['data']['photos']));
 
         $resArticlePhotos = array_map(function ($photo) {
@@ -243,7 +245,6 @@ class PublisherTest extends \PHPUnit\Framework\TestCase
         $articleDeleted = $this->publisher->deleteArticle($articleCreatedId);
 
         $this->assertTrue(!empty($articleDeleted));
-
         $this->assertTrue(in_array('Article deleted', json_decode($articleDeleted, true)));
     }
 
@@ -283,7 +284,6 @@ class PublisherTest extends \PHPUnit\Framework\TestCase
         $responseArticle = $this->publisher->getArticle($articleCreatedId);
 
         $this->assertTrue(!empty($articleCreatedId));
-
         $this->assertTrue(!empty($responseArticle));
 
         $resArticleDecoded = json_decode($responseArticle, true);
@@ -294,7 +294,6 @@ class PublisherTest extends \PHPUnit\Framework\TestCase
         }, ARRAY_FILTER_USE_KEY);
 
         $this->assertArraySubset($subArticleFiltered, $resArticleDecoded['data']);
-
         $this->assertTrue(!empty($resArticleDecoded['data']['pages']));
 
         $resArticlePages = array_map(function ($page) {
@@ -310,9 +309,7 @@ class PublisherTest extends \PHPUnit\Framework\TestCase
         $this->assertTrue(empty($dataDifferences));
 
         $articleDeleted = $this->publisher->deleteArticle($articleCreatedId);
-
         $this->assertTrue(!empty($articleDeleted));
-
         $this->assertTrue(in_array('Article deleted', json_decode($articleDeleted, true)));
     }
 
@@ -351,9 +348,7 @@ class PublisherTest extends \PHPUnit\Framework\TestCase
         $articleCreatedId = $articleCreated->getId();
 
         $responseArticle = $this->publisher->getArticle($articleCreatedId);
-
         $this->assertTrue(!empty($articleCreatedId));
-
         $this->assertTrue(!empty($responseArticle));
 
         $resArticleDecoded = json_decode($responseArticle, true);
@@ -364,9 +359,7 @@ class PublisherTest extends \PHPUnit\Framework\TestCase
         }, ARRAY_FILTER_USE_KEY);
 
         $this->assertArraySubset($subArticleFiltered, $resArticleDecoded['data']);
-
         $this->assertTrue(!empty($resArticleDecoded['data']['galleries']));
-
         $this->assertEquals($maxPhotos, count($resArticleDecoded['data']['galleries']));
 
         $resArticleGalleries = array_map(function ($gallery) {
@@ -384,8 +377,15 @@ class PublisherTest extends \PHPUnit\Framework\TestCase
         $articleDeleted = $this->publisher->deleteArticle($articleCreatedId);
 
         $this->assertTrue(!empty($articleDeleted));
-
-        $this->assertTrue(in_array('Article deleted', json_decode($articleDeleted, true)));
+        $this->assertTrue(
+          in_array(
+            'Article deleted', 
+            json_decode(
+              $articleDeleted, 
+              true
+            )
+          )
+        );
     }
 
     /**
@@ -430,7 +430,6 @@ class PublisherTest extends \PHPUnit\Framework\TestCase
         $responseArticle = $this->publisher->getArticle($articleCreatedId);
 
         $this->assertTrue(!empty($articleCreatedId));
-
         $this->assertTrue(!empty($responseArticle));
 
         $resArticleDecoded = json_decode($responseArticle, true);
@@ -441,7 +440,6 @@ class PublisherTest extends \PHPUnit\Framework\TestCase
         }, ARRAY_FILTER_USE_KEY);
 
         $this->assertArraySubset($subArticleFiltered, $resArticleDecoded['data']);
-
         $this->assertTrue(!empty($resArticleDecoded['data']['videos']));
 
         $resArticleVideos = array_map(function ($video) {
@@ -459,7 +457,14 @@ class PublisherTest extends \PHPUnit\Framework\TestCase
         $articleDeleted = $this->publisher->deleteArticle($articleCreatedId);
 
         $this->assertTrue(!empty($articleDeleted));
-
-        $this->assertTrue(in_array('Article deleted', json_decode($articleDeleted, true)));
+        $this->assertTrue(
+          in_array(
+            'Article deleted', 
+            json_decode(
+              $articleDeleted, 
+              true
+            )
+          )
+        );
     }
 }

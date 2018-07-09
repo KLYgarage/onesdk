@@ -2,6 +2,8 @@
 
 namespace One;
 
+use one\Model\Article;
+
 /**
  * createUriFromString
  *
@@ -60,5 +62,39 @@ function createuriFromServer()
         $fragment,
         $user,
         $password
+    );
+}
+/**
+ * createArticleFromArray
+ *
+ * @param array $data
+ */
+function createArticleFromArray($data)
+{
+    $title = isset($data['title']) ? $data['title'] : '';
+    $body = isset($data['body']) ? $data['body'] : '';
+    $source = isset($data['source']) ? $data['source'] : '';
+    $uniqueId = isset($data['uniqueId']) ? $data['uniqueId'] : '';
+    $typeId = isset($data['typeId']) ? $data['typeId'] : null;
+    $categoryId = isset($data['categoryId']) ? $data['categoryId'] : null;
+    $reporter = isset($data['reporter']) ? $data['reporter'] : '';
+    $lead = isset($data['lead']) ? $data['lead'] : '';
+    $reporter = isset($data['reporter']) ? $data['reporter'] : '';
+    $tags = isset($data['tags']) ? $data['tags'] : '';
+    $publishedAt = isset($data['publishedAt']) ? $data['publishedAt'] : null;
+    $identifier = isset($data['identifier']) ? $data['identifier'] : null;
+    return new Article(
+        $title,
+        $body,
+        $source,
+        $uniqueId,
+        $typeId,
+        $categoryId,
+        $reporter,
+        $lead,
+        $reporter,
+        $tags,
+        $publishedAt,
+        $identifier
     );
 }
