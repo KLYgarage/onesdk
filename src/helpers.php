@@ -106,7 +106,6 @@ function stream_for($resource = '', array $options = [])
                 $resource->next();
                 return $result;
             }, $options);
-            break;
         case 'NULL':
             return new Stream(fopen('php://temp', 'r+'), $options);
     }
