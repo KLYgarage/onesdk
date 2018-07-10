@@ -19,11 +19,17 @@ class Message implements \Psr\Http\Message\MessageInterface
 
     protected $stream;
 
+    /**
+     * @inheritdoc
+     */
     public function getProtocolVersion()
     {
         return $this->protocol;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function withProtocolVersion($version)
     {
         if ($this->protocol == $version) {
@@ -37,16 +43,25 @@ class Message implements \Psr\Http\Message\MessageInterface
         return $new;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getHeaders()
     {
         return $this->headers;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function hasHeader($name)
     {
         return isset($this->headerNames[strtolower($name)]);
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getHeader($name)
     {
         $lower = strtolower($name);
@@ -58,11 +73,17 @@ class Message implements \Psr\Http\Message\MessageInterface
         return $this->headers[$this->headerNames[$lower]];
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getHeaderLine($header)
     {
         return implode(', ', $this->getHeader($header));
     }
 
+    /**
+     * @inheritdoc
+     */
     public function withHeader($header, $value)
     {
         if (!is_array($value)) {
@@ -79,6 +100,9 @@ class Message implements \Psr\Http\Message\MessageInterface
         return $new;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function withAddedHeader($header, $value)
     {
         if (!is_array($value)) {
@@ -97,6 +121,9 @@ class Message implements \Psr\Http\Message\MessageInterface
         return $new;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function withoutHeader($header)
     {
         $normalized = strtolower($header);
@@ -109,6 +136,9 @@ class Message implements \Psr\Http\Message\MessageInterface
         return $new;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getBody()
     {
         if (!$this->stream) {
@@ -117,6 +147,9 @@ class Message implements \Psr\Http\Message\MessageInterface
         return $this->stream;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function withBody(\Psr\Http\Message\StreamInterface $body)
     {
         if ($body === $this->stream) {
@@ -127,6 +160,9 @@ class Message implements \Psr\Http\Message\MessageInterface
         return $new;
     }
 
+    /**
+     * @inheritdoc
+     */
     protected function setHeaders(array $headers)
     {
         $this->headerNames = $this->headers = [];

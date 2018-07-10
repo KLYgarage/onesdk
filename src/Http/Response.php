@@ -71,6 +71,7 @@ class Response extends Message implements ResponseInterface
         508 => 'Loop Detected',
         511 => 'Network Authentication Required',
     ];
+    
     /** @var string */
     private $reasonPhrase = '';
     /** @var int */
@@ -102,16 +103,25 @@ class Response extends Message implements ResponseInterface
         $this->protocol = $version;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getStatusCode()
     {
         return $this->statusCode;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getReasonPhrase()
     {
         return $this->reasonPhrase;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function withStatus($code, $reasonPhrase = '')
     {
         $new = clone $this;
