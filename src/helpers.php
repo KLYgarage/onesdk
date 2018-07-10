@@ -84,7 +84,7 @@ function stream_for($resource = '', array $options = [])
 {
     if (is_scalar($resource)) {
         $stream = fopen('php://temp', 'r+');
-        if ($resource !== '') {
+        if ($resource !== '' && $stream !== false) {
             fwrite($stream, $resource);
             fseek($stream, 0);
         }
