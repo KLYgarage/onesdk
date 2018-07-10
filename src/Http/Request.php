@@ -57,7 +57,7 @@ class Request extends Message implements \Psr\Http\Message\RequestInterface
     public function withRequestTarget($requestTarget)
     {
         if (preg_match('#\s#', $requestTarget)) {
-            throw new InvalidArgumentException(
+            throw new \InvalidArgumentException(
                 'Invalid request target provided; cannot contain whitespace'
             );
         }
