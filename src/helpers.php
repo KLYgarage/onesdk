@@ -7,16 +7,18 @@ namespace One;
  *
  * @param string $uri
  */
-function createUriFromString($uri) {
-	return FactoryUri::create('string', $uri);
+function createUriFromString($uri)
+{
+    return FactoryUri::create('string', $uri);
 }
 
 /**
  * createuriFromServer
  *
  */
-function createUriFromServer() {
-	return FactoryUri::create('server');
+function createUriFromServer()
+{
+    return FactoryUri::create('server');
 }
 
 /**
@@ -24,6 +26,7 @@ function createUriFromServer() {
  *
  * @param array $data
  */
-function createArticleFromArray($data) {
-	return FactoryArticle::create($data);
+function createArticleFromArray($data)
+{
+    return FactoryArticle::create($data);
 }
