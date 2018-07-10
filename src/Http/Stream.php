@@ -40,14 +40,14 @@ class Stream implements \Psr\Http\Message\StreamInterface
      * - metadata: (array) Any additional metadata to return when the metadata
      *   of the stream is accessed.
      *
-     * @param resource $stream  Stream resource to wrap.
+     * @param bool|resource $stream  Stream resource to wrap.
      * @param array    $options Associative array of options.
      *
      * @throws \InvalidArgumentException if the stream is not a stream resource
      */
     public function __construct($stream, $options = [])
     {
-        if (!is_resource($stream)||!$stream) {
+        if (!is_resource($stream)) {
             throw new \InvalidArgumentException('Stream must be a resource');
         }
 
