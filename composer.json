@@ -35,6 +35,7 @@
         "test:format_mapping:verbose":"php ./phpunit --configuration=phpunit.xml --testsuite format_mapping -vvv --debug",
         "test:model:verbose":"php ./phpunit --configuration=phpunit.xml --testsuite model -vvv --debug",
         "test:publisher:verbose":"php ./phpunit --configuration=phpunit.xml --testsuite publisher -vvv --debug",
+        "test:response:verbose":"php ./phpunit --configuration=phpunit.xml --testsuite response -vvv --debug",
         "test:windows": "@test",
         "cs-fix": "php ./php-cs-fixer fix ./src -vvv --rules=@PSR2",
         "cs-fix:test": "php ./php-cs-fixer fix ./test -vvv --rules=@PSR2"

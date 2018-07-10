@@ -18,5 +18,8 @@
     <testsuite name="uri">
       <file>./test/Unit/UriTest.php</file>
     </testsuite>
+    <testsuite name="response">
+      <file>./test/Unit/ResponseTest.php</file>
+    </testsuite>
   </testsuites>
 </phpunit>

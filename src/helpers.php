@@ -2,6 +2,10 @@
 
 namespace One;
 
+use One\Http\Stream;
+use One\Http\PumpStream;
+use Psr\Http\Message\StreamInterface;
+
 /**
  * createUriFromString
  *
@@ -61,4 +65,38 @@ function createuriFromServer()
         $user,
         $password
     );
+}
+
+function stream_for($resource = '', array $options = [])
+{
+    if (is_scalar($resource)) {
+        $stream = fopen('php://temp', 'r+');
+        if ($resource !== '') {
+            fwrite($stream, $resource);
+            fseek($stream, 0);
+        }
+        return new Stream($stream, $options);
+    }
+    switch (gettype($resource)) {
+        case 'resource':
+            return new Stream($resource, $options);
+        case 'object':
+            if ($resource instanceof StreamInterface) {
+                return $resource;
+            } elseif ($resource instanceof \Iterator) {
+                return new PumpStream(function () use ($resource) {
+                    if (!$resource->valid()) {
+                        return false;
+                    }
+                    $result = $resource->current();
+                    $resource->next();
+                    return $result;
+                }, $options);
+            } elseif (method_exists($resource, '__toString')) {
+                return stream_for((string) $resource, $options);
+            }
+            break;
+        case 'NULL':
+            return new Stream(fopen('php://temp', 'r+'), $options);
+    }
 }
