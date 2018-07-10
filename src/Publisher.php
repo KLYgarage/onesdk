@@ -449,7 +449,7 @@ class Publisher implements LoggerAwareInterface
      * get proxy
      *
      * @param string $path
-     * @param \One\Collection|array $header
+     * @param array $header
      * @param array $options
      * @return string
      */
@@ -469,7 +469,7 @@ class Publisher implements LoggerAwareInterface
      *
      * @param string $path
      * @param \One\Collection|array $body
-     * @param \One\Collection|array $header
+     * @param array $header
      * @param array $options
      * @return string
      */
@@ -493,7 +493,7 @@ class Publisher implements LoggerAwareInterface
      *
      * @param string $path
      * @param \One\Collection|array $body
-     * @param \One\Collection|array $header
+     * @param array $header
      * @param array $options
      * @return string
      */

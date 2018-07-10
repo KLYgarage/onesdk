@@ -67,6 +67,19 @@ function createuriFromServer()
     );
 }
 
+/**
+ * Create a new stream based on the input type.
+ *
+ * Options is an associative array that can contain the following keys:
+ * - metadata: Array of custom metadata.
+ * - size: Size of the stream.
+ *
+ * @param resource|string|null|int|float|bool|StreamInterface|callable|\Iterator $resource Entity body data
+ * @param array                                                                  $options  Additional options
+ *
+ * @return StreamInterface
+ * @throws \InvalidArgumentException if the $resource arg is not valid.
+ */
 function stream_for($resource = '', array $options = [])
 {
     if (is_scalar($resource)) {

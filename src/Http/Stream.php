@@ -118,7 +118,7 @@ class Stream implements \Psr\Http\Message\StreamInterface
 
         $result = $this->stream;
         unset($this->stream);
-        $this->size     = $this->uri     = null;
+        $this->size     = $this->uri = null;
         $this->readable = $this->writable = $this->seekable = false;
 
         return $result;
