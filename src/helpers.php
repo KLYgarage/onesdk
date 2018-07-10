@@ -96,18 +96,16 @@ function stream_for($resource = '', array $options = [])
         case 'object':
             if ($resource instanceof StreamInterface) {
                 return $resource;
-            } elseif ($resource instanceof \Iterator) {
-                return new PumpStream(function () use ($resource) {
-                    if (!$resource->valid()) {
-                        return false;
-                    }
-                    $result = $resource->current();
-                    $resource->next();
-                    return $result;
-                }, $options);
             } elseif (method_exists($resource, '__toString')) {
                 return stream_for((string) $resource, $options);
-            }
+            }return new PumpStream(function () use ($resource) {
+                if (!$resource->valid()) {
+                    return false;
+                }
+                $result = $resource->current();
+                $resource->next();
+                return $result;
+            }, $options);
             break;
         case 'NULL':
             return new Stream(fopen('php://temp', 'r+'), $options);
