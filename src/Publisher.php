@@ -140,7 +140,7 @@ class Publisher implements LoggerAwareInterface
      *
      * @param string $method
      * @param string $path
-     * @param \One\Collection|array $header
+     * @param array $header
      * @param \One\Collection|array $body
      * @param array $options
      * @return string
