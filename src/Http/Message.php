@@ -57,7 +57,7 @@ class Message implements \Psr\Http\Message\MessageInterface
     {
         return implode(', ', $this->getHeader($header));
     }
-    public function withHeader($name, $value)
+    public function withHeader($header, $value)
     {
         if (!is_array($value)) {
             $value = [$value];
@@ -72,7 +72,7 @@ class Message implements \Psr\Http\Message\MessageInterface
         $new->headers[$header]         = $value;
         return $new;
     }
-    public function withAddedHeader($name, $value)
+    public function withAddedHeader($header, $value)
     {
         if (!is_array($value)) {
             $value = [$value];
@@ -89,7 +89,7 @@ class Message implements \Psr\Http\Message\MessageInterface
         }
         return $new;
     }
-    public function withoutHeader($name)
+    public function withoutHeader($header)
     {
         $normalized = strtolower($header);
         if (!isset($this->headerNames[$normalized])) {
