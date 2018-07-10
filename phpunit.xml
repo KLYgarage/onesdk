@@ -21,5 +21,8 @@
     <testsuite name="response">
       <file>./test/Unit/ResponseTest.php</file>
     </testsuite>
+    <testsuite name="request">
+      <file>./test/Unit/RequestTest.php</file>
+    </testsuite>
   </testsuites>
 </phpunit>

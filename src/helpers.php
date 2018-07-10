@@ -99,4 +99,10 @@ function stream_for($resource = '', array $options = [])
         case 'NULL':
             return new Stream(fopen('php://temp', 'r+'), $options);
     }
+
+    if (is_callable($resource)) {
+        return new \One\Http\PumpStream($resource, $options);
+    }
+
+    throw new \InvalidArgumentException('Invalid resource type: ' . gettype($resource));
 }
