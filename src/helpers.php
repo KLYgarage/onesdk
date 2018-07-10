@@ -113,7 +113,7 @@ function stream_for($resource = '', array $options = [])
             return new Stream(fopen('php://temp', 'r+'), $options);
     }
 
-    if (is_callable($resource)) {
+    if (is_callable($resource) && !is_null($resource)) {
         return new \One\Http\PumpStream($resource, $options);
     }
 
