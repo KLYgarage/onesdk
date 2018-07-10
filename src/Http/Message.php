@@ -23,6 +23,7 @@ class Message implements \Psr\Http\Message\MessageInterface
     {
         return $this->protocol;
     }
+
     public function withProtocolVersion($version)
     {
         if ($this->protocol == $version) {
@@ -35,14 +36,17 @@ class Message implements \Psr\Http\Message\MessageInterface
 
         return $new;
     }
+
     public function getHeaders()
     {
         return $this->headers;
     }
+
     public function hasHeader($name)
     {
         return isset($this->headerNames[strtolower($name)]);
     }
+
     public function getHeader($name)
     {
         $lower = strtolower($name);
@@ -53,10 +57,12 @@ class Message implements \Psr\Http\Message\MessageInterface
 
         return $this->headers[$this->headerNames[$lower]];
     }
+
     public function getHeaderLine($header)
     {
         return implode(', ', $this->getHeader($header));
     }
+
     public function withHeader($header, $value)
     {
         if (!is_array($value)) {
@@ -72,6 +78,7 @@ class Message implements \Psr\Http\Message\MessageInterface
         $new->headers[$header]         = $value;
         return $new;
     }
+
     public function withAddedHeader($header, $value)
     {
         if (!is_array($value)) {
@@ -89,6 +96,7 @@ class Message implements \Psr\Http\Message\MessageInterface
         }
         return $new;
     }
+
     public function withoutHeader($header)
     {
         $normalized = strtolower($header);
@@ -100,6 +108,7 @@ class Message implements \Psr\Http\Message\MessageInterface
         unset($new->headers[$header], $new->headerNames[$normalized]);
         return $new;
     }
+
     public function getBody()
     {
         if (!$this->stream) {
@@ -107,6 +116,7 @@ class Message implements \Psr\Http\Message\MessageInterface
         }
         return $this->stream;
     }
+
     public function withBody(\Psr\Http\Message\StreamInterface $body)
     {
         if ($body === $this->stream) {
@@ -135,6 +145,7 @@ class Message implements \Psr\Http\Message\MessageInterface
             }
         }
     }
+    
     /**
      * Trims whitespace from the header values.
      *

@@ -2,6 +2,10 @@
 
 namespace One;
 
+use One\Http\Stream;
+use One\Http\PumpStream;
+use Psr\Http\Message\StreamInterface;
+
 /**
  * createUriFromString
  *
@@ -71,17 +75,16 @@ function stream_for($resource = '', array $options = [])
             fwrite($stream, $resource);
             fseek($stream, 0);
         }
-        return new \One\Http\Stream($stream, $options);
+        return new Stream($stream, $options);
     }
-
     switch (gettype($resource)) {
         case 'resource':
-            return new \One\Http\Stream($resource, $options);
+            return new Stream($resource, $options);
         case 'object':
             if ($resource instanceof StreamInterface) {
                 return $resource;
             } elseif ($resource instanceof \Iterator) {
-                return new \One\Http\PumpStream(function () use ($resource) {
+                return new PumpStream(function () use ($resource) {
                     if (!$resource->valid()) {
                         return false;
                     }
@@ -94,7 +97,7 @@ function stream_for($resource = '', array $options = [])
             }
             break;
         case 'NULL':
-            return new \One\Http\Stream(fopen('php://temp', 'r+'), $options);
+            return new Stream(fopen('php://temp', 'r+'), $options);
     }
 
     if (is_callable($resource)) {
