@@ -101,17 +101,23 @@ class Response extends Message implements ResponseInterface
         }
         $this->protocol = $version;
     }
-
+    /**
+     * @inheritDoc
+     */
     public function getStatusCode()
     {
         return $this->statusCode;
     }
-
+    /**
+     * @inheritDoc
+     */
     public function getReasonPhrase()
     {
         return $this->reasonPhrase;
     }
-
+    /**
+     * @inheritDoc
+     */
     public function withStatus($code, $reasonPhrase = '')
     {
         $new = clone $this;
