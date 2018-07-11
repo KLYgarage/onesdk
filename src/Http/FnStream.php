@@ -2,6 +2,23 @@
 
 namespace One\Http;
 
+/**
+ * @param string $_fn___toString Contains function name as value
+ * @param string $_fn_close Contains function name as value
+ * @param string $_fn_detach Contains function name as value
+ * @param string $_fn_rewind Contains function name as value
+ * @param string $_fn_getSize Contains function name as value
+ * @param string $_fn_tell Contains function name as value
+ * @param string $_fn_eof Contains function name as value
+ * @param string $_fn_isSeekable Contains function name as value
+ * @param string $_fn_seek Contains function name as value
+ * @param string $_fn_isWritable Contains function name as value
+ * @param string $_fn_write Contains function name as value
+ * @param string $_fn_isReadable Contains function name as value
+ * @param string $_fn_read Contains function name as value
+ * @param string $_fn_getContents Contains function name as value
+ * @param string $_fn_getMetadata Contains function name as value
+ */
 class FnStream implements \Psr\Http\Message\StreamInterface
 {
     /** @var array */
