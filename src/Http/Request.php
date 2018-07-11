@@ -18,6 +18,14 @@ class Request extends Message implements \Psr\Http\Message\RequestInterface
     
     private $uri;
 
+    /**
+     * Default Constructor
+     * @param string $method
+     * @param string|\Psr\Http\Message\UriInterface $uri
+     * @param array  $headers
+     * @param mixed $body
+     * @param string $version
+     */
     public function __construct(
         $method,
         $uri,
@@ -25,7 +33,7 @@ class Request extends Message implements \Psr\Http\Message\RequestInterface
         $body = null,
         $version = '1.1'
     ) {
-        if (!($uri instanceof UriInterface)) {
+        if (!($uri instanceof \Psr\Http\Message\UriInterface)) {
             $uri = createUriFromString($uri);
         }
         $this->method = strtoupper($method);
@@ -39,7 +47,9 @@ class Request extends Message implements \Psr\Http\Message\RequestInterface
             $this->stream = stream_for($body);
         }
     }
-
+    /**
+     * @inheritDoc
+     */
     public function getRequestTarget()
     {
         if ($this->requestTarget !== null) {
@@ -54,6 +64,9 @@ class Request extends Message implements \Psr\Http\Message\RequestInterface
         }
         return $target;
     }
+    /**
+     * @inheritDoc
+     */
     public function withRequestTarget($requestTarget)
     {
         if (preg_match('#\s#', $requestTarget)) {
@@ -65,20 +78,32 @@ class Request extends Message implements \Psr\Http\Message\RequestInterface
         $new->requestTarget = $requestTarget;
         return $new;
     }
+    /**
+     * @inheritDoc
+     */
     public function getMethod()
     {
         return $this->method;
     }
+    /**
+     * @inheritDoc
+     */
     public function withMethod($method)
     {
         $new         = clone $this;
         $new->method = strtoupper($method);
         return $new;
     }
+    /**
+     * @inheritDoc
+     */
     public function getUri()
     {
         return $this->uri;
     }
+    /**
+     * @inheritDoc
+     */
     public function withUri(\Psr\Http\message\UriInterface $uri, $preserveHost = false)
     {
         if ($uri === $this->uri) {
@@ -91,7 +116,10 @@ class Request extends Message implements \Psr\Http\Message\RequestInterface
         }
         return $new;
     }
-
+    /**
+     * Ensure Host is the first header
+     * See: http://tools.ietf.org/html/rfc7230#section-5.4
+     */
     private function updateHostFromUri()
     {
         $host = $this->uri->getHost();
@@ -107,8 +135,7 @@ class Request extends Message implements \Psr\Http\Message\RequestInterface
             $header                    = 'Host';
             $this->headerNames['host'] = 'Host';
         }
-        // Ensure Host is the first header.
-        // See: http://tools.ietf.org/html/rfc7230#section-5.4
+       
         $this->headers = [$header => [$host]] + $this->headers;
     }
 }

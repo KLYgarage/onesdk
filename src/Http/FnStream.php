@@ -90,77 +90,122 @@ class FnStream implements StreamInterface
         }
         return new self($methods);
     }
-    
+  
+    /**
+     * @inheritDoc
+     */
     public function __toString()
     {
         return call_user_func($this->_fn___toString);
     }
-    
+  
+    /**
+     * @inheritDoc
+     */
     public function close()
     {
         return call_user_func($this->_fn_close);
     }
-    
+  
+    /**
+     * @inheritDoc
+     */
     public function detach()
     {
         return call_user_func($this->_fn_detach);
     }
-    
+  
+    /**
+     * @inheritDoc
+     */
     public function getSize()
     {
         return call_user_func($this->_fn_getSize);
     }
-    
+  
+    /**
+     * @inheritDoc
+     */
     public function tell()
     {
         return call_user_func($this->_fn_tell);
     }
-    
+  
+    /**
+     * @inheritDoc
+     */
     public function eof()
     {
         return call_user_func($this->_fn_eof);
     }
-    
+
+    /**
+     * @inheritDoc
+     */
     public function isSeekable()
     {
         return call_user_func($this->_fn_isSeekable);
     }
-    
+
+    /**
+     * @inheritDoc
+     */
     public function rewind()
     {
         call_user_func($this->_fn_rewind);
     }
-    
+
+    /**
+     * @inheritDoc
+     */
     public function seek($offset, $whence = SEEK_SET)
     {
         call_user_func($this->_fn_seek, $offset, $whence);
     }
-    
+
+    /**
+     * @inheritDoc
+     */
     public function isWritable()
     {
         return call_user_func($this->_fn_isWritable);
     }
-    
+
+    /**
+     * @inheritDoc
+     */
     public function write($string)
     {
         return call_user_func($this->_fn_write, $string);
     }
-    
+
+    /**
+     * @inheritDoc
+     */
     public function isReadable()
     {
         return call_user_func($this->_fn_isReadable);
     }
-    
+
+    /**
+     * @inheritDoc
+     */
     public function read($length)
     {
         return call_user_func($this->_fn_read, $length);
     }
-    
+
+    /**
+     * @inheritDoc
+     */
     public function getContents()
     {
         return call_user_func($this->_fn_getContents);
     }
-    
+
+    /**
+     * @inheritDoc
+     */
     public function getMetadata($key = null)
     {
         return call_user_func($this->_fn_getMetadata, $key);

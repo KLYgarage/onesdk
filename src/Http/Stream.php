@@ -40,7 +40,7 @@ class Stream implements \Psr\Http\Message\StreamInterface
      * - metadata: (array) Any additional metadata to return when the metadata
      *   of the stream is accessed.
      *
-     * @param resource $stream  Stream resource to wrap.
+     * @param bool|resource $stream  Stream resource to wrap.
      * @param array    $options Associative array of options.
      *
      * @throws \InvalidArgumentException if the stream is not a stream resource
@@ -74,7 +74,9 @@ class Stream implements \Psr\Http\Message\StreamInterface
     {
         $this->close();
     }
-
+    /**
+     * @inheritDoc
+     */
     public function __toString()
     {
         try {
@@ -84,7 +86,9 @@ class Stream implements \Psr\Http\Message\StreamInterface
             return '';
         }
     }
-
+    /**
+     * @inheritDoc
+     */
     public function getContents()
     {
         if (!isset($this->stream)) {
@@ -99,7 +103,9 @@ class Stream implements \Psr\Http\Message\StreamInterface
 
         return $contents;
     }
-
+    /**
+     * @inheritDoc
+     */
     public function close()
     {
         if (isset($this->stream)) {
@@ -109,7 +115,9 @@ class Stream implements \Psr\Http\Message\StreamInterface
             $this->detach();
         }
     }
-
+    /**
+     * @inheritDoc
+     */
     public function detach()
     {
         if (!isset($this->stream)) {
@@ -118,12 +126,14 @@ class Stream implements \Psr\Http\Message\StreamInterface
 
         $result = $this->stream;
         unset($this->stream);
-        $this->size     = $this->uri      = null;
+        $this->size     = $this->uri = null;
         $this->readable = $this->writable = $this->seekable = false;
 
         return $result;
     }
-
+    /**
+     * @inheritDoc
+     */
     public function getSize()
     {
         if ($this->size !== null) {
@@ -147,22 +157,30 @@ class Stream implements \Psr\Http\Message\StreamInterface
 
         return null;
     }
-
+    /**
+     * @inheritDoc
+     */
     public function isReadable()
     {
         return $this->readable;
     }
-
+    /**
+     * @inheritDoc
+     */
     public function isWritable()
     {
         return $this->writable;
     }
-
+    /**
+     * @inheritDoc
+     */
     public function isSeekable()
     {
         return $this->seekable;
     }
-
+    /**
+     * @inheritDoc
+     */
     public function eof()
     {
         if (!isset($this->stream)) {
@@ -171,7 +189,9 @@ class Stream implements \Psr\Http\Message\StreamInterface
 
         return feof($this->stream);
     }
-
+    /**
+     * @inheritDoc
+     */
     public function tell()
     {
         if (!isset($this->stream)) {
@@ -186,12 +206,16 @@ class Stream implements \Psr\Http\Message\StreamInterface
 
         return $result;
     }
-
+    /**
+     * @inheritDoc
+     */
     public function rewind()
     {
         $this->seek(0);
     }
-
+    /**
+     * @inheritDoc
+     */
     public function seek($offset, $whence = SEEK_SET)
     {
         if (!isset($this->stream)) {
@@ -205,7 +229,9 @@ class Stream implements \Psr\Http\Message\StreamInterface
                 . $offset . ' with whence ' . var_export($whence, true));
         }
     }
-
+    /**
+     * @inheritDoc
+     */
     public function read($length)
     {
         if (!isset($this->stream)) {
@@ -229,7 +255,9 @@ class Stream implements \Psr\Http\Message\StreamInterface
 
         return $string;
     }
-
+    /**
+     * @inheritDoc
+     */
     public function write($string)
     {
         if (!isset($this->stream)) {
@@ -249,7 +277,9 @@ class Stream implements \Psr\Http\Message\StreamInterface
 
         return $result;
     }
-
+    /**
+     * @inheritDoc
+     */
     public function getMetadata($key = null)
     {
         if (!isset($this->stream)) {

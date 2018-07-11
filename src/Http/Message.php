@@ -20,15 +20,15 @@ class Message implements \Psr\Http\Message\MessageInterface
     protected $stream;
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function getProtocolVersion()
     {
         return $this->protocol;
     }
-
+  
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function withProtocolVersion($version)
     {
@@ -42,25 +42,25 @@ class Message implements \Psr\Http\Message\MessageInterface
 
         return $new;
     }
-
+  
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function getHeaders()
     {
         return $this->headers;
     }
-
+  
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function hasHeader($name)
     {
         return isset($this->headerNames[strtolower($name)]);
     }
-
+  
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function getHeader($name)
     {
@@ -72,17 +72,17 @@ class Message implements \Psr\Http\Message\MessageInterface
 
         return $this->headers[$this->headerNames[$lower]];
     }
-
+  
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function getHeaderLine($header)
     {
         return implode(', ', $this->getHeader($header));
     }
-
+  
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function withHeader($header, $value)
     {
@@ -99,9 +99,9 @@ class Message implements \Psr\Http\Message\MessageInterface
         $new->headers[$header]         = $value;
         return $new;
     }
-
+  
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function withAddedHeader($header, $value)
     {
@@ -120,9 +120,9 @@ class Message implements \Psr\Http\Message\MessageInterface
         }
         return $new;
     }
-
+  
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function withoutHeader($header)
     {
@@ -135,9 +135,9 @@ class Message implements \Psr\Http\Message\MessageInterface
         unset($new->headers[$header], $new->headerNames[$normalized]);
         return $new;
     }
-
+  
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function getBody()
     {
@@ -146,9 +146,9 @@ class Message implements \Psr\Http\Message\MessageInterface
         }
         return $this->stream;
     }
-
+  
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function withBody(\Psr\Http\Message\StreamInterface $body)
     {
@@ -159,9 +159,10 @@ class Message implements \Psr\Http\Message\MessageInterface
         $new->stream = $body;
         return $new;
     }
-
+  
     /**
-     * @inheritdoc
+     * Set header
+     * @param array $headers
      */
     protected function setHeaders(array $headers)
     {

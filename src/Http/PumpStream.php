@@ -53,7 +53,7 @@ class PumpStream implements StreamInterface
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function __toString()
     {
@@ -63,98 +63,98 @@ class PumpStream implements StreamInterface
             return '';
         }
     }
-
+  
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function close()
     {
         $this->detach();
     }
-
+  
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function detach()
     {
         $this->tellPos = false;
         $this->source = null;
     }
-
+  
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function getSize()
     {
         return $this->size;
     }
-
+  
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function tell()
     {
         return $this->tellPos;
     }
-
+  
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function eof()
     {
         return !$this->source;
     }
-
+  
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function isSeekable()
     {
         return false;
     }
-
+  
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function rewind()
     {
         $this->seek(0);
     }
-
+  
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function seek($offset, $whence = SEEK_SET)
     {
         throw new \RuntimeException('Cannot seek a PumpStream');
     }
-
+  
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function isWritable()
     {
         return false;
     }
-
+  
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function write($string)
     {
         throw new \RuntimeException('Cannot write to a PumpStream');
     }
-
+  
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function isReadable()
     {
         return true;
     }
-
+  
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function read($length)
     {
@@ -171,9 +171,9 @@ class PumpStream implements StreamInterface
 
         return $data;
     }
-
+  
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function getContents()
     {
@@ -184,9 +184,9 @@ class PumpStream implements StreamInterface
 
         return $result;
     }
-
+  
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function getMetadata($key = null)
     {
@@ -196,7 +196,7 @@ class PumpStream implements StreamInterface
 
         return isset($this->metadata[$key]) ? $this->metadata[$key] : null;
     }
-
+  
     /**
      * @inheritdoc
      */
