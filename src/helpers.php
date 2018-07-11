@@ -86,10 +86,17 @@ function stream_for($resource = '', array $options = [])
         return openStream($resource, $options);
     }
     
-    return createStream($resource);
+    return createStream($resource, $options);
 }
 
-function createStream($resource)
+/**
+ * Helper to create stream based on resource and options
+ * @param resource|string|null|int|float|bool|StreamInterface|callable|\Iterator $resource
+ * @param  array $options
+ * @return StreamInterface
+ * @throws \InvalidArgumentException if the $resource arg is not valid.
+ */
+function createStream($resource, $options)
 {
     switch (gettype($resource)) {
         case 'resource':
@@ -119,6 +126,12 @@ function createStream($resource)
     throw new \InvalidArgumentException('Invalid resource type: ' . gettype($resource));
 }
 
+/**
+ * Open Stream when resource is a scalar type
+ * @param resource|string|null|int|float|bool|StreamInterface|callable|\Iterator $resource
+ * @param array $options
+ * @return StreamInterface
+ */
 function openStream($resource, $options)
 {
     $stream = fopen('php://temp', 'r+');
