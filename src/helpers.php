@@ -74,7 +74,7 @@ function createuriFromServer()
  * - metadata: Array of custom metadata.
  * - size: Size of the stream.
  *
- * @param resource|string|null|int|float|bool|StreamInterface|callable|\Iterator $resource Entity body data
+ * @param mixed $resource Entity body data
  * @param array                                                                  $options  Additional options
  *
  * @return StreamInterface
@@ -91,7 +91,7 @@ function stream_for($resource = '', array $options = [])
 
 /**
  * Helper to create stream based on resource and options
- * @param resource|null|object|callable $resource
+ * @param mixed $resource
  * @param  array $options
  * @return StreamInterface
  * @throws \InvalidArgumentException if the $resource arg is not valid.
@@ -128,7 +128,7 @@ function createStream($resource, $options)
 
 /**
  * Open Stream when resource is a scalar type
- * @param resource|string $resource
+ * @param mixed $resource
  * @param array $options
  * @return StreamInterface
  */
