@@ -156,7 +156,7 @@ class BufferStream implements StreamInterface
         $this->buffer .= $string;
         // TODO: What should happen here?
         if (strlen($this->buffer) >= $this->hwm) {
-            return false;
+            throw new \RuntimeException('Fail');
         }
         return strlen($string);
     }
