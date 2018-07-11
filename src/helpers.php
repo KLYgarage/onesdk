@@ -91,7 +91,7 @@ function stream_for($resource = '', array $options = [])
 
 /**
  * Helper to create stream based on resource and options
- * @param resource|string|null|int|float|bool|StreamInterface|callable|\Iterator $resource
+ * @param resource|null|object|callable $resource
  * @param  array $options
  * @return StreamInterface
  * @throws \InvalidArgumentException if the $resource arg is not valid.
@@ -119,7 +119,7 @@ function createStream($resource, $options)
             return new Stream(fopen('php://temp', 'r+'), $options);
     }
 
-    if (is_callable($resource) && !is_null($resource)) {
+    if (is_callable($resource)) {
         return new \One\Http\PumpStream($resource, $options);
     }
 
@@ -128,7 +128,7 @@ function createStream($resource, $options)
 
 /**
  * Open Stream when resource is a scalar type
- * @param resource|string|null|int|float|bool|StreamInterface|callable|\Iterator $resource
+ * @param resource|string $resource
  * @param array $options
  * @return StreamInterface
  */
