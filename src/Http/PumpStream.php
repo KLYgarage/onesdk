@@ -2,6 +2,10 @@
 
 namespace One\Http;
 
+use Psr\Http\Message\StreamInterface;
+use One\Http\BufferStream;
+use function One\copy_to_string;
+
 /**
  * Provides a read only stream that pumps data from a PHP callable.
  *
@@ -11,22 +15,22 @@ namespace One\Http;
  * returned by the provided callable is buffered internally until drained using
  * the read() function of the PumpStream. The provided callable MUST return
  * false when there is no more data to read.
+ * @property mixed $source
+ * @property int $size
+ * @property mixed $tellPos
+ * @property mixed[] $metadata
+ * @property mixed $buffer
  */
-class PumpStream implements \Psr\Http\Message\StreamInterface
+class PumpStream implements StreamInterface
 {
-    /** @var callable */
     private $source;
 
-    /** @var int */
     private $size;
 
-    /** @var int */
-    private $tellPos = 0;
+    private $tellPos;
 
-    /** @var array */
     private $metadata;
 
-    /** @var BufferStream */
     private $buffer;
 
     /**
@@ -43,10 +47,14 @@ class PumpStream implements \Psr\Http\Message\StreamInterface
     {
         $this->source = $source;
         $this->size = isset($options['size']) ? $options['size'] : null;
+        $this->tellPos = 0;
         $this->metadata = isset($options['metadata']) ? $options['metadata'] : [];
         $this->buffer = new BufferStream();
     }
 
+    /**
+     * @inheritdoc
+     */
     public function __toString()
     {
         try {
@@ -56,62 +64,98 @@ class PumpStream implements \Psr\Http\Message\StreamInterface
         }
     }
 
+    /**
+     * @inheritdoc
+     */
     public function close()
     {
         $this->detach();
     }
 
+    /**
+     * @inheritdoc
+     */
     public function detach()
     {
         $this->tellPos = false;
         $this->source = null;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getSize()
     {
         return $this->size;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function tell()
     {
         return $this->tellPos;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function eof()
     {
         return !$this->source;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function isSeekable()
     {
         return false;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function rewind()
     {
         $this->seek(0);
     }
 
+    /**
+     * @inheritdoc
+     */
     public function seek($offset, $whence = SEEK_SET)
     {
         throw new \RuntimeException('Cannot seek a PumpStream');
     }
 
+    /**
+     * @inheritdoc
+     */
     public function isWritable()
     {
         return false;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function write($string)
     {
         throw new \RuntimeException('Cannot write to a PumpStream');
     }
 
+    /**
+     * @inheritdoc
+     */
     public function isReadable()
     {
         return true;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function read($length)
     {
         $data = $this->buffer->read($length);
@@ -128,6 +172,9 @@ class PumpStream implements \Psr\Http\Message\StreamInterface
         return $data;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getContents()
     {
         $result = '';
@@ -138,6 +185,9 @@ class PumpStream implements \Psr\Http\Message\StreamInterface
         return $result;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getMetadata($key = null)
     {
         if (!$key) {
@@ -147,6 +197,9 @@ class PumpStream implements \Psr\Http\Message\StreamInterface
         return isset($this->metadata[$key]) ? $this->metadata[$key] : null;
     }
 
+    /**
+     * @inheritdoc
+     */
     private function pump($length)
     {
         if ($this->source) {

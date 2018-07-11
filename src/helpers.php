@@ -106,3 +106,41 @@ function stream_for($resource = '', array $options = [])
 
     throw new \InvalidArgumentException('Invalid resource type: ' . gettype($resource));
 }
+
+/**
+ * Copy the contents of a stream into a string until the given number of
+ * bytes have been read.
+ *
+ * @param StreamInterface $stream Stream to read
+ * @param int             $maxLen Maximum number of bytes to read. Pass -1
+ *                                to read the entire stream.
+ * @return string
+ * @throws \RuntimeException on error.
+ */
+function copy_to_string(StreamInterface $stream, $maxLen = -1)
+{
+    $buffer = '';
+    if ($maxLen === -1) {
+        while (!$stream->eof()) {
+            $buf = $stream->read(1048576);
+            // Using a loose equality here to match on '' and false.
+            if ($buf == null) {
+                break;
+            }
+            $buffer .= $buf;
+        }
+        return $buffer;
+    }
+    
+    $len = 0;
+    while (!$stream->eof() && $len < $maxLen) {
+        $buf = $stream->read($maxLen - $len);
+        // Using a loose equality here to match on '' and false.
+        if ($buf == null) {
+            break;
+        }
+        $buffer .= $buf;
+        $len = strlen($buffer);
+    }
+    return $buffer;
+}

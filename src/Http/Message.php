@@ -2,7 +2,7 @@
 
 namespace One\Http;
 
-use \Psr\Http\Message\StreamInterface;
+use Psr\Http\Message\StreamInterface;
 
 use function One\stream_for;
 
