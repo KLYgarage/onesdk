@@ -163,7 +163,8 @@ function copy_to_string(StreamInterface $stream, $maxLen = -1)
     }
     return $buffer;
 }
-  
+ 
+/**
  * Open Stream when resource is a scalar type
  * @param mixed $resource
  * @param array $options
