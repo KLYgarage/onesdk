@@ -234,7 +234,7 @@ class ResponseTest extends \PHPUnit\Framework\TestCase
         
         foreach ([$response1, $response2, $response3] as $response) {
             $this->assertSame(['OWS' => ['Foo']], $response->getHeaders());
-            $this->assertSame('Foo', $response->getHeaderLine('OWS'));            
+            $this->assertSame('Foo', $response->getHeaderLine('OWS'));
             $this->assertSame(['Foo'], $response->getHeader('OWS'));
         }
     }

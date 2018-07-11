@@ -46,7 +46,9 @@ class PumpStream implements \Psr\Http\Message\StreamInterface
         $this->metadata = isset($options['metadata']) ? $options['metadata'] : [];
         $this->buffer = new BufferStream();
     }
-
+    /**
+     * @inheritDoc
+     */
     public function __toString()
     {
         try {
@@ -55,63 +57,87 @@ class PumpStream implements \Psr\Http\Message\StreamInterface
             return '';
         }
     }
-
+    /**
+     * @inheritDoc
+     */
     public function close()
     {
         $this->detach();
     }
-
+    /**
+     * @inheritDoc
+     */
     public function detach()
     {
         $this->tellPos = false;
         $this->source = null;
     }
-
+    /**
+     * @inheritDoc
+     */
     public function getSize()
     {
         return $this->size;
     }
-
+    /**
+     * @inheritDoc
+     */
     public function tell()
     {
         return $this->tellPos;
     }
-
+    /**
+     * @inheritDoc
+     */
     public function eof()
     {
         return !$this->source;
     }
-
+    /**
+     * @inheritDoc
+     */
     public function isSeekable()
     {
         return false;
     }
-
+    /**
+     * @inheritDoc
+     */
     public function rewind()
     {
         $this->seek(0);
     }
-
+    /**
+     * @inheritDoc
+     */
     public function seek($offset, $whence = SEEK_SET)
     {
         throw new \RuntimeException('Cannot seek a PumpStream');
     }
-
+    /**
+     * @inheritDoc
+     */
     public function isWritable()
     {
         return false;
     }
-
+    /**
+     * @inheritDoc
+     */
     public function write($string)
     {
         throw new \RuntimeException('Cannot write to a PumpStream');
     }
-
+    /**
+     * @inheritDoc
+     */
     public function isReadable()
     {
         return true;
     }
-
+    /**
+     * @inheritDoc
+     */
     public function read($length)
     {
         $data = $this->buffer->read($length);
@@ -127,7 +153,9 @@ class PumpStream implements \Psr\Http\Message\StreamInterface
 
         return $data;
     }
-
+    /**
+     * @inheritDoc
+     */
     public function getContents()
     {
         $result = '';
@@ -137,7 +165,9 @@ class PumpStream implements \Psr\Http\Message\StreamInterface
 
         return $result;
     }
-
+    /**
+     * @inheritDoc
+     */
     public function getMetadata($key = null)
     {
         if (!$key) {
@@ -146,7 +176,11 @@ class PumpStream implements \Psr\Http\Message\StreamInterface
 
         return isset($this->metadata[$key]) ? $this->metadata[$key] : null;
     }
-
+    /**
+     * Pump data
+     * @param  int $length
+     * @return void
+     */
     private function pump($length)
     {
         if ($this->source) {

@@ -10,7 +10,7 @@ use function One\stream_for;
 class Response extends Message implements ResponseInterface
 {
 
-     /** @var array Map of standard HTTP status code/reason phrases */
+    /** @var array Map of standard HTTP status code/reason phrases */
     private static $phrases = [
         100 => 'Continue',
         101 => 'Switching Protocols',
@@ -101,17 +101,23 @@ class Response extends Message implements ResponseInterface
         }
         $this->protocol = $version;
     }
-
+    /**
+     * @inheritDoc
+     */
     public function getStatusCode()
     {
         return $this->statusCode;
     }
-
+    /**
+     * @inheritDoc
+     */
     public function getReasonPhrase()
     {
         return $this->reasonPhrase;
     }
-
+    /**
+     * @inheritDoc
+     */
     public function withStatus($code, $reasonPhrase = '')
     {
         $new = clone $this;
