@@ -2,9 +2,7 @@
 
 namespace One\Http;
 
-use \Psr\Http\Message\StreamInterface;
-
-use function One\stream_for;
+use Psr\Http\Message\StreamInterface;
 
 /**
  *
@@ -26,6 +24,7 @@ class Message implements \Psr\Http\Message\MessageInterface
     {
         return $this->protocol;
     }
+  
     /**
      * @inheritDoc
      */
@@ -41,6 +40,7 @@ class Message implements \Psr\Http\Message\MessageInterface
 
         return $new;
     }
+  
     /**
      * @inheritDoc
      */
@@ -48,6 +48,7 @@ class Message implements \Psr\Http\Message\MessageInterface
     {
         return $this->headers;
     }
+  
     /**
      * @inheritDoc
      */
@@ -55,6 +56,7 @@ class Message implements \Psr\Http\Message\MessageInterface
     {
         return isset($this->headerNames[strtolower($name)]);
     }
+  
     /**
      * @inheritDoc
      */
@@ -68,6 +70,7 @@ class Message implements \Psr\Http\Message\MessageInterface
 
         return $this->headers[$this->headerNames[$lower]];
     }
+  
     /**
      * @inheritDoc
      */
@@ -75,6 +78,7 @@ class Message implements \Psr\Http\Message\MessageInterface
     {
         return implode(', ', $this->getHeader($header));
     }
+  
     /**
      * @inheritDoc
      */
@@ -93,6 +97,7 @@ class Message implements \Psr\Http\Message\MessageInterface
         $new->headers[$header]         = $value;
         return $new;
     }
+  
     /**
      * @inheritDoc
      */
@@ -113,6 +118,7 @@ class Message implements \Psr\Http\Message\MessageInterface
         }
         return $new;
     }
+  
     /**
      * @inheritDoc
      */
@@ -127,16 +133,18 @@ class Message implements \Psr\Http\Message\MessageInterface
         unset($new->headers[$header], $new->headerNames[$normalized]);
         return $new;
     }
+  
     /**
      * @inheritDoc
      */
     public function getBody()
     {
         if (!$this->stream) {
-            $this->stream = stream_for('');
+            $this->stream = \One\stream_for('');
         }
         return $this->stream;
     }
+  
     /**
      * @inheritDoc
      */
@@ -149,6 +157,7 @@ class Message implements \Psr\Http\Message\MessageInterface
         $new->stream = $body;
         return $new;
     }
+  
     /**
      * Set header
      * @param array $headers

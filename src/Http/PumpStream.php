@@ -2,6 +2,9 @@
 
 namespace One\Http;
 
+use Psr\Http\Message\StreamInterface;
+use One\Http\BufferStream;
+
 /**
  * Provides a read only stream that pumps data from a PHP callable.
  *
@@ -11,22 +14,22 @@ namespace One\Http;
  * returned by the provided callable is buffered internally until drained using
  * the read() function of the PumpStream. The provided callable MUST return
  * false when there is no more data to read.
+ * @property mixed $source
+ * @property int $size
+ * @property mixed $tellPos
+ * @property mixed[] $metadata
+ * @property mixed $buffer
  */
-class PumpStream implements \Psr\Http\Message\StreamInterface
+class PumpStream implements StreamInterface
 {
-    /** @var callable */
     private $source;
 
-    /** @var int */
     private $size;
 
-    /** @var int */
-    private $tellPos = 0;
+    private $tellPos;
 
-    /** @var array */
     private $metadata;
 
-    /** @var BufferStream */
     private $buffer;
 
     /**
@@ -43,20 +46,23 @@ class PumpStream implements \Psr\Http\Message\StreamInterface
     {
         $this->source = $source;
         $this->size = isset($options['size']) ? $options['size'] : null;
+        $this->tellPos = 0;
         $this->metadata = isset($options['metadata']) ? $options['metadata'] : [];
         $this->buffer = new BufferStream();
     }
+
     /**
      * @inheritDoc
      */
     public function __toString()
     {
         try {
-            return copy_to_string($this);
+            return \One\copy_to_string($this);
         } catch (\Exception $e) {
             return '';
         }
     }
+  
     /**
      * @inheritDoc
      */
@@ -64,6 +70,7 @@ class PumpStream implements \Psr\Http\Message\StreamInterface
     {
         $this->detach();
     }
+  
     /**
      * @inheritDoc
      */
@@ -72,6 +79,7 @@ class PumpStream implements \Psr\Http\Message\StreamInterface
         $this->tellPos = false;
         $this->source = null;
     }
+  
     /**
      * @inheritDoc
      */
@@ -79,6 +87,7 @@ class PumpStream implements \Psr\Http\Message\StreamInterface
     {
         return $this->size;
     }
+  
     /**
      * @inheritDoc
      */
@@ -86,6 +95,7 @@ class PumpStream implements \Psr\Http\Message\StreamInterface
     {
         return $this->tellPos;
     }
+  
     /**
      * @inheritDoc
      */
@@ -93,6 +103,7 @@ class PumpStream implements \Psr\Http\Message\StreamInterface
     {
         return !$this->source;
     }
+  
     /**
      * @inheritDoc
      */
@@ -100,6 +111,7 @@ class PumpStream implements \Psr\Http\Message\StreamInterface
     {
         return false;
     }
+  
     /**
      * @inheritDoc
      */
@@ -107,6 +119,7 @@ class PumpStream implements \Psr\Http\Message\StreamInterface
     {
         $this->seek(0);
     }
+  
     /**
      * @inheritDoc
      */
@@ -114,6 +127,7 @@ class PumpStream implements \Psr\Http\Message\StreamInterface
     {
         throw new \RuntimeException('Cannot seek a PumpStream');
     }
+  
     /**
      * @inheritDoc
      */
@@ -121,6 +135,7 @@ class PumpStream implements \Psr\Http\Message\StreamInterface
     {
         return false;
     }
+  
     /**
      * @inheritDoc
      */
@@ -128,6 +143,7 @@ class PumpStream implements \Psr\Http\Message\StreamInterface
     {
         throw new \RuntimeException('Cannot write to a PumpStream');
     }
+  
     /**
      * @inheritDoc
      */
@@ -135,6 +151,7 @@ class PumpStream implements \Psr\Http\Message\StreamInterface
     {
         return true;
     }
+  
     /**
      * @inheritDoc
      */
@@ -153,6 +170,7 @@ class PumpStream implements \Psr\Http\Message\StreamInterface
 
         return $data;
     }
+  
     /**
      * @inheritDoc
      */
@@ -165,6 +183,7 @@ class PumpStream implements \Psr\Http\Message\StreamInterface
 
         return $result;
     }
+  
     /**
      * @inheritDoc
      */
@@ -176,10 +195,9 @@ class PumpStream implements \Psr\Http\Message\StreamInterface
 
         return isset($this->metadata[$key]) ? $this->metadata[$key] : null;
     }
+  
     /**
-     * Pump data
-     * @param  int $length
-     * @return void
+     * @inheritdoc
      */
     private function pump($length)
     {

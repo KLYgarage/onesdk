@@ -4,8 +4,6 @@ namespace One\Http;
 
 use One\Http\Message;
 use One\Uri;
-use function One\createUriFromString;
-use function One\stream_for;
 
 /**
  *
@@ -34,7 +32,7 @@ class Request extends Message implements \Psr\Http\Message\RequestInterface
         $version = '1.1'
     ) {
         if (!($uri instanceof \Psr\Http\Message\UriInterface)) {
-            $uri = createUriFromString($uri);
+            $uri = \One\createUriFromString($uri);
         }
         $this->method = strtoupper($method);
         $this->uri    = $uri;
@@ -44,7 +42,7 @@ class Request extends Message implements \Psr\Http\Message\RequestInterface
             $this->updateHostFromUri();
         }
         if ($body !== '' && $body !== null) {
-            $this->stream = stream_for($body);
+            $this->stream = \One\stream_for($body);
         }
     }
     /**

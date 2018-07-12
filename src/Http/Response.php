@@ -5,7 +5,6 @@ namespace One\Http;
 use One\Http\Message;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
-use function One\stream_for;
 
 class Response extends Message implements ResponseInterface
 {
@@ -71,6 +70,7 @@ class Response extends Message implements ResponseInterface
         508 => 'Loop Detected',
         511 => 'Network Authentication Required',
     ];
+    
     /** @var string */
     private $reasonPhrase = '';
     /** @var int */
@@ -91,7 +91,7 @@ class Response extends Message implements ResponseInterface
     ) {
         $this->statusCode = (int) $status;
         if ($body !== '' && $body !== null) {
-            $this->stream = stream_for($body);
+            $this->stream = \One\stream_for($body);
         }
         $this->setHeaders($headers);
         if ($reason == '' && isset(self::$phrases[$this->statusCode])) {
@@ -101,22 +101,25 @@ class Response extends Message implements ResponseInterface
         }
         $this->protocol = $version;
     }
+
     /**
-     * @inheritDoc
+     * @inheritdoc
      */
     public function getStatusCode()
     {
         return $this->statusCode;
     }
+
     /**
-     * @inheritDoc
+     * @inheritdoc
      */
     public function getReasonPhrase()
     {
         return $this->reasonPhrase;
     }
+  
     /**
-     * @inheritDoc
+     * @inheritdoc
      */
     public function withStatus($code, $reasonPhrase = '')
     {
