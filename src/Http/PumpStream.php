@@ -4,7 +4,6 @@ namespace One\Http;
 
 use Psr\Http\Message\StreamInterface;
 use One\Http\BufferStream;
-use function One\copy_to_string;
 
 /**
  * Provides a read only stream that pumps data from a PHP callable.
@@ -58,7 +57,7 @@ class PumpStream implements StreamInterface
     public function __toString()
     {
         try {
-            return copy_to_string($this);
+            return \One\copy_to_string($this);
         } catch (\Exception $e) {
             return '';
         }

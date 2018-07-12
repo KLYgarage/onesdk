@@ -5,7 +5,6 @@ namespace One\Http;
 use One\Http\Message;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
-use function One\stream_for;
 
 class Response extends Message implements ResponseInterface
 {
@@ -92,7 +91,7 @@ class Response extends Message implements ResponseInterface
     ) {
         $this->statusCode = (int) $status;
         if ($body !== '' && $body !== null) {
-            $this->stream = stream_for($body);
+            $this->stream = \One\stream_for($body);
         }
         $this->setHeaders($headers);
         if ($reason == '' && isset(self::$phrases[$this->statusCode])) {

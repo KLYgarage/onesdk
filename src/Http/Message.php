@@ -4,8 +4,6 @@ namespace One\Http;
 
 use Psr\Http\Message\StreamInterface;
 
-use function One\stream_for;
-
 /**
  *
  */
@@ -142,7 +140,7 @@ class Message implements \Psr\Http\Message\MessageInterface
     public function getBody()
     {
         if (!$this->stream) {
-            $this->stream = stream_for('');
+            $this->stream = \One\stream_for('');
         }
         return $this->stream;
     }
