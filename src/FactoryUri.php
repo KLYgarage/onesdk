@@ -34,7 +34,7 @@ class FactoryUri
      *
      * @param String $string
      */
-    public function createFromString(String $string)
+    public function createFromString($string)
     {
         self::validateUrl($string);
         $data = self::parseUrl($string);
@@ -120,7 +120,7 @@ class FactoryUri
      * @param String
      * @return array
      */
-    private function parseUrl(String $string): array
+    private function parseUrl($string)
     {
         return parse_url($string);
     }

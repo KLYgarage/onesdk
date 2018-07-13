@@ -17,8 +17,9 @@ use One\Model\Article;
  */
 class FactoryArticle
 {
-    public function create(array $data)
+    public function create($data)
     {
+        $data = self::validateArray($data);
         $data = self::checkData($data);
         $title = self::validateString($data['title']);
         $body = self::validateString($data['body']);
@@ -76,7 +77,7 @@ class FactoryArticle
      */
     private function validateArray($var)
     {
-        if (is_string($var) == false) {
+        if (is_array($var) == false) {
             throw new \Exception("The variable type must Array :" . $var);
         }
         return $var;
@@ -95,7 +96,7 @@ class FactoryArticle
         }
         return $var;
     }
-    private function parseUrl(String $string): array
+    private function parseUrl($string)
     {
         return parse_url($string);
     }
@@ -134,7 +135,7 @@ class FactoryArticle
      * @param array $parts
      * @return array
      */
-    private function checkData(array $data)
+    private function checkData($data)
     {
         $data['title'] = isset($data['title']) ? $data['title'] : '';
         $data['body'] = isset($data['body']) ? $data['body'] : '';
