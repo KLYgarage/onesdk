@@ -9,20 +9,31 @@ use One\Uri;
 
 class FactoryTest extends \PHPUnit\Framework\TestCase
 {
-    public function testFactoryArticleFromArray()
-    {
-        $dummy = array('title' => 'Recusandae natus ', 'body' => 'Nulla labore earum. Perspiciatis odio nostrum molestias voluptatem quidem error. ', 'source' => 'http://example.com/url-detail.html', 'unique_id' => 'dummy-1', 'type_id' => 2, 'category_id' => 1, 'reporter' => 'earum');
-        $article = createArticleFromArray($dummy);
-        $data = $article->toJson();
-        $data = json_decode($data);
-        $this->assertEquals($dummy['title'], $data->title);
-        $this->assertEquals($dummy['body'], $data->body);
-        $this->assertEquals($dummy['source'], $data->source);
-        $this->assertEquals($dummy['unique_id'], $data->uniqueId);
-        $this->assertEquals($dummy['category_id'], $data->category_id);
-        $this->assertEquals($dummy['reporter'], $data->reporter);
-    }
 
+    /**
+     * @covers Uri::createUriFromString
+     * @covers Uri::getScheme
+     * @covers Uri::getUserInfo
+     * @covers Uri::getHost
+     * @covers Uri::getPort
+     * @covers Uri::getPath
+     * @covers Uri::getQuery
+     * @covers Uri::getFragment
+     * @covers Uri::getBaseUrl
+     * @covers Uri::withHost
+     * @covers Uri::withUserInfo
+     * @covers Uri::withPort
+     * @covers Uri::withScheme
+     * @covers Uri::withPath
+     * @covers Uri::withQuery
+     * @covers Uri::withString
+     * @covers Uri::withFragment
+     * @covers Uri::filterScheme
+     * @covers Uri::filterPort
+     * @covers Uri::filterPath
+     * @covers Uri::filterQuery
+     * @covers Uri::hasStandardPort
+     */
     public function testFactoryUriFromServer()
     {
         $_SERVER['HTTPS'] = 'https://';
@@ -45,9 +56,33 @@ class FactoryTest extends \PHPUnit\Framework\TestCase
             ->withUserInfo('user2:pass2')
             ->withPort(80)
             ->withScheme('http')
-            ->withPath('/path/kerap/258')
-            ->withQuery('content=false&delimiter=default');
+            ->withPath('/path/kerap/258');
     }
+
+    /**
+     * @covers Uri::createUriFromServer
+     * @covers Uri::getScheme
+     * @covers Uri::getUserInfo
+     * @covers Uri::getHost
+     * @covers Uri::getPort
+     * @covers Uri::getPath
+     * @covers Uri::getQuery
+     * @covers Uri::getFragment
+     * @covers Uri::getBaseUrl
+     * @covers Uri::withHost
+     * @covers Uri::withUserInfo
+     * @covers Uri::withPort
+     * @covers Uri::withScheme
+     * @covers Uri::withPath
+     * @covers Uri::withQuery
+     * @covers Uri::withString
+     * @covers Uri::withFragment
+     * @covers Uri::filterScheme
+     * @covers Uri::filterPort
+     * @covers Uri::filterPath
+     * @covers Uri::filterQuery
+     * @covers Uri::hasStandardPort
+     */
     public function testFactoryUriFromString()
     {
         $string = 'https://username:password@www.example.com:85/kerap/254?page=1#idkomentar';
@@ -65,8 +100,24 @@ class FactoryTest extends \PHPUnit\Framework\TestCase
         $uri2 = $uri->withHost('www.phpunit.de')
             ->withUserInfo('user2:pass2')
             ->withPort(80)
-            ->withScheme('http')
-            ->withPath('/path/kerap/258')
-            ->withQuery('content=false&delimiter=default');
+            ->withScheme('http');
+    }
+
+    /**
+     * @covers Helper::createArticleFromArray
+     *
+     */
+    public function testFactoryArticleFromArray()
+    {
+        $dummy = array('title' => 'Recusandae natus ', 'body' => 'Nulla labore earum. Perspiciatis odio nostrum molestias voluptatem quidem error. ', 'source' => 'http://example.com/url-detail.html', 'unique_id' => 'dummy-1', 'type_id' => 2, 'category_id' => 1, 'reporter' => 'earum');
+        $article = createArticleFromArray($dummy);
+        $data = $article->toJson();
+        $data = json_decode($data);
+        $this->assertEquals($dummy['title'], $data->title);
+        $this->assertEquals($dummy['body'], $data->body);
+        $this->assertEquals($dummy['source'], $data->source);
+        $this->assertEquals($dummy['unique_id'], $data->uniqueId);
+        $this->assertEquals($dummy['category_id'], $data->category_id);
+        $this->assertEquals($dummy['reporter'], $data->reporter);
     }
 }
