@@ -51,6 +51,19 @@ class Model
     }
 
     /**
+     * Clean non parseable char from string
+     *
+     * @param $string
+     * @return string
+     */
+    protected function filterStringInstance($string)
+    {
+        if (!empty($string)) {
+            return htmlentities($string);
+        }
+    }
+
+    /**
      * Make Sure Uri is a Psr\Http\Message\UriInterface instance
      *
      * @param \Psr\Http\Message\UriInterface|string|null $uri
@@ -82,7 +95,7 @@ class Model
         }
 
         if (is_string($date) || is_int($date)) {
-            $date = new \DateTime($date);
+            $date = new \DateTime($date, new \DateTimeZone("Asia/Jakarta"));
         }
 
         return $this->formatDate($date);

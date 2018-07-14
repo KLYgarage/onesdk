@@ -24,7 +24,7 @@ class Publisher implements LoggerAwareInterface
     const ARTICLE_CHECK_ENDPOINT = '/api/article';
     const ARTICLE_ENDPOINT = '/api/publisher/article';
 
-    /**
+    /*
      * attachment url destination
      *
      * @var array
@@ -67,7 +67,7 @@ class Publisher implements LoggerAwareInterface
      * @var \Guzzle\Http\Client
      */
     private $httpClient;
-
+    
     /**
      * constructor
      *
@@ -81,12 +81,13 @@ class Publisher implements LoggerAwareInterface
         $this->clientSecret = $clientSecret;
 
         $this->assessOptions($options);
-
+ 
         $this->attachmentUrl = array(
             Article::ATTACHMENT_FIELD_GALLERY => self::ARTICLE_ENDPOINT . '/{article_id}/gallery',
-            Article::ATTACHMENT_FIELD_PAGE => self::ARTICLE_ENDPOINT . '/{article_id}/page',
-            Article::ATTACHMENT_FIELD_PHOTO => self::ARTICLE_ENDPOINT . '/{article_id}/photo',
-            Article::ATTACHMENT_FIELD_VIDEO => self::ARTICLE_ENDPOINT . '/{article_id}/video',
+            Article::ATTACHMENT_FIELD_PAGE    => self::ARTICLE_ENDPOINT . '/{article_id}/page',
+            Article::ATTACHMENT_FIELD_PHOTO   => self::ARTICLE_ENDPOINT . '/{article_id}/photo',
+            Article::ATTACHMENT_FIELD_VIDEO   => self::ARTICLE_ENDPOINT . '/{article_id}/video'
+
         );
     }
 
@@ -266,6 +267,7 @@ class Publisher implements LoggerAwareInterface
     private function getAttachmentEndPoint($idArticle, $field)
     {
         return $this->replaceEndPointId(
+
             $idArticle,
             $this->attachmentUrl[$field]
         );
