@@ -17,23 +17,39 @@ use One\Model\Article;
  */
 class FactoryArticle
 {
-    public function create($data)
+
+    /**
+     * Create Article from array
+     *
+     * @param array $data
+     * @return object Article
+     */
+    public static function create($data)
     {
         $data = self::validateArray($data);
-        $data = self::checkData($data);
-        $title = self::validateString($data['title']);
-        $body = self::validateString($data['body']);
-        $source = self::validateUrl($data['source']);
-        $uniqueId = self::validateString($data['unique_id']);
-        $typeId = self::validateInteger($data['type_id']);
-        $categoryId = self::validateInteger($data['category_id']);
-        $reporter = self::validateString($data['reporter']);
-        $lead = self::validateString($data['lead']);
-        $tags = self::validateString($data['tags']);
-        $publishedAt = $data['published_at'];
-        $identifier = $data['identifier'];
-
+        $title = self::validateString(self::checkData($data, 'title', ''));
+        $body = self::validateString(self::checkData($data, 'body', ''));
+        $source = self::validateUrl(self::checkData($data, 'source', ''));
+        $uniqueId = self::validateString(self::checkData($data, 'unique_id', ''));
+        $typeId = self::validateInteger(self::checkData($data, 'type_id', ''));
+        $categoryId = self::validateInteger(self::checkData($data, 'category_id', ''));
+        $reporter = self::validateString(self::checkData($data, 'reporter', ''));
+        $lead = self::validateString(self::checkData($data, 'lead', ''));
+        $tags = self::validateString(self::checkData($data, 'tags', ''));
+        $publishedAt = self::checkData($data, 'published_at', '');
+        $identifier = self::checkData($data, 'identifier', '');
         return self::createArticle($title, $body, $source, $uniqueId, $typeId, $categoryId, $reporter, $lead, $tags, $publishedAt, $identifier);
+    }
+
+    /**
+     * functionality to check whether a variable is set or not.
+     *
+     * @param array $parts
+     * @return array
+     */
+    private function checkData($data, $key, $default = '')
+    {
+        return isset($data[$key]) ? $data[$key] : $default;
     }
 
     /**
@@ -127,28 +143,5 @@ class FactoryArticle
             throw new \Exception("The variable type must String :" . $var);
         }
         return $var;
-    }
-
-    /**
-     * functionality to check whether a variable is set or not.
-     *
-     * @param array $parts
-     * @return array
-     */
-    private function checkData($data)
-    {
-        $data['title'] = isset($data['title']) ? $data['title'] : '';
-        $data['body'] = isset($data['body']) ? $data['body'] : '';
-        $data['source'] = isset($data['source']) ? $data['source'] : '';
-        $data['unique_id'] = isset($data['unique_id']) ? $data['unique_id'] : '';
-        $data['type_id'] = isset($data['type_id']) ? $data['type_id'] : null;
-        $data['category_id'] = isset($data['category_id']) ? $data['category_id'] : null;
-        $data['reporter'] = isset($data['reporter']) ? $data['reporter'] : '';
-        $data['lead'] = isset($data['lead']) ? $data['lead'] : '';
-        $data['reporter'] = isset($data['reporter']) ? $data['reporter'] : '';
-        $data['tags'] = isset($data['tags']) ? $data['tags'] : '';
-        $data['published_at'] = isset($data['published_at']) ? $data['published_at'] : null;
-        $data['identifier'] = isset($data['identifier']) ? $data['identifier'] : null;
-        return $data;
     }
 }

@@ -115,7 +115,6 @@ class FactoryTest extends \PHPUnit\Framework\TestCase
         $data = json_decode($data);
         $this->assertEquals($dummy['title'], $data->title);
         $this->assertEquals($dummy['body'], $data->body);
-        $this->assertEquals($dummy['source'], $data->source);
         $this->assertEquals($dummy['unique_id'], $data->uniqueId);
         $this->assertEquals($dummy['category_id'], $data->category_id);
         $this->assertEquals($dummy['reporter'], $data->reporter);

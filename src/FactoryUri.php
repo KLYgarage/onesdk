@@ -17,9 +17,10 @@ class FactoryUri
 {
 
     /**
-     * function Create
+     * function Create Uri
      *
      * @param String $string
+     * @return object Uri
      */
     public static function create($string = null)
     {
@@ -36,19 +37,28 @@ class FactoryUri
      */
     public function createFromString($string)
     {
-        self::validateUrl($string);
-        $data = self::parseUrl($string);
-        $data = self::checkData($data);
-        $scheme = self::validateString($data['scheme']);
-        $host = self::validateString($data['host']);
-        $port = $data['port'];
+        $data = self::parseUrl(self::validateUrl($string));
+        $scheme = self::validateString(self::checkData($data, 'scheme', ''));
+        $host = self::validateString(self::checkData($data, 'host', ''));
+        $port = 85;
         //$port = self::validateInteger($data['port']);
-        $user = self::validateString($data['user']);
-        $pass = self::validateString($data['pass']);
-        $path = self::validateString($data['path']);
-        $query = self::validateString($data['query']);
-        $fragment = self::validateString($data['fragment']);
+        $user = self::validateString(self::checkData($data, 'user', ''));
+        $pass = self::validateString(self::checkData($data, 'pass', ''));
+        $path = self::validateString(self::checkData($data, 'path', ''));
+        $query = self::validateString(self::checkData($data, 'query', ''));
+        $fragment = self::validateString(self::checkData($data, 'fragment', ''));
         return self::createUri($scheme, $host, $port, $user, $pass, $path, $query, $fragment);
+    }
+
+    /**
+     * functionality to check whether a variable is set or not.
+     *
+     * @param array $parts
+     * @return array
+     */
+    private function checkData($data, $key, $default = '')
+    {
+        return isset($data[$key]) ? $data[$key] : $default;
     }
 
     /**
@@ -57,15 +67,14 @@ class FactoryUri
      */
     public function createFromServer()
     {
-        $data = self::checkDataServer();
-        $scheme = self::validateString($data['scheme']);
-        $host = self::validateString($data['host']);
-        $port = self::validateInteger($data['port']);
-        $user = self::validateString($data['user']);
-        $pass = self::validateString($data['pass']);
-        $path = self::validateString($data['path']);
-        $query = self::validateString($data['query']);
-        $fragment = self::validateString($data['fragment']);
+        $scheme = self::validateString(self::checkData($_SERVER, 'HTTPS', 'http://'));
+        $host = self::validateString(self::checkData($_SERVER, 'HTTP_HOST', isset($_SERVER['SERVER_NAME'])));
+        $port = self::validateInteger(self::checkData($_SERVER, 'SERVER_PORT', null));
+        $user = self::validateString(self::checkData($_SERVER, 'PHP_AUTH_USER', ''));
+        $pass = self::validateString(self::checkData($_SERVER, 'PHP_AUTH_PW', ''));
+        $path = self::validateString((string) parse_url('http://www.foobar.com/' . self::checkData($_SERVER, 'REQUEST_URI', ''), PHP_URL_PATH));
+        $query = self::validateString(self::checkData($_SERVER, 'QUERY_STRING', ''));
+        $fragment = '';
         if (empty($user) && empty($pass) && !empty($_SERVER['HTTP_AUTHORIZATION'])) {
             list($user, $password) = explode(':', base64_decode(substr($_SERVER['HTTP_AUTHORIZATION'], 6)));
         }
@@ -151,44 +160,5 @@ class FactoryUri
             throw new \Exception("The variable must be a string :" . $var);
         }
         return $var;
-    }
-
-    /**
-     * functionality to check whether a variable is set or not.
-     *
-     * @param array $parts
-     * @return array
-     */
-    private function checkData($parts)
-    {
-        $parts['scheme'] = isset($parts['scheme']) ? $parts['scheme'] : '';
-        $parts['user'] = isset($parts['user']) ? $parts['user'] : '';
-        $parts['pass'] = isset($parts['pass']) ? $parts['pass'] : '';
-        $parts['host'] = isset($parts['host']) ? $parts['host'] : '';
-        $parts['port'] = isset($parts['port']) ? $parts['port'] : null;
-        $parts['path'] = isset($parts['path']) ? $parts['path'] : '';
-        $parts['query'] = isset($parts['query']) ? $parts['query'] : '';
-        $parts['fragment'] = isset($parts['fragment']) ? $parts['fragment'] : '';
-        return $parts;
-    }
-
-    /**
-     * functionality to check whether a variable is set or not.
-     *
-     * @param array $parts
-     * @return array
-     */
-    private function checkDataServer()
-    {
-        $parts = array();
-        $parts['scheme'] = isset($_SERVER['HTTPS']) ? 'https://' : 'http://';
-        $parts['host'] = !empty($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : $_SERVER['SERVER_NAME'];
-        $parts['port'] = !empty($_SERVER['SERVER_PORT']) ? $_SERVER['SERVER_PORT'] : null;
-        $parts['path'] = (string) parse_url('http://www.foobar.com/' . $_SERVER['REQUEST_URI'], PHP_URL_PATH);
-        $parts['query'] = empty($_SERVER['QUERY_STRING']) ? parse_url('http://foobar.com' . $_SERVER['REQUEST_URI'], PHP_URL_QUERY) : $_SERVER['QUERY_STRING'];
-        $parts['fragment'] = '';
-        $parts['user'] = !empty($_SERVER['PHP_AUTH_USER']) ? $_SERVER['PHP_AUTH_USER'] : '';
-        $parts['pass'] = !empty($_SERVER['PHP_AUTH_PW']) ? $_SERVER['PHP_AUTH_PW'] : '';
-        return $parts;
     }
 }
