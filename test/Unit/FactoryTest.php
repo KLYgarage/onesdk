@@ -3,12 +3,22 @@
 namespace One\Test\Unit;
 
 use function One\createArticleFromArray;
+use function One\createAttachmentGallery;
+use function One\createAttachmentPhoto;
 use function One\createUriFromServer;
 use function One\createUriFromString;
+use One\Model\Article;
+use One\Model\Photo;
 use One\Uri;
 
 class FactoryTest extends \PHPUnit\Framework\TestCase
 {
+    protected $dummy;
+
+    public function setUp()
+    {
+        $this->dummy = array('title' => 'Recusandae natus ', 'body' => 'Nulla labore earum. Perspiciatis odio nostrum molestias voluptatem quidem error. ', 'source' => 'http://example.com/url-detail.html', 'unique_id' => 'dummy-1', 'type_id' => 2, 'category_id' => 1, 'reporter' => 'earum');
+    }
 
     /**
      * @covers Uri::createUriFromString
@@ -87,7 +97,9 @@ class FactoryTest extends \PHPUnit\Framework\TestCase
     {
         $string = 'https://username:password@www.example.com:85/kerap/254?page=1#idkomentar';
         $uri = createUriFromString($string);
+
         $this->assertInstanceOf(Uri::class, $uri);
+
         $this->assertEquals('https', $uri->getScheme());
         $this->assertEquals('username:password', $uri->getUserInfo());
         $this->assertEquals('www.example.com', $uri->getHost());
@@ -106,17 +118,55 @@ class FactoryTest extends \PHPUnit\Framework\TestCase
     /**
      * @covers Helper::createArticleFromArray
      *
+     * @return void
      */
     public function testFactoryArticleFromArray()
     {
-        $dummy = array('title' => 'Recusandae natus ', 'body' => 'Nulla labore earum. Perspiciatis odio nostrum molestias voluptatem quidem error. ', 'source' => 'http://example.com/url-detail.html', 'unique_id' => 'dummy-1', 'type_id' => 2, 'category_id' => 1, 'reporter' => 'earum');
-        $article = createArticleFromArray($dummy);
+        $article = createArticleFromArray($this->dummy);
         $data = $article->toJson();
         $data = json_decode($data);
-        $this->assertEquals($dummy['title'], $data->title);
-        $this->assertEquals($dummy['body'], $data->body);
-        $this->assertEquals($dummy['unique_id'], $data->uniqueId);
-        $this->assertEquals($dummy['category_id'], $data->category_id);
-        $this->assertEquals($dummy['reporter'], $data->reporter);
+        $this->assertEquals($this->dummy['title'], $data->title);
+        $this->assertEquals($this->dummy['body'], $data->body);
+        $this->assertEquals($this->dummy['unique_id'], $data->uniqueId);
+        $this->assertEquals($this->dummy['category_id'], $data->category_id);
+        $this->assertEquals($this->dummy['reporter'], $data->reporter);
+    }
+
+    /**
+     * @covers Helper::createArticleFromArray
+     * @covers Helper::createAttachmentPhoto
+     *
+     * @return void
+     */
+    public function testAttachmentPhoto()
+    {
+        $article = createArticleFromArray($this->dummy);
+
+        $article->attach(Article::ATTACHMENT_FIELD_PHOTO, createAttachmentPhoto('http://test.com/', Photo::RATIO_SQUARE, 'Repellat nesciunt ipsum.', 'Quos atque quaerat recusandae modi reprehenderit magnam expedita.'));
+
+        $photoAttachment = $article->getAttachmentByField(Article::ATTACHMENT_FIELD_PHOTO)[0];
+
+        $this->assertCount(1, $article->getAttachmentByField(Article::ATTACHMENT_FIELD_PHOTO));
+    }
+
+    /**
+     * @covers Helper::createArticleFromArray
+     * @covers Helper::createAttachmentGallery
+     *
+     * @return void
+     */
+    public function testAttachmentGallery()
+    {
+        $article = createArticleFromArray($this->dummy);
+
+        $article->attachGallery(createAttachmentGallery(
+            'Est illum cupiditate quidem alias.',
+            1,
+            'http://jordan.biz/',
+            'https://www.roemer.de/',
+            'Ipsam quidem ut tempora incidunt officia sunt.'
+        ));
+
+        $this->assertCount(1, $article->getAttachmentByField(Article::ATTACHMENT_FIELD_GALLERY));
     }
 }

@@ -33,3 +33,44 @@ function createArticleFromArray($data)
 {
     return FactoryArticle::create($data);
 }
+
+/**
+ * createAttachmentPhoto
+ * @covers FactoryPhoto::create
+ * @param String $url
+ * @param String $ratio
+ * @param String $description
+ * @param String $information
+ *
+ */
+function createAttachmentPhoto($url, $ratio, $description, $information)
+{
+    $data = array(
+        'url' => $url,
+        'ratio' => $ratio,
+        'description' => $description,
+        'information' => $information,
+    );
+    return FactoryPhoto::create($data);
+}
+
+/**
+ * createAttachmentGallery
+ * @covers FactoryGalery::create
+ * @param String $body
+ * @param Int $order
+ * @param String $source
+ * @param String $lead
+ *
+ */
+function createAttachmentGallery($body, $order, $photo, $source, $lead = '')
+{
+    $data = array(
+        'body' => $body,
+        'order' => $order,
+        'photo' => $photo,
+        'source' => $source,
+        'lead' => $lead,
+    );
+    return FactoryGallery::create($data);
+}

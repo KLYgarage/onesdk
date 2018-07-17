@@ -30,20 +30,14 @@ class FactoryUri
         return self::createFromServer();
     }
 
-    /**
-     * function for Create Uri From String
-     *
-     * @param String $string
-     */
-    public function createFromString($string)
+    public function createFromString($uri)
     {
-        $data = self::parseUrl(self::validateUrl($string));
+        $data = parse_url(self::validateUrl($uri));
         $scheme = self::validateString(self::checkData($data, 'scheme', ''));
-        $host = self::validateString(self::checkData($data, 'host', ''));
-        $port = 85;
-        //$port = self::validateInteger($data['port']);
         $user = self::validateString(self::checkData($data, 'user', ''));
         $pass = self::validateString(self::checkData($data, 'pass', ''));
+        $host = self::validateString(self::checkData($data, 'host', ''));
+        $port = self::checkData($data, 'port', null);
         $path = self::validateString(self::checkData($data, 'path', ''));
         $query = self::validateString(self::checkData($data, 'query', ''));
         $fragment = self::validateString(self::checkData($data, 'fragment', ''));
@@ -95,7 +89,7 @@ class FactoryUri
      * @param string $fragment
      * @return Uri Object
      */
-    public function createUri($scheme, $host, $port, $user, $password, $path, $query, $fragment)
+    private function createUri($scheme, $host, $port, $user, $password, $path, $query, $fragment)
     {
         return new Uri(
             $scheme,
