@@ -28,16 +28,16 @@ class FactoryArticle
     {
         $data = self::validateArray($data);
         $title = self::validateString((string) self::checkData($data, 'title', ''));
-        $body = self::validateString(self::checkData($data, 'body', ''));
-        $source = self::validateUrl(self::checkData($data, 'source', ''));
-        $uniqueId = self::validateString(self::checkData($data, 'unique_id', ''));
+        $body = self::validateString((string) self::checkData($data, 'body', ''));
+        $source = self::validateUrl((string) self::checkData($data, 'source', ''));
+        $uniqueId = self::validateString((string) self::checkData($data, 'unique_id', ''));
         $typeId = self::validateInteger((int) self::checkData($data, 'type_id', ''));
         $categoryId = self::validateInteger((int) self::checkData($data, 'category_id', ''));
-        $reporter = self::validateString(self::checkData($data, 'reporter', ''));
-        $lead = self::validateString(self::checkData($data, 'lead', ''));
-        $tags = self::validateString(self::checkData($data, 'tags', ''));
-        $publishedAt = self::checkData($data, 'published_at', '');
-        $identifier = self::checkData($data, 'identifier', '');
+        $reporter = self::validateString((string) self::checkData($data, 'reporter', ''));
+        $lead = self::validateString((string) self::checkData($data, 'lead', ''));
+        $tags = self::validateString((string) self::checkData($data, 'tags', ''));
+        $publishedAt = self::validateString((string) self::checkData($data, 'published_at', ''));
+        $identifier = self::validateInteger((int) self::checkData($data, 'identifier', null));
         return self::createArticle($title, $body, $source, $uniqueId, $typeId, $categoryId, $reporter, $lead, $tags, $publishedAt, $identifier);
     }
 
@@ -93,10 +93,10 @@ class FactoryArticle
      */
     private static function validateArray(array $var)
     {
-        if (is_array($var) === false) {
-            throw new \Exception("The variable type must Array :");
+        if (is_array($var)) {
+            return $var;
         }
-        return $var;
+        throw new \Exception("The variable type must Array :");
     }
 
     /**
@@ -111,10 +111,6 @@ class FactoryArticle
             throw new \Exception("Invalid url : $var");
         }
         return $var;
-    }
-    private static function parseUrl($string)
-    {
-        return parse_url($string);
     }
 
     /**
@@ -139,9 +135,9 @@ class FactoryArticle
      */
     private static function validateString($var)
     {
-        if (is_string($var) === false) {
-            throw new \Exception("The variable type must String :" . $var);
+        if (is_string($var)) {
+            return $var;
         }
-        return $var;
+        throw new \Exception("The variable type must String :" . $var);
     }
 }

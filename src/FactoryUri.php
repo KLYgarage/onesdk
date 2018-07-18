@@ -35,13 +35,13 @@ class FactoryUri
         $data = parse_url(self::validateUrl($uri));
 
         $scheme = self::validateString((string) self::checkData($data, 'scheme', ''));
-        $user = self::validateString(self::checkData($data, 'user', ''));
-        $pass = self::validateString(self::checkData($data, 'pass', ''));
-        $host = self::validateString(self::checkData($data, 'host', ''));
+        $user = self::validateString((string) self::checkData($data, 'user', ''));
+        $pass = self::validateString((string) self::checkData($data, 'pass', ''));
+        $host = self::validateString((string) self::checkData($data, 'host', ''));
         $port = self::validateInteger((int) self::checkData($data, 'port', null));
-        $path = self::validateString(self::checkData($data, 'path', ''));
-        $query = self::validateString(self::checkData($data, 'query', ''));
-        $fragment = self::validateString(self::checkData($data, 'fragment', ''));
+        $path = self::validateString((string) self::checkData($data, 'path', ''));
+        $query = self::validateString((string) self::checkData($data, 'query', ''));
+        $fragment = self::validateString((string) self::checkData($data, 'fragment', ''));
         return self::createUri($scheme, $host, $port, $user, $pass, $path, $query, $fragment);
     }
 
@@ -63,11 +63,10 @@ class FactoryUri
     public static function createFromServer()
     {
         $scheme = self::validateString((string) self::checkData($_SERVER, 'HTTPS', 'http://'));
-        $host = self::validateString(self::checkData($_SERVER, 'HTTP_HOST', isset($_SERVER['SERVER_NAME'])));
+        $host = self::validateString((string) self::checkData($_SERVER, 'HTTP_HOST', isset($_SERVER['SERVER_NAME'])));
         $port = self::validateInteger((int) self::checkData($_SERVER, 'SERVER_PORT', null));
-        $user = self::validateString(self::checkData($_SERVER, 'PHP_AUTH_USER', ''));
-        $pass = self::validateString(self::checkData($_SERVER, 'PHP_AUTH_PW', ''));
-        /*		$path = self::validateString((string) parse_url('http://www.foobar.com/' . self::checkData($_SERVER, 'REQUEST_URI', ''), PHP_URL_PATH));*/
+        $user = self::validateString((string) self::checkData($_SERVER, 'PHP_AUTH_USER', ''));
+        $pass = self::validateString((string) self::checkData($_SERVER, 'PHP_AUTH_PW', ''));
         $path = self::validateString((string) parse_url('http://www.foobar.com/' . self::checkData($_SERVER, 'REQUEST_URI', ''), PHP_URL_PATH));
 
         $query = self::validateString(self::checkData($_SERVER, 'QUERY_STRING', ''));
@@ -142,9 +141,9 @@ class FactoryUri
      */
     private static function validateString($var)
     {
-        if (is_string($var) === false) {
-            throw new \Exception("The variable must be a string :" . $var);
+        if (is_string($var)) {
+            return $var;
         }
-        return $var;
+        throw new \Exception("The variable must be a string :" . $var);
     }
 }

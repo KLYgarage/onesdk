@@ -79,10 +79,10 @@ class FactoryGallery
      */
     private static function validateString($var)
     {
-        if (is_string($var) === false) {
-            throw new \Exception("The variable must be a string :" . $var);
+        if (is_string($var)) {
+            return $var;
         }
-        return $var;
+        throw new \Exception("The variable must be a string :" . $var);
     }
 
     /**

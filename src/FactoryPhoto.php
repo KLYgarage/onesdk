@@ -27,6 +27,7 @@ class FactoryPhoto
         $ratio = self::validateString((string) self::checkData($data, 'ratio', ''));
 
         $description = self::validateString((string) self::checkData($data, 'description', ''));
+
         $information = self::validateString((string) self::checkData($data, 'information', ''));
 
         return self::createPhoto($url, $ratio, $description, $information);
@@ -38,12 +39,12 @@ class FactoryPhoto
      * @param String $string
      * @return string
      */
-    private static function validateUrl($string)
+    private static function validateUrl($url)
     {
-        if (filter_var($string, FILTER_VALIDATE_URL) === false) {
-            throw new \Exception("Invalid url : $string");
+        if (filter_var($url, FILTER_VALIDATE_URL) === false) {
+            throw new \Exception("Invalid url : $url");
         }
-        return $string;
+        return $url;
     }
 
     /**
@@ -65,10 +66,10 @@ class FactoryPhoto
      */
     private static function validateString($var)
     {
-        if (is_string($var) === false) {
-            throw new \Exception("The variable must be a string :" . $var);
+        if (is_string($var)) {
+            return $var;
         }
-        return $var;
+        throw new \Exception("The variable must be a string :" . $var);
     }
 
     /**
@@ -85,7 +86,7 @@ class FactoryPhoto
             $url,
             $ratio,
             $description,
-            $information
+            (string) $information
         );
     }
 }
