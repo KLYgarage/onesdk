@@ -58,7 +58,7 @@ class FactoryArticle
      * @param String $title
      * @param string $body
      * @param string $source
-     * @param int $uniqueId
+     * @param string $uniqueId
      * @param int $typeId
      * @param int $categoryId
      * @param string $reporter
@@ -91,7 +91,7 @@ class FactoryArticle
      * @param int $var
      * @return int
      */
-    private static function validateArray(array $var)
+    private static function validateArray($var)
     {
         if (is_array($var)) {
             return $var;
@@ -135,7 +135,7 @@ class FactoryArticle
      */
     private static function validateString($var)
     {
-        if (is_string($var)) {
+        if (is_string($var) == true) {
             return $var;
         }
         throw new \Exception("The variable type must String :" . $var);

@@ -67,9 +67,9 @@ class FactoryUri
         $port = self::validateInteger((int) self::checkData($_SERVER, 'SERVER_PORT', null));
         $user = self::validateString((string) self::checkData($_SERVER, 'PHP_AUTH_USER', ''));
         $pass = self::validateString((string) self::checkData($_SERVER, 'PHP_AUTH_PW', ''));
-        $path = self::validateString((string) parse_url('http://www.foobar.com/' . self::checkData($_SERVER, 'REQUEST_URI', ''), PHP_URL_PATH));
-
-        $query = self::validateString(self::checkData($_SERVER, 'QUERY_STRING', ''));
+        $path = (string) self::checkData($_SERVER, 'REQUEST_URI', '');
+        $path = self::validateString(parse_url('http://www.foobar.com/' . $path, PHP_URL_PATH));
+        $query = self::validateString((string) self::checkData($_SERVER, 'QUERY_STRING', ''));
         $fragment = '';
         if (empty($user) && empty($pass) && !empty($_SERVER['HTTP_AUTHORIZATION'])) {
             list($user, $password) = explode(':', base64_decode(substr($_SERVER['HTTP_AUTHORIZATION'], 6)));
@@ -141,7 +141,7 @@ class FactoryUri
      */
     private static function validateString($var)
     {
-        if (is_string($var)) {
+        if (is_string($var) == true) {
             return $var;
         }
         throw new \Exception("The variable must be a string :" . $var);

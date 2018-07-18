@@ -25,7 +25,6 @@ class FactoryPhoto
     {
         $url = self::validateUrl((string) self::checkData($data, 'url', ''));
         $ratio = self::validateString((string) self::checkData($data, 'ratio', ''));
-
         $description = self::validateString((string) self::checkData($data, 'description', ''));
 
         $information = self::validateString((string) self::checkData($data, 'information', ''));
@@ -66,7 +65,7 @@ class FactoryPhoto
      */
     private static function validateString($var)
     {
-        if (is_string($var)) {
+        if (is_string($var) == true) {
             return $var;
         }
         throw new \Exception("The variable must be a string :" . $var);
@@ -78,7 +77,7 @@ class FactoryPhoto
      * @param String $url
      * @param String $ratio
      * @param String $description
-     * @return Uri Photo
+     * @param String $information
      */
     private static function createPhoto($url, $ratio, $description, $information)
     {
@@ -86,7 +85,7 @@ class FactoryPhoto
             $url,
             $ratio,
             $description,
-            (string) $information
+            $information
         );
     }
 }
