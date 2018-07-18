@@ -93,7 +93,7 @@ class FactoryArticle
      */
     private static function validateArray($var)
     {
-        if (is_array($var)) {
+        if (is_array($var) === true) {
             return $var;
         }
         throw new \Exception("The variable type must Array :");
@@ -135,7 +135,7 @@ class FactoryArticle
      */
     private static function validateString($var)
     {
-        if (is_string($var) == true) {
+        if (is_string($var) === true) {
             return $var;
         }
         throw new \Exception("The variable type must String :" . $var);

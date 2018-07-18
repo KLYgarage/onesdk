@@ -65,7 +65,7 @@ class FactoryPhoto
      */
     private static function validateString($var)
     {
-        if (is_string($var) == true) {
+        if (is_string($var) === true) {
             return $var;
         }
         throw new \Exception("The variable must be a string :" . $var);
