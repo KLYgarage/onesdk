@@ -30,14 +30,15 @@ class FactoryUri
         return self::createFromServer();
     }
 
-    public function createFromString($uri)
+    public static function createFromString($uri)
     {
         $data = parse_url(self::validateUrl($uri));
-        $scheme = self::validateString(self::checkData($data, 'scheme', ''));
+
+        $scheme = self::validateString((string) self::checkData($data, 'scheme', ''));
         $user = self::validateString(self::checkData($data, 'user', ''));
         $pass = self::validateString(self::checkData($data, 'pass', ''));
         $host = self::validateString(self::checkData($data, 'host', ''));
-        $port = self::checkData($data, 'port', null);
+        $port = self::validateInteger((int) self::checkData($data, 'port', null));
         $path = self::validateString(self::checkData($data, 'path', ''));
         $query = self::validateString(self::checkData($data, 'query', ''));
         $fragment = self::validateString(self::checkData($data, 'fragment', ''));
@@ -50,7 +51,7 @@ class FactoryUri
      * @param array $parts
      * @return array
      */
-    private function checkData($data, $key, $default = '')
+    private static function checkData($data, $key, $default = '')
     {
         return isset($data[$key]) ? $data[$key] : $default;
     }
@@ -59,14 +60,16 @@ class FactoryUri
      * function for Create Uri From Server
      *
      */
-    public function createFromServer()
+    public static function createFromServer()
     {
-        $scheme = self::validateString(self::checkData($_SERVER, 'HTTPS', 'http://'));
+        $scheme = self::validateString((string) self::checkData($_SERVER, 'HTTPS', 'http://'));
         $host = self::validateString(self::checkData($_SERVER, 'HTTP_HOST', isset($_SERVER['SERVER_NAME'])));
-        $port = self::validateInteger(self::checkData($_SERVER, 'SERVER_PORT', null));
+        $port = self::validateInteger((int) self::checkData($_SERVER, 'SERVER_PORT', null));
         $user = self::validateString(self::checkData($_SERVER, 'PHP_AUTH_USER', ''));
         $pass = self::validateString(self::checkData($_SERVER, 'PHP_AUTH_PW', ''));
+        /*		$path = self::validateString((string) parse_url('http://www.foobar.com/' . self::checkData($_SERVER, 'REQUEST_URI', ''), PHP_URL_PATH));*/
         $path = self::validateString((string) parse_url('http://www.foobar.com/' . self::checkData($_SERVER, 'REQUEST_URI', ''), PHP_URL_PATH));
+
         $query = self::validateString(self::checkData($_SERVER, 'QUERY_STRING', ''));
         $fragment = '';
         if (empty($user) && empty($pass) && !empty($_SERVER['HTTP_AUTHORIZATION'])) {
@@ -89,7 +92,7 @@ class FactoryUri
      * @param string $fragment
      * @return Uri Object
      */
-    private function createUri($scheme, $host, $port, $user, $password, $path, $query, $fragment)
+    private static function createUri($scheme, $host, $port, $user, $password, $path, $query, $fragment)
     {
         return new Uri(
             $scheme,
@@ -109,23 +112,12 @@ class FactoryUri
      * @param String $string
      * @return string
      */
-    private function validateUrl($string)
+    private static function validateUrl($url)
     {
-        if (filter_var($string, FILTER_VALIDATE_URL) == false) {
-            throw new \Exception("Invalid url : $string");
+        if (filter_var($url, FILTER_VALIDATE_URL) === false) {
+            throw new \Exception("Invalid url : $url");
         }
-        return $string;
-    }
-
-    /**
-     * Make Sure Url in string with correct url format
-     *
-     * @param String
-     * @return array
-     */
-    private function parseUrl($string)
-    {
-        return parse_url($string);
+        return $url;
     }
 
     /**
@@ -134,9 +126,9 @@ class FactoryUri
      * @param int $var
      * @return int
      */
-    private function validateInteger($var)
+    private static function validateInteger($var)
     {
-        if (filter_var($var, FILTER_VALIDATE_INT) == false) {
+        if (filter_var($var, FILTER_VALIDATE_INT) === false) {
             throw new \Exception("The variable must be a integer :" . $var);
         }
         return $var;
@@ -148,9 +140,9 @@ class FactoryUri
      * @param String $var
      * @return String
      */
-    private function validateString($var)
+    private static function validateString($var)
     {
-        if (is_string($var) == false) {
+        if (is_string($var) === false) {
             throw new \Exception("The variable must be a string :" . $var);
         }
         return $var;

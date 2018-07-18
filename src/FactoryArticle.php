@@ -27,12 +27,12 @@ class FactoryArticle
     public static function create($data)
     {
         $data = self::validateArray($data);
-        $title = self::validateString(self::checkData($data, 'title', ''));
+        $title = self::validateString((string) self::checkData($data, 'title', ''));
         $body = self::validateString(self::checkData($data, 'body', ''));
         $source = self::validateUrl(self::checkData($data, 'source', ''));
         $uniqueId = self::validateString(self::checkData($data, 'unique_id', ''));
-        $typeId = self::validateInteger(self::checkData($data, 'type_id', ''));
-        $categoryId = self::validateInteger(self::checkData($data, 'category_id', ''));
+        $typeId = self::validateInteger((int) self::checkData($data, 'type_id', ''));
+        $categoryId = self::validateInteger((int) self::checkData($data, 'category_id', ''));
         $reporter = self::validateString(self::checkData($data, 'reporter', ''));
         $lead = self::validateString(self::checkData($data, 'lead', ''));
         $tags = self::validateString(self::checkData($data, 'tags', ''));
@@ -47,7 +47,7 @@ class FactoryArticle
      * @param array $parts
      * @return array
      */
-    private function checkData($data, $key, $default = '')
+    private static function checkData($data, $key, $default = '')
     {
         return isset($data[$key]) ? $data[$key] : $default;
     }
@@ -64,11 +64,11 @@ class FactoryArticle
      * @param string $reporter
      * @param string $lead
      * @param string $tags
-     * @param date $publishedAt
+     * @param string $publishedAt
      * @param int $identifier
      * @return Article Object
      */
-    public function createArticle($title, $body, $source, $uniqueId, $typeId, $categoryId, $reporter, $lead, $tags, $publishedAt, $identifier)
+    public static function createArticle($title, $body, $source, $uniqueId, $typeId, $categoryId, $reporter, $lead, $tags, $publishedAt, $identifier)
     {
         return new Article(
             $title,
@@ -91,10 +91,10 @@ class FactoryArticle
      * @param int $var
      * @return int
      */
-    private function validateArray($var)
+    private static function validateArray(array $var)
     {
-        if (is_array($var) == false) {
-            throw new \Exception("The variable type must Array :" . $var);
+        if (is_array($var) === false) {
+            throw new \Exception("The variable type must Array :");
         }
         return $var;
     }
@@ -105,14 +105,14 @@ class FactoryArticle
      * @param String $string
      * @return string
      */
-    private function validateUrl($var)
+    private static function validateUrl($var)
     {
-        if (filter_var($var, FILTER_VALIDATE_URL) == false) {
+        if (filter_var($var, FILTER_VALIDATE_URL) === false) {
             throw new \Exception("Invalid url : $var");
         }
         return $var;
     }
-    private function parseUrl($string)
+    private static function parseUrl($string)
     {
         return parse_url($string);
     }
@@ -123,9 +123,9 @@ class FactoryArticle
      * @param int $var
      * @return int
      */
-    private function validateInteger($var)
+    private static function validateInteger($var)
     {
-        if (filter_var($var, FILTER_VALIDATE_INT) == false) {
+        if (filter_var($var, FILTER_VALIDATE_INT) === false) {
             throw new \Exception("The variable type must Integer :" . $var);
         }
         return $var;
@@ -137,9 +137,9 @@ class FactoryArticle
      * @param String $var
      * @return String
      */
-    private function validateString($var)
+    private static function validateString($var)
     {
-        if (is_string($var) == false) {
+        if (is_string($var) === false) {
             throw new \Exception("The variable type must String :" . $var);
         }
         return $var;

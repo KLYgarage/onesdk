@@ -24,11 +24,11 @@ class FactoryGallery
      */
     public static function create($data)
     {
-        $body = self::validateString(self::checkData($data, 'body', ''));
-        $order = self::validateInteger(self::checkData($data, 'order', null));
-        $photo = self::validateUrl(self::checkData($data, 'photo', ''));
-        $source = self::validateUrl(self::checkData($data, 'source', ''));
-        $lead = self::validateString(self::checkData($data, 'lead', ''));
+        $body = self::validateString((string) self::checkData($data, 'body', ''));
+        $order = self::validateInteger((int) self::checkData($data, 'order', null));
+        $photo = self::validateUrl((string) self::checkData($data, 'photo', ''));
+        $source = self::validateUrl((string) self::checkData($data, 'source', ''));
+        $lead = self::validateString((string) self::checkData($data, 'lead', ''));
         return self::createGallery($body, $order, $photo, $source, $lead);
     }
 
@@ -38,9 +38,9 @@ class FactoryGallery
      * @param String $string
      * @return string
      */
-    private function validateUrl($string)
+    private static function validateUrl($string)
     {
-        if (filter_var($string, FILTER_VALIDATE_URL) == false) {
+        if (filter_var($string, FILTER_VALIDATE_URL) === false) {
             throw new \Exception("Invalid url : $string");
         }
         return $string;
@@ -52,7 +52,7 @@ class FactoryGallery
      * @param array $parts
      * @return array
      */
-    private function checkData($data, $key, $default = '')
+    private static function checkData($data, $key, $default = '')
     {
         return isset($data[$key]) ? $data[$key] : $default;
     }
@@ -63,9 +63,9 @@ class FactoryGallery
      * @param int $var
      * @return int
      */
-    private function validateInteger($var)
+    private static function validateInteger($var)
     {
-        if (filter_var($var, FILTER_VALIDATE_INT) == false) {
+        if (filter_var($var, FILTER_VALIDATE_INT) === false) {
             throw new \Exception("The variable must be a integer :" . $var);
         }
         return $var;
@@ -77,9 +77,9 @@ class FactoryGallery
      * @param String $var
      * @return String
      */
-    private function validateString($var)
+    private static function validateString($var)
     {
-        if (is_string($var) == false) {
+        if (is_string($var) === false) {
             throw new \Exception("The variable must be a string :" . $var);
         }
         return $var;
@@ -94,7 +94,7 @@ class FactoryGallery
      * @param String $source
      * @param string $lead
      */
-    public function createGallery($body, $order, $photo, $source, $lead)
+    private static function createGallery($body, $order, $photo, $source, $lead)
     {
         return new Gallery(
             $body,

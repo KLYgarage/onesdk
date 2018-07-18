@@ -9,7 +9,6 @@ use One\Model\Photo;
  * @method create
  * @method createPhoto
  * @method validateUrl
- * @method validateInteger
  * @method validateString
  * @method checkData
  */
@@ -24,10 +23,11 @@ class FactoryPhoto
      */
     public static function create($data)
     {
-        $url = self::validateUrl(self::checkData($data, 'url', ''));
-        $ratio = self::checkData($data, 'ratio', '');
-        $description = self::validateString(self::checkData($data, 'description', ''));
-        $information = self::validateString(self::checkData($data, 'information', ''));
+        $url = self::validateUrl((string) self::checkData($data, 'url', ''));
+        $ratio = self::validateString((string) self::checkData($data, 'ratio', ''));
+
+        $description = self::validateString((string) self::checkData($data, 'description', ''));
+        $information = self::validateString((string) self::checkData($data, 'information', ''));
 
         return self::createPhoto($url, $ratio, $description, $information);
     }
@@ -38,9 +38,9 @@ class FactoryPhoto
      * @param String $string
      * @return string
      */
-    private function validateUrl($string)
+    private static function validateUrl($string)
     {
-        if (filter_var($string, FILTER_VALIDATE_URL) == false) {
+        if (filter_var($string, FILTER_VALIDATE_URL) === false) {
             throw new \Exception("Invalid url : $string");
         }
         return $string;
@@ -52,23 +52,9 @@ class FactoryPhoto
      * @param array $parts
      * @return array
      */
-    private function checkData($data, $key, $default = '')
+    private static function checkData($data, $key, $default = '')
     {
         return isset($data[$key]) ? $data[$key] : $default;
-    }
-
-    /**
-     * functionality validity for int variables
-     *
-     * @param int $var
-     * @return int
-     */
-    private function validateInteger($var)
-    {
-        if (filter_var($var, FILTER_VALIDATE_INT) == false) {
-            throw new \Exception("The variable must be a integer :" . $var);
-        }
-        return $var;
     }
 
     /**
@@ -77,9 +63,9 @@ class FactoryPhoto
      * @param String $var
      * @return String
      */
-    private function validateString($var)
+    private static function validateString($var)
     {
-        if (is_string($var) == false) {
+        if (is_string($var) === false) {
             throw new \Exception("The variable must be a string :" . $var);
         }
         return $var;
@@ -93,7 +79,7 @@ class FactoryPhoto
      * @param String $description
      * @return Uri Photo
      */
-    public function createPhoto($url, $ratio, $description, $information)
+    private static function createPhoto($url, $ratio, $description, $information)
     {
         return new Photo(
             $url,
