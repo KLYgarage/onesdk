@@ -21,11 +21,8 @@ class FormatMapping
      * JSON field constants
      */
     const JSON_PHOTO_FIELD = "photos";
-
     const JSON_PAGE_FIELD = "pages";
-
     const JSON_GALLERY_FIELD = "galleries";
-
     const JSON_VIDEO_FIELD = "videos";
 
     /**
