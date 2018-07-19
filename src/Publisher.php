@@ -67,7 +67,7 @@ class Publisher implements LoggerAwareInterface
      * @var \Guzzle\Http\Client
      */
     private $httpClient;
-    
+
     /**
      * constructor
      *
@@ -81,7 +81,7 @@ class Publisher implements LoggerAwareInterface
         $this->clientSecret = $clientSecret;
 
         $this->assessOptions($options);
- 
+
         $this->attachmentUrl = array(
             Article::ATTACHMENT_FIELD_GALLERY => self::ARTICLE_ENDPOINT . '/{article_id}/gallery',
             Article::ATTACHMENT_FIELD_PAGE    => self::ARTICLE_ENDPOINT . '/{article_id}/page',
@@ -329,7 +329,7 @@ class Publisher implements LoggerAwareInterface
         $responseArticle = json_decode($responseArticle, true);
         $article->setId($responseArticle['data']['id']);
 
-        foreach (Article::getPossibleAttachment() as $field) {
+        foreach ($article->getPossibleAttachment() as $field) {
             if ($article->hasAttachment($field)) {
                 foreach ($article->getAttachmentByField($field) as $attachment) {
                     $this->submitAttachment(
