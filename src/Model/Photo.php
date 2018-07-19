@@ -29,16 +29,8 @@ class Photo extends Model
     ) {
         $url = $this->filterUriInstance($url);
 
-        $allowedRatio = array(
-            self::RATIO_SQUARE,
-            self::RATIO_RECTANGLE,
-            self::RATIO_HEADLINE,
-            self::RATIO_VERTICAL,
-            self::RATIO_COVER,
-        );
-
-        if (!in_array($ratio, $allowedRatio)) {
-            throw new \Exception("ratio $ratio not allowed, allowed ratio are " . implode(', ', $allowedRatio));
+        if (!in_array($ratio, $this->getAvailableRatios())) {
+            throw new \Exception("ratio $ratio not allowed, allowed ratio are " . implode(', ', $this->getAvailableRatios()));
         }
 
         $description = $this->filterStringInstance($description);
@@ -51,6 +43,22 @@ class Photo extends Model
                 'description' => $description,
                 'information' => $information,
             )
+        );
+    }
+
+    /**
+     * get available ratio for photo attachment
+     *
+     * @return array
+     */
+    private function getAvailableRatios()
+    {
+        return array(
+            self::RATIO_SQUARE,
+            self::RATIO_RECTANGLE,
+            self::RATIO_HEADLINE,
+            self::RATIO_VERTICAL,
+            self::RATIO_COVER
         );
     }
 }

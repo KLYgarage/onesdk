@@ -8,62 +8,76 @@ use Psr\Http\Message\StreamInterface;
 
 /**
  * createUriFromString
- *
+ * @covers FactoryUri::create
  * @param string $uri
- * @return \Psr\Http\Message\UriInterface
+ *
  */
 function createUriFromString($uri)
 {
-    $parts    = parse_url($uri);
-    $scheme   = isset($parts['scheme']) ? $parts['scheme'] : '';
-    $user     = isset($parts['user']) ? $parts['user'] : '';
-    $pass     = isset($parts['pass']) ? $parts['pass'] : '';
-    $host     = isset($parts['host']) ? $parts['host'] : '';
-    $port     = isset($parts['port']) ? $parts['port'] : null;
-    $path     = isset($parts['path']) ? $parts['path'] : '';
-    $query    = isset($parts['query']) ? $parts['query'] : '';
-    $fragment = isset($parts['fragment']) ? $parts['fragment'] : '';
-    return new Uri(
-        $scheme,
-        $host,
-        $port,
-        $path,
-        $query,
-        $fragment,
-        $user,
-        $pass
-    );
+    return FactoryUri::create($uri);
 }
 
 /**
  * createuriFromServer
+ * @covers FactoryUri::create
  *
- * @return \Psr\Http\Message\UriInterface
  */
-
-function createuriFromServer()
+function createUriFromServer()
 {
-    $scheme   = isset($_SERVER['HTTPS']) ? 'https://' : 'http://';
-    $host     = !empty($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : $_SERVER['SERVER_NAME'];
-    $port     = empty($_SERVER['SERVER_PORT']) ? $_SERVER['SERVER_PORT'] : null;
-    $path     = (string) parse_url('http://www.example.com/' . $_SERVER['REQUEST_URI'], PHP_URL_PATH);
-    $query    = empty($_SERVER['QUERY_STRING']) ? parse_url('http://example.com' . $_SERVER['REQUEST_URI'], PHP_URL_QUERY) : $_SERVER['QUERY_STRING'];
-    $fragment = '';
-    $user     = !empty($_SERVER['PHP_AUTH_USER']) ? $_SERVER['PHP_AUTH_USER'] : '';
-    $password = !empty($_SERVER['PHP_AUTH_PW']) ? $_SERVER['PHP_AUTH_PW'] : '';
-    if (empty($user) && empty($password) && !empty($_SERVER['HTTP_AUTHORIZATION'])) {
-        list($user, $password) = explode(':', base64_decode(substr($_SERVER['HTTP_AUTHORIZATION'], 6)));
-    }
+    return FactoryUri::create();
+}
 
-    return new Uri(
-        $scheme,
-        $host,
-        $port,
-        $path,
-        $query,
-        $fragment,
-        $user,
-        $password
+/**
+ * createArticleFromArray
+ * @covers FactoryArticle::create
+ * @param array $data
+ *
+ */
+function createArticleFromArray($data)
+{
+    return FactoryArticle::create($data);
+}
+
+/**
+ * createAttachmentPhoto
+ * @covers FactoryPhoto::create
+ * @param String $url
+ * @param String $ratio
+ * @param String $description
+ * @param String $information
+ *
+ */
+function createAttachmentPhoto($url, $ratio, $description, $information)
+{
+    return FactoryPhoto::create(
+        array(
+            'url' => $url,
+            'ratio' => $ratio,
+            'description' => $description,
+            'information' => $information,
+        )
+    );
+}
+
+/**
+ * createAttachmentGallery
+ * @covers FactoryGalery::create
+ * @param String $body
+ * @param Int $order
+ * @param String $source
+ * @param String $lead
+ *
+ */
+function createAttachmentGallery($body, $order, $photo, $source, $lead = '')
+{
+    return FactoryGallery::create(
+        array(
+            'body' => $body,
+            'order' => $order,
+            'photo' => $photo,
+            'source' => $source,
+            'lead' => $lead,
+        )
     );
 }
 
