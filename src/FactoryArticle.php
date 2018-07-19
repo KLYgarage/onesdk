@@ -92,7 +92,7 @@ class FactoryArticle
      */
     private static function validateArray($var)
     {
-        if (is_array($var) === true) {
+        if (gettype($var) === "array") {
             return $var;
         }
         throw new \Exception("The variable type must Array :");
