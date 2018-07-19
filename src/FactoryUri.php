@@ -31,13 +31,13 @@ class FactoryUri
     }
 
     /**
-     * function for Create Uri From String
+     * function for Create Uri From Server
      *
-     * @param string $uri
      */
     public static function createFromString($uri)
     {
         $data = parse_url(self::validateUrl($uri));
+
         $scheme = self::validateString((string) self::checkData($data, 'scheme', ''));
         $user = self::validateString((string) self::checkData($data, 'user', ''));
         $pass = self::validateString((string) self::checkData($data, 'pass', ''));
@@ -52,9 +52,6 @@ class FactoryUri
     /**
      * functionality to check whether a variable is set or not.
      *
-     * @param string $data
-     * @param string $key
-     * @param string $default
      * @return array
      */
     private static function checkData($data, $key, $default = '')

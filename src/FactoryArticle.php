@@ -87,8 +87,8 @@ class FactoryArticle
     /**
      * functionality validity for array variables
      *
-     * @param int $var
-     * @return int
+     * @param array $var
+     * @return array
      */
     private static function validateArray($var)
     {
