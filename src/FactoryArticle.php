@@ -21,22 +21,21 @@ class FactoryArticle
     /**
      * Create Article from array
      *
-     * @param array $data
      * @return object Article
      */
     public static function create($data)
     {
         $data = self::validateArray($data);
-        $title = self::validateString((string) self::checkData($data, 'title', ''));
-        $body = self::validateString((string) self::checkData($data, 'body', ''));
-        $source = self::validateUrl((string) self::checkData($data, 'source', ''));
-        $uniqueId = self::validateString((string) self::checkData($data, 'unique_id', ''));
+        $title = self::validateString(self::checkData($data, 'title', ''));
+        $body = self::validateString(self::checkData($data, 'body', ''));
+        $source = self::validateUrl(self::checkData($data, 'source', ''));
+        $uniqueId = self::validateString(self::checkData($data, 'unique_id', ''));
         $typeId = self::validateInteger((int) self::checkData($data, 'type_id', ''));
         $categoryId = self::validateInteger((int) self::checkData($data, 'category_id', ''));
-        $reporter = self::validateString((string) self::checkData($data, 'reporter', ''));
-        $lead = self::validateString((string) self::checkData($data, 'lead', ''));
-        $tags = self::validateString((string) self::checkData($data, 'tags', ''));
-        $publishedAt = self::validateString((string) self::checkData($data, 'published_at', ''));
+        $reporter = self::validateString(self::checkData($data, 'reporter', ''));
+        $lead = self::validateString(self::checkData($data, 'lead', ''));
+        $tags = self::validateString(self::checkData($data, 'tags', ''));
+        $publishedAt = self::validateString(self::checkData($data, 'published_at', ''));
         $identifier = self::validateInteger((int) self::checkData($data, 'identifier', null));
         return self::createArticle($title, $body, $source, $uniqueId, $typeId, $categoryId, $reporter, $lead, $tags, $publishedAt, $identifier);
     }

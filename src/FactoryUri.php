@@ -34,14 +34,14 @@ class FactoryUri
     {
         $data = parse_url(self::validateUrl($uri));
 
-        $scheme = self::validateString((string) self::checkData($data, 'scheme', ''));
-        $user = self::validateString((string) self::checkData($data, 'user', ''));
-        $pass = self::validateString((string) self::checkData($data, 'pass', ''));
-        $host = self::validateString((string) self::checkData($data, 'host', ''));
+        $scheme = self::validateString(self::checkData($data, 'scheme', ''));
+        $user = self::validateString(self::checkData($data, 'user', ''));
+        $pass = self::validateString(self::checkData($data, 'pass', ''));
+        $host = self::validateString(self::checkData($data, 'host', ''));
         $port = self::validateInteger((int) self::checkData($data, 'port', null));
-        $path = self::validateString((string) self::checkData($data, 'path', ''));
-        $query = self::validateString((string) self::checkData($data, 'query', ''));
-        $fragment = self::validateString((string) self::checkData($data, 'fragment', ''));
+        $path = self::validateString(self::checkData($data, 'path', ''));
+        $query = self::validateString(self::checkData($data, 'query', ''));
+        $fragment = self::validateString(self::checkData($data, 'fragment', ''));
         return self::createUri($scheme, $host, $port, $user, $pass, $path, $query, $fragment);
     }
 

@@ -24,11 +24,11 @@ class FactoryGallery
      */
     public static function create($data)
     {
-        $body = self::validateString((string) self::checkData($data, 'body', ''));
+        $body = self::validateString(self::checkData($data, 'body', ''));
         $order = self::validateInteger((int) self::checkData($data, 'order', null));
-        $photo = self::validateUrl((string) self::checkData($data, 'photo', ''));
-        $source = self::validateUrl((string) self::checkData($data, 'source', ''));
-        $lead = self::validateString((string) self::checkData($data, 'lead', ''));
+        $photo = self::validateUrl(self::checkData($data, 'photo', ''));
+        $source = self::validateUrl(self::checkData($data, 'source', ''));
+        $lead = self::validateString(self::checkData($data, 'lead', ''));
         return self::createGallery($body, $order, $photo, $source, $lead);
     }
 
