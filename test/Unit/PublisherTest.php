@@ -32,13 +32,10 @@ class PublisherTest extends \PHPUnit\Framework\TestCase
     public function testAuthentication()
     {
         $jsonResponse = $this->publisher->listArticle();
-
         $data = json_decode($jsonResponse, true);
 
         $this->assertArrayNotHasKey('message', $data);
-
         $this->assertArrayHasKey('data', $data);
-
         $this->assertArrayHasKey('meta', $data);
     }
 
@@ -57,13 +54,10 @@ class PublisherTest extends \PHPUnit\Framework\TestCase
         $this->publisher->recycleToken($tokenProducer);
 
         $jsonResponse = $this->publisher->listArticle();
-
         $data = json_decode($jsonResponse, true);
 
         $this->assertArrayNotHasKey('message', $data);
-
         $this->assertArrayHasKey('data', $data);
-
         $this->assertArrayHasKey('meta', $data);
     }
 
@@ -116,7 +110,7 @@ class PublisherTest extends \PHPUnit\Framework\TestCase
 
         $this->assertTrue(!empty($this->publisher->deleteArticle($resultingArticle->getId())));
     }
-
+  
     public function testSubmitArticleWithoutAttachment()
     {
         $article = new Article(
