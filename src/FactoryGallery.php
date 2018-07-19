@@ -24,11 +24,11 @@ class FactoryGallery
      */
     public static function create($data)
     {
-        $body = self::validateString(self::checkData($data, 'body', ''));
+        $body = self::validateString((string) self::checkData($data, 'body', ''));
         $order = self::validateInteger((int) self::checkData($data, 'order', null));
-        $photo = self::validateUrl(self::checkData($data, 'photo', ''));
-        $source = self::validateUrl(self::checkData($data, 'source', ''));
-        $lead = self::validateString(self::checkData($data, 'lead', ''));
+        $photo = self::validateUrl((string) self::checkData($data, 'photo', ''));
+        $source = self::validateUrl((string) self::checkData($data, 'source', ''));
+        $lead = self::validateString((string) self::checkData($data, 'lead', ''));
         return self::createGallery($body, $order, $photo, $source, $lead);
     }
 
@@ -79,10 +79,10 @@ class FactoryGallery
      */
     private static function validateString($var)
     {
-        if (is_string($var) === true) {
+        if (gettype($var) === "string") {
             return $var;
         }
-        throw new \Exception("The variable must be a string :" . $var);
+        throw new \Exception("The variable type must String :" . $var);
     }
 
     /**

@@ -23,11 +23,11 @@ class FactoryPhoto
      */
     public static function create($data)
     {
-        $url = self::validateUrl(self::checkData($data, 'url', ''));
-        $ratio = self::validateString(self::checkData($data, 'ratio', ''));
-        $description = self::validateString(self::checkData($data, 'description', ''));
+        $url = self::validateUrl((string) self::checkData($data, 'url', ''));
+        $ratio = self::validateString((string) self::checkData($data, 'ratio', ''));
+        $description = self::validateString((string) self::checkData($data, 'description', ''));
 
-        $information = self::validateString(self::checkData($data, 'information', ''));
+        $information = self::validateString((string) self::checkData($data, 'information', ''));
 
         return self::createPhoto($url, $ratio, $description, $information);
     }
@@ -35,7 +35,7 @@ class FactoryPhoto
     /**
      * Make Sure Url in string with correct url format
      *
-     * @param String $url
+     * @param String $string
      * @return string
      */
     private static function validateUrl($url)
@@ -65,10 +65,10 @@ class FactoryPhoto
      */
     private static function validateString($var)
     {
-        if (is_string($var) === true) {
+        if (gettype($var) === "string") {
             return $var;
         }
-        throw new \Exception("The variable must be a string :" . $var);
+        throw new \Exception("The variable type must String :" . $var);
     }
 
     /**
