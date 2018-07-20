@@ -85,7 +85,6 @@ class FactoryUri
      * @param String $string
      * @param string $scheme
      * @param string $host
-     * @param int $port
      * @param string $user
      * @param string $password
      * @param string $path
