@@ -36,13 +36,12 @@ class FactoryUri
      */
     public static function createFromString($uri)
     {
-        $data = parse_url(self::validateUrl($uri));
-
+        $data = parse_url($uri);
         $scheme = self::validateString((string) self::checkData($data, 'scheme', ''));
         $user = self::validateString((string) self::checkData($data, 'user', ''));
         $pass = self::validateString((string) self::checkData($data, 'pass', ''));
         $host = self::validateString((string) self::checkData($data, 'host', ''));
-        $port = self::validateInteger((int) self::checkData($data, 'port', null));
+        $port = self::checkData($data, 'port', null);
         $path = self::validateString((string) self::checkData($data, 'path', ''));
         $query = self::validateString((string) self::checkData($data, 'query', ''));
         $fragment = self::validateString((string) self::checkData($data, 'fragment', ''));
@@ -67,7 +66,7 @@ class FactoryUri
     {
         $scheme = self::validateString((string) self::checkData($_SERVER, 'HTTPS', 'http://'));
         $host = self::validateString((string) self::checkData($_SERVER, 'HTTP_HOST', isset($_SERVER['SERVER_NAME'])));
-        $port = self::validateInteger((int) self::checkData($_SERVER, 'SERVER_PORT', null));
+        $port = self::checkData($_SERVER, 'SERVER_PORT', null);
         $user = self::validateString((string) self::checkData($_SERVER, 'PHP_AUTH_USER', ''));
         $pass = self::validateString((string) self::checkData($_SERVER, 'PHP_AUTH_PW', ''));
         $path = (string) self::checkData($_SERVER, 'REQUEST_URI', '');
@@ -120,20 +119,6 @@ class FactoryUri
             throw new \Exception("Invalid url : $url");
         }
         return $url;
-    }
-
-    /**
-     * functionality validity for int variables
-     *
-     * @param int $var
-     * @return int
-     */
-    private static function validateInteger($var)
-    {
-        if (filter_var($var, FILTER_VALIDATE_INT) === false) {
-            throw new \Exception("The variable must be a integer :" . $var);
-        }
-        return $var;
     }
 
     /**
