@@ -108,20 +108,6 @@ class FactoryUri
     }
 
     /**
-     * Make Sure Url in string with correct url format
-     *
-     * @param String $string
-     * @return string
-     */
-    private static function validateUrl($url)
-    {
-        if (filter_var($url, FILTER_VALIDATE_URL) === false) {
-            throw new \Exception("Invalid url : $url");
-        }
-        return $url;
-    }
-
-    /**
      * functionality validity for string variables
      *
      * @param String $var
