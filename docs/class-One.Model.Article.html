@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 
-	<title>Class One\Model\Article</title>
+	<title>Class One\Model\Article | KLY ONE APP PHP SDK</title>
 
 	<link rel="stylesheet" href="resources/style.css?e99947befd7bf673c6b43ff75e9e0f170c88a60e">
 
@@ -24,12 +24,22 @@
 					</a>
 
 						<ul>
+				<li>
+					<a href="namespace-One.Http.html">
+						Http					</a>
+
+						</li>
 				<li class="active">
 					<a href="namespace-One.Model.html">
 						Model					</a>
 
 						</li>
 							</ul></li>
+				<li>
+					<a href="namespace-PHP.html">
+						PHP					</a>
+
+						</li>
 			</ul>
 		</div>
 
@@ -77,6 +87,9 @@
 <span>Class</span>			</li>
 		</ul>
 		<ul>
+			<li>
+				<a href="tree.html" title="Tree view of classes, interfaces, traits and exceptions"><span>Tree</span></a>
+			</li>
 		</ul>
 		<ul>
 		</ul>
@@ -118,7 +131,7 @@
 		<b>Namespace:</b> <a href="namespace-One.html">One</a>\<a href="namespace-One.Model.html">Model</a><br>
 		
 
-			<b>Located at</b> <a href="source-class-One.Model.Article.html#8-330" title="Go to source code">Model/Article.php</a>
+			<b>Located at</b> <a href="source-class-One.Model.Article.html#8-336" title="Go to source code">Model/Article.php</a>
 		<br>
 	</div>
 
@@ -138,7 +151,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#___construct">#</a>
-		<code><a href="source-class-One.Model.Article.html#55-142" title="Go to source code">__construct</a>( <span>string <var>$title</var></span>, <span>string <var>$body</var></span>, <span>Psr\Http\Message\UriInterface|string <var>$source</var></span>, <span>string <var>$uniqueId</var></span>, <span>integer <var>$typeId</var> = <code><a href="class-One.Model.Article.html#TYPE_TEXT">One\Model\Article::<b>TYPE_TEXT</b></a></code></span>, <span>integer <var>$categoryId</var> = <code><a href="class-One.Model.Article.html#CATEGORY_NASIONAL">One\Model\Article::<b>CATEGORY_NASIONAL</b></a></code></span>, <span>string <var>$reporter</var> = <span class="php-quote">''</span></span>, <span>string <var>$lead</var> = <span class="php-quote">''</span></span>, <span>string <var>$tags</var> = <span class="php-quote">''</span></span>, <span>DateTimeInterface|string <var>$publishedAt</var> = <span class="php-keyword1">null</span></span>, <span> <var>$identifier</var> = <span class="php-keyword1">null</span> </span> )</code>
+		<code><a href="source-class-One.Model.Article.html#55-148" title="Go to source code">__construct</a>( <span>string <var>$title</var></span>, <span>string <var>$body</var></span>, <span>Psr\Http\Message\UriInterface|string <var>$source</var></span>, <span>string <var>$uniqueId</var></span>, <span>integer <var>$typeId</var> = <code><a href="class-One.Model.Article.html#TYPE_TEXT">One\Model\Article::<b>TYPE_TEXT</b></a></code></span>, <span>integer <var>$categoryId</var> = <code><a href="class-One.Model.Article.html#CATEGORY_NASIONAL">One\Model\Article::<b>CATEGORY_NASIONAL</b></a></code></span>, <span>string <var>$reporter</var> = <span class="php-quote">''</span></span>, <span>string <var>$lead</var> = <span class="php-quote">''</span></span>, <span>string <var>$tags</var> = <span class="php-quote">''</span></span>, <span><code><a href="class-DateTimeInterface.html">DateTimeInterface</a></code>|string <var>$publishedAt</var> = <span class="php-keyword1">null</span></span>, <span> <var>$identifier</var> = <span class="php-keyword1">null</span> </span> )</code>
 
 		<div class="description short">
 			<p>constructor</p>
@@ -193,7 +206,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_getPossibleAttachment">#</a>
-		<code><a href="source-class-One.Model.Article.html#144-158" title="Go to source code">getPossibleAttachment</a>( )</code>
+		<code><a href="source-class-One.Model.Article.html#150-164" title="Go to source code">getPossibleAttachment</a>( )</code>
 
 		<div class="description short">
 			<p>get ALL Possible attachment for an article, return arrays of field name. Used for consistency accross sdk
@@ -229,7 +242,7 @@ leveraging php version 5.3 cannot use array constant</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_getDeleteableAttachment">#</a>
-		<code><a href="source-class-One.Model.Article.html#160-172" title="Go to source code">getDeleteableAttachment</a>( )</code>
+		<code><a href="source-class-One.Model.Article.html#166-178" title="Go to source code">getDeleteableAttachment</a>( )</code>
 
 		<div class="description short">
 			<p>get deleteable attachment for constant usage across sdk</p>
@@ -263,7 +276,7 @@ leveraging php version 5.3 cannot use array constant</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_setId">#</a>
-		<code><a href="source-class-One.Model.Article.html#174-183" title="Go to source code">setId</a>( <span>string <var>$identifier</var></span> )</code>
+		<code><a href="source-class-One.Model.Article.html#180-189" title="Go to source code">setId</a>( <span>string <var>$identifier</var></span> )</code>
 
 		<div class="description short">
 			<p>setIdentifier from rest api response</p>
@@ -298,7 +311,7 @@ leveraging php version 5.3 cannot use array constant</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_getId">#</a>
-		<code><a href="source-class-One.Model.Article.html#185-193" title="Go to source code">getId</a>( )</code>
+		<code><a href="source-class-One.Model.Article.html#191-199" title="Go to source code">getId</a>( )</code>
 
 		<div class="description short">
 			<p>getIdentifier set before</p>
@@ -332,7 +345,7 @@ leveraging php version 5.3 cannot use array constant</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_hasAttachment">#</a>
-		<code><a href="source-class-One.Model.Article.html#195-204" title="Go to source code">hasAttachment</a>( <span>string <var>$field</var></span> )</code>
+		<code><a href="source-class-One.Model.Article.html#201-210" title="Go to source code">hasAttachment</a>( <span>string <var>$field</var></span> )</code>
 
 		<div class="description short">
 			<p>check if this object has attachment assigned to it</p>
@@ -371,7 +384,7 @@ leveraging php version 5.3 cannot use array constant</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_getAttachmentByField">#</a>
-		<code><a href="source-class-One.Model.Article.html#206-219" title="Go to source code">getAttachmentByField</a>( <span>string <var>$field</var></span> )</code>
+		<code><a href="source-class-One.Model.Article.html#212-225" title="Go to source code">getAttachmentByField</a>( <span>string <var>$field</var></span> )</code>
 
 		<div class="description short">
 			<p>getAttachment based on fields</p>
@@ -410,7 +423,7 @@ leveraging php version 5.3 cannot use array constant</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_getAttachments">#</a>
-		<code><a href="source-class-One.Model.Article.html#221-229" title="Go to source code">getAttachments</a>( )</code>
+		<code><a href="source-class-One.Model.Article.html#227-235" title="Go to source code">getAttachments</a>( )</code>
 
 		<div class="description short">
 			<p>get ALL attachment assigned to this object</p>
@@ -444,7 +457,7 @@ leveraging php version 5.3 cannot use array constant</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_attach">#</a>
-		<code><a href="source-class-One.Model.Article.html#231-243" title="Go to source code">attach</a>( <span>string <var>$field</var></span>, <span><code><a href="class-One.Model.Model.html">One\Model\Model</a></code> <var>$item</var></span> )</code>
+		<code><a href="source-class-One.Model.Article.html#237-249" title="Go to source code">attach</a>( <span>string <var>$field</var></span>, <span><code><a href="class-One.Model.Model.html">One\Model\Model</a></code> <var>$item</var></span> )</code>
 
 		<div class="description short">
 			<p>add attach an attachment to this model</p>
@@ -485,7 +498,7 @@ leveraging php version 5.3 cannot use array constant</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_attachPhoto">#</a>
-		<code><a href="source-class-One.Model.Article.html#245-257" title="Go to source code">attachPhoto</a>( <span><code><a href="class-One.Model.Photo.html">One\Model\Photo</a></code> <var>$photo</var></span> )</code>
+		<code><a href="source-class-One.Model.Article.html#251-263" title="Go to source code">attachPhoto</a>( <span><code><a href="class-One.Model.Photo.html">One\Model\Photo</a></code> <var>$photo</var></span> )</code>
 
 		<div class="description short">
 			<p>Attach Photo Attachment to article</p>
@@ -524,7 +537,7 @@ leveraging php version 5.3 cannot use array constant</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_attachPage">#</a>
-		<code><a href="source-class-One.Model.Article.html#259-274" title="Go to source code">attachPage</a>( <span><code><a href="class-One.Model.Page.html">One\Model\Page</a></code> <var>$page</var></span> )</code>
+		<code><a href="source-class-One.Model.Article.html#265-280" title="Go to source code">attachPage</a>( <span><code><a href="class-One.Model.Page.html">One\Model\Page</a></code> <var>$page</var></span> )</code>
 
 		<div class="description short">
 			<p>Attach Paging</p>
@@ -563,7 +576,7 @@ leveraging php version 5.3 cannot use array constant</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_attachGallery">#</a>
-		<code><a href="source-class-One.Model.Article.html#276-291" title="Go to source code">attachGallery</a>( <span><code><a href="class-One.Model.Gallery.html">One\Model\Gallery</a></code> <var>$gallery</var></span> )</code>
+		<code><a href="source-class-One.Model.Article.html#282-297" title="Go to source code">attachGallery</a>( <span><code><a href="class-One.Model.Gallery.html">One\Model\Gallery</a></code> <var>$gallery</var></span> )</code>
 
 		<div class="description short">
 			<p>Attach gallery here</p>
@@ -602,7 +615,7 @@ leveraging php version 5.3 cannot use array constant</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_attachVideo">#</a>
-		<code><a href="source-class-One.Model.Article.html#293-308" title="Go to source code">attachVideo</a>( <span><code><a href="class-One.Model.Video.html">One\Model\Video</a></code> <var>$video</var></span> )</code>
+		<code><a href="source-class-One.Model.Article.html#299-314" title="Go to source code">attachVideo</a>( <span><code><a href="class-One.Model.Video.html">One\Model\Video</a></code> <var>$video</var></span> )</code>
 
 		<div class="description short">
 			<p>attach Video</p>
@@ -638,6 +651,7 @@ leveraging php version 5.3 cannot use array constant</p>
 			<a href="class-One.Model.Model.html#___call">__call()</a>, 
 			<a href="class-One.Model.Model.html#_createLeadFromBody">createLeadFromBody()</a>, 
 			<a href="class-One.Model.Model.html#_filterDateInstance">filterDateInstance()</a>, 
+			<a href="class-One.Model.Model.html#_filterStringInstance">filterStringInstance()</a>, 
 			<a href="class-One.Model.Model.html#_filterUriInstance">filterUriInstance()</a>, 
 			<a href="class-One.Model.Model.html#_formatDate">formatDate()</a>, 
 			<a href="class-One.Model.Model.html#_getCollection">getCollection()</a>, 
@@ -1325,7 +1339,7 @@ leveraging php version 5.3 cannot use array constant</p>
 </div>
 
 	<div id="footer">
-		 API documentation generated by <a href="http://apigen.org">ApiGen</a>
+		KLY ONE APP PHP SDK API documentation generated by <a href="http://apigen.org">ApiGen</a>
 	</div>
 </div>
 </div>

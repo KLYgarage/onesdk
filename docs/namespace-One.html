@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 
-	<title>Namespace One</title>
+	<title>Namespace One | KLY ONE APP PHP SDK</title>
 
 	<link rel="stylesheet" href="resources/style.css?e99947befd7bf673c6b43ff75e9e0f170c88a60e">
 
@@ -25,11 +25,21 @@
 
 						<ul>
 				<li>
+					<a href="namespace-One.Http.html">
+						Http					</a>
+
+						</li>
+				<li>
 					<a href="namespace-One.Model.html">
 						Model					</a>
 
 						</li>
 							</ul></li>
+				<li>
+					<a href="namespace-PHP.html">
+						PHP					</a>
+
+						</li>
 			</ul>
 		</div>
 
@@ -41,6 +51,11 @@
 			<ul>
 				<li><a href="class-One.Collection.html">Collection</a></li>
 				<li><a href="class-One.DummyLogger.html">DummyLogger</a></li>
+				<li><a href="class-One.FactoryArticle.html">FactoryArticle</a></li>
+				<li><a href="class-One.FactoryGallery.html">FactoryGallery</a></li>
+				<li><a href="class-One.FactoryPhoto.html">FactoryPhoto</a></li>
+				<li><a href="class-One.FactoryUri.html">FactoryUri</a></li>
+				<li><a href="class-one.FormatMapping.html">FormatMapping</a></li>
 				<li><a href="class-One.Publisher.html">Publisher</a></li>
 				<li><a href="class-One.Uri.html">Uri</a></li>
 			</ul>
@@ -56,8 +71,15 @@
 
 			<h3>Functions</h3>
 			<ul>
-				<li><a href="function-One.createuriFromServer.html">createuriFromServer</a></li>
+				<li><a href="function-One.copy_to_string.html">copy_to_string</a></li>
+				<li><a href="function-One.createArticleFromArray.html">createArticleFromArray</a></li>
+				<li><a href="function-One.createAttachmentGallery.html">createAttachmentGallery</a></li>
+				<li><a href="function-One.createAttachmentPhoto.html">createAttachmentPhoto</a></li>
+				<li><a href="function-One.createStream.html">createStream</a></li>
+				<li><a href="function-One.createUriFromServer.html">createUriFromServer</a></li>
 				<li><a href="function-One.createUriFromString.html">createUriFromString</a></li>
+				<li><a href="function-One.openStream.html">openStream</a></li>
+				<li><a href="function-One.stream_for.html">stream_for</a></li>
 			</ul>
 		</div>
 	</div>
@@ -84,6 +106,9 @@
 <span>Class</span>			</li>
 		</ul>
 		<ul>
+			<li>
+				<a href="tree.html" title="Tree view of classes, interfaces, traits and exceptions"><span>Tree</span></a>
+			</li>
 		</ul>
 		<ul>
 		</ul>
@@ -94,6 +119,9 @@
 
 	<table class="summary" id="namespaces">
 	<caption>Namespaces summary</caption>
+	<tr>
+		<td class="name"><a href="namespace-One.Http.html">One\Http</a></td>
+	</tr>
 	<tr>
 		<td class="name"><a href="namespace-One.Model.html">One\Model</a></td>
 	</tr>
@@ -109,6 +137,26 @@
 <tr>
 	<td class="name"><a href="class-One.DummyLogger.html">DummyLogger</a></td>
 	<td>dummy logger</td>
+</tr>
+<tr>
+	<td class="name"><a href="class-One.FactoryArticle.html">FactoryArticle</a></td>
+	<td>FactoryArticle Class</td>
+</tr>
+<tr>
+	<td class="name"><a href="class-One.FactoryGallery.html">FactoryGallery</a></td>
+	<td>FactoryGallery Class</td>
+</tr>
+<tr>
+	<td class="name"><a href="class-One.FactoryPhoto.html">FactoryPhoto</a></td>
+	<td>FactoryPhoto Class</td>
+</tr>
+<tr>
+	<td class="name"><a href="class-One.FactoryUri.html">FactoryUri</a></td>
+	<td>FactoryUri Class</td>
+</tr>
+<tr>
+	<td class="name"><a href="class-one.FormatMapping.html">FormatMapping</a></td>
+	<td></td>
 </tr>
 <tr>
 	<td class="name"><a href="class-One.Publisher.html">Publisher</a></td>
@@ -139,22 +187,51 @@ main class to be used that interfacing to the API</p></td>
 <table class="summary" id="functions">
 <caption>Functions summary</caption>
 <tr>
-	<td class="name"><a href="function-One.createuriFromServer.html">createuriFromServer</a></td>
+	<td class="name"><a href="function-One.copy_to_string.html">copy_to_string</a></td>
+	<td><p>Copy the contents of a stream into a string until the given number of
+bytes have been read.</p></td>
+</tr>
+<tr>
+	<td class="name"><a href="function-One.createArticleFromArray.html">createArticleFromArray</a></td>
+	<td>createArticleFromArray</td>
+</tr>
+<tr>
+	<td class="name"><a href="function-One.createAttachmentGallery.html">createAttachmentGallery</a></td>
+	<td>createAttachmentGallery</td>
+</tr>
+<tr>
+	<td class="name"><a href="function-One.createAttachmentPhoto.html">createAttachmentPhoto</a></td>
+	<td>createAttachmentPhoto</td>
+</tr>
+<tr>
+	<td class="name"><a href="function-One.createStream.html">createStream</a></td>
+	<td>Helper to create stream based on resource and options</td>
+</tr>
+<tr>
+	<td class="name"><a href="function-One.createUriFromServer.html">createUriFromServer</a></td>
 	<td>createuriFromServer</td>
 </tr>
 <tr>
 	<td class="name"><a href="function-One.createUriFromString.html">createUriFromString</a></td>
 	<td>createUriFromString</td>
 </tr>
+<tr>
+	<td class="name"><a href="function-One.openStream.html">openStream</a></td>
+	<td>Open Stream when resource is a scalar type</td>
+</tr>
+<tr>
+	<td class="name"><a href="function-One.stream_for.html">stream_for</a></td>
+	<td>Create a new stream based on the input type.</td>
+</tr>
 </table>
 </div>
 
 	<div id="footer">
-		 API documentation generated by <a href="http://apigen.org">ApiGen</a>
+		KLY ONE APP PHP SDK API documentation generated by <a href="http://apigen.org">ApiGen</a>
 	</div>
 </div>
 </div>
-<script src="resources/combined.js?030bbb3c5f324fb6b91da70274261e670131ae33"></script>
-<script src="elementlist.js?bca26adfff8a4cb468f8d30409966add9256d180"></script>
+<script src="resources/combined.js?96df333659c06c6bf145472d22cd5f3c79d19321"></script>
+<script src="elementlist.js?8589e5741455ec43578d1811f5d542111764c7b6"></script>
 </body>
 </html>

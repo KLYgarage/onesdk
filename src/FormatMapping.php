@@ -3,9 +3,9 @@
 namespace one;
 
 use One\Model\Article;
-use one\Model\Gallery;
+use One\Model\Gallery;
 use One\Model\Page;
-use one\Model\Photo;
+use One\Model\Photo;
 use One\Model\Video;
 
 class FormatMapping
@@ -21,11 +21,8 @@ class FormatMapping
      * JSON field constants
      */
     const JSON_PHOTO_FIELD = "photos";
-
     const JSON_PAGE_FIELD = "pages";
-
     const JSON_GALLERY_FIELD = "galleries";
-
     const JSON_VIDEO_FIELD = "videos";
 
     /**

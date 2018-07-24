@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 
-	<title>Class One\Publisher</title>
+	<title>Class One\Publisher | KLY ONE APP PHP SDK</title>
 
 	<link rel="stylesheet" href="resources/style.css?e99947befd7bf673c6b43ff75e9e0f170c88a60e">
 
@@ -25,11 +25,21 @@
 
 						<ul>
 				<li>
+					<a href="namespace-One.Http.html">
+						Http					</a>
+
+						</li>
+				<li>
 					<a href="namespace-One.Model.html">
 						Model					</a>
 
 						</li>
 							</ul></li>
+				<li>
+					<a href="namespace-PHP.html">
+						PHP					</a>
+
+						</li>
 			</ul>
 		</div>
 
@@ -41,6 +51,11 @@
 			<ul>
 				<li><a href="class-One.Collection.html">Collection</a></li>
 				<li><a href="class-One.DummyLogger.html">DummyLogger</a></li>
+				<li><a href="class-One.FactoryArticle.html">FactoryArticle</a></li>
+				<li><a href="class-One.FactoryGallery.html">FactoryGallery</a></li>
+				<li><a href="class-One.FactoryPhoto.html">FactoryPhoto</a></li>
+				<li><a href="class-One.FactoryUri.html">FactoryUri</a></li>
+				<li><a href="class-one.FormatMapping.html">FormatMapping</a></li>
 				<li class="active"><a href="class-One.Publisher.html">Publisher</a></li>
 				<li><a href="class-One.Uri.html">Uri</a></li>
 			</ul>
@@ -56,8 +71,15 @@
 
 			<h3>Functions</h3>
 			<ul>
-				<li><a href="function-One.createuriFromServer.html">createuriFromServer</a></li>
+				<li><a href="function-One.copy_to_string.html">copy_to_string</a></li>
+				<li><a href="function-One.createArticleFromArray.html">createArticleFromArray</a></li>
+				<li><a href="function-One.createAttachmentGallery.html">createAttachmentGallery</a></li>
+				<li><a href="function-One.createAttachmentPhoto.html">createAttachmentPhoto</a></li>
+				<li><a href="function-One.createStream.html">createStream</a></li>
+				<li><a href="function-One.createUriFromServer.html">createUriFromServer</a></li>
 				<li><a href="function-One.createUriFromString.html">createUriFromString</a></li>
+				<li><a href="function-One.openStream.html">openStream</a></li>
+				<li><a href="function-One.stream_for.html">stream_for</a></li>
 			</ul>
 		</div>
 	</div>
@@ -85,6 +107,9 @@
 <span>Class</span>			</li>
 		</ul>
 		<ul>
+			<li>
+				<a href="tree.html" title="Tree view of classes, interfaces, traits and exceptions"><span>Tree</span></a>
+			</li>
 		</ul>
 		<ul>
 		</ul>
@@ -122,7 +147,7 @@ main class to be used that interfacing to the API</p>
 		<b>Namespace:</b> <a href="namespace-One.html">One</a><br>
 		
 
-			<b>Located at</b> <a href="source-class-One.Publisher.html#14-516" title="Go to source code">Publisher.php</a>
+			<b>Located at</b> <a href="source-class-One.Publisher.html#14-518" title="Go to source code">Publisher.php</a>
 		<br>
 	</div>
 
@@ -142,7 +167,7 @@ main class to be used that interfacing to the API</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#___construct">#</a>
-		<code><a href="source-class-One.Publisher.html#71-91" title="Go to source code">__construct</a>( <span>string <var>$clientId</var></span>, <span>string <var>$clientSecret</var></span>, <span>array <var>$options</var> = <span class="php-keyword1">array</span>()</span> )</code>
+		<code><a href="source-class-One.Publisher.html#71-92" title="Go to source code">__construct</a>( <span>string <var>$clientId</var></span>, <span>string <var>$clientSecret</var></span>, <span>array <var>$options</var> = <span class="php-keyword1">array</span>()</span> )</code>
 
 		<div class="description short">
 			<p>constructor</p>
@@ -181,7 +206,7 @@ main class to be used that interfacing to the API</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_recycleToken">#</a>
-		<code><a href="source-class-One.Publisher.html#93-102" title="Go to source code">recycleToken</a>( <span>Closure <var>$tokenProducer</var></span> )</code>
+		<code><a href="source-class-One.Publisher.html#94-103" title="Go to source code">recycleToken</a>( <span><code><a href="class-Closure.html">Closure</a></code> <var>$tokenProducer</var></span> )</code>
 
 		<div class="description short">
 			<p>recycleToken from callback. If use external token storage could leveraged on this</p>
@@ -220,7 +245,7 @@ main class to be used that interfacing to the API</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_submitArticle">#</a>
-		<code><a href="source-class-One.Publisher.html#312-343" title="Go to source code">submitArticle</a>( <span><code><a href="class-One.Model.Article.html">One\Model\Article</a></code> <var>$article</var></span> )</code>
+		<code><a href="source-class-One.Publisher.html#314-345" title="Go to source code">submitArticle</a>( <span><code><a href="class-One.Model.Article.html">One\Model\Article</a></code> <var>$article</var></span> )</code>
 
 		<div class="description short">
 			<p>submitting article here, return new Object cloned from original</p>
@@ -259,7 +284,7 @@ main class to be used that interfacing to the API</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_submitAttachment">#</a>
-		<code><a href="source-class-One.Publisher.html#345-364" title="Go to source code">submitAttachment</a>( <span>string <var>$idArticle</var></span>, <span><code><a href="class-One.Model.Model.html">One\Model\Model</a></code> <var>$attachment</var></span>, <span>string <var>$field</var></span> )</code>
+		<code><a href="source-class-One.Publisher.html#347-366" title="Go to source code">submitAttachment</a>( <span>string <var>$idArticle</var></span>, <span><code><a href="class-One.Model.Model.html">One\Model\Model</a></code> <var>$attachment</var></span>, <span>string <var>$field</var></span> )</code>
 
 		<div class="description short">
 			<p>submit each attachment of an article here</p>
@@ -302,7 +327,7 @@ main class to be used that interfacing to the API</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_getArticle">#</a>
-		<code><a href="source-class-One.Publisher.html#366-377" title="Go to source code">getArticle</a>( <span>string <var>$idArticle</var></span> )</code>
+		<code><a href="source-class-One.Publisher.html#368-379" title="Go to source code">getArticle</a>( <span>string <var>$idArticle</var></span> )</code>
 
 		<div class="description short">
 			<p>get article from rest API</p>
@@ -341,7 +366,7 @@ main class to be used that interfacing to the API</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_listArticle">#</a>
-		<code><a href="source-class-One.Publisher.html#379-389" title="Go to source code">listArticle</a>( )</code>
+		<code><a href="source-class-One.Publisher.html#381-391" title="Go to source code">listArticle</a>( )</code>
 
 		<div class="description short">
 			<p>get list article by publisher</p>
@@ -375,7 +400,7 @@ main class to be used that interfacing to the API</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_deleteArticle">#</a>
-		<code><a href="source-class-One.Publisher.html#391-420" title="Go to source code">deleteArticle</a>( <span>string <var>$idArticle</var></span> )</code>
+		<code><a href="source-class-One.Publisher.html#393-422" title="Go to source code">deleteArticle</a>( <span>string <var>$idArticle</var></span> )</code>
 
 		<div class="description short">
 			<p>delete article based on id</p>
@@ -414,7 +439,7 @@ main class to be used that interfacing to the API</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_deleteAttachment">#</a>
-		<code><a href="source-class-One.Publisher.html#422-435" title="Go to source code">deleteAttachment</a>( <span>string <var>$idArticle</var></span>, <span>string <var>$field</var></span>, <span>string <var>$order</var></span> )</code>
+		<code><a href="source-class-One.Publisher.html#424-437" title="Go to source code">deleteAttachment</a>( <span>string <var>$idArticle</var></span>, <span>string <var>$field</var></span>, <span>string <var>$order</var></span> )</code>
 
 		<div class="description short">
 			<p>delete attachment of an article</p>
@@ -457,7 +482,7 @@ main class to be used that interfacing to the API</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get">#</a>
-		<code><a href="source-class-One.Publisher.html#446-463" title="Go to source code">get</a>( <span>string <var>$path</var></span>, <span><code><a href="class-One.Collection.html">One\Collection</a></code>|array <var>$header</var> = <span class="php-keyword1">array</span>()</span>, <span>array <var>$options</var> = <span class="php-keyword1">array</span>()</span> )</code>
+		<code><a href="source-class-One.Publisher.html#448-465" title="Go to source code">get</a>( <span>string <var>$path</var></span>, <span>array <var>$header</var> = <span class="php-keyword1">array</span>()</span>, <span>array <var>$options</var> = <span class="php-keyword1">array</span>()</span> )</code>
 
 		<div class="description short">
 			<p>get proxy</p>
@@ -500,7 +525,7 @@ main class to be used that interfacing to the API</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_post">#</a>
-		<code><a href="source-class-One.Publisher.html#465-487" title="Go to source code">post</a>( <span>string <var>$path</var></span>, <span><code><a href="class-One.Collection.html">One\Collection</a></code>|array <var>$body</var></span>, <span><code><a href="class-One.Collection.html">One\Collection</a></code>|array <var>$header</var> = <span class="php-keyword1">array</span>()</span>, <span>array <var>$options</var> = <span class="php-keyword1">array</span>()</span> )</code>
+		<code><a href="source-class-One.Publisher.html#467-489" title="Go to source code">post</a>( <span>string <var>$path</var></span>, <span><code><a href="class-One.Collection.html">One\Collection</a></code>|array <var>$body</var></span>, <span>array <var>$header</var> = <span class="php-keyword1">array</span>()</span>, <span>array <var>$options</var> = <span class="php-keyword1">array</span>()</span> )</code>
 
 		<div class="description short">
 			<p>post proxy</p>
@@ -545,7 +570,7 @@ main class to be used that interfacing to the API</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_delete">#</a>
-		<code><a href="source-class-One.Publisher.html#489-507" title="Go to source code">delete</a>( <span>string <var>$path</var></span>, <span><code><a href="class-One.Collection.html">One\Collection</a></code>|array <var>$body</var> = <span class="php-keyword1">array</span>()</span>, <span><code><a href="class-One.Collection.html">One\Collection</a></code>|array <var>$header</var> = <span class="php-keyword1">array</span>()</span>, <span>array <var>$options</var> = <span class="php-keyword1">array</span>()</span> )</code>
+		<code><a href="source-class-One.Publisher.html#491-509" title="Go to source code">delete</a>( <span>string <var>$path</var></span>, <span><code><a href="class-One.Collection.html">One\Collection</a></code>|array <var>$body</var> = <span class="php-keyword1">array</span>()</span>, <span>array <var>$header</var> = <span class="php-keyword1">array</span>()</span>, <span>array <var>$options</var> = <span class="php-keyword1">array</span>()</span> )</code>
 
 		<div class="description short">
 			<p>delete proxy</p>
@@ -590,7 +615,7 @@ main class to be used that interfacing to the API</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_setLogger">#</a>
-		<code><a href="source-class-One.Publisher.html#509-515" title="Go to source code">setLogger</a>( <span>Psr\Log\LoggerInterface <var>$logger</var></span> )</code>
+		<code><a href="source-class-One.Publisher.html#511-517" title="Go to source code">setLogger</a>( <span>Psr\Log\LoggerInterface <var>$logger</var></span> )</code>
 
 		<div class="description short">
 			
@@ -756,7 +781,7 @@ main class to be used that interfacing to the API</p>
 </div>
 
 	<div id="footer">
-		 API documentation generated by <a href="http://apigen.org">ApiGen</a>
+		KLY ONE APP PHP SDK API documentation generated by <a href="http://apigen.org">ApiGen</a>
 	</div>
 </div>
 </div>

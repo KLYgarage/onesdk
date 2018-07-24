@@ -32,13 +32,10 @@ class PublisherTest extends \PHPUnit\Framework\TestCase
     public function testAuthentication()
     {
         $jsonResponse = $this->publisher->listArticle();
-
         $data = json_decode($jsonResponse, true);
 
         $this->assertArrayNotHasKey('message', $data);
-
         $this->assertArrayHasKey('data', $data);
-
         $this->assertArrayHasKey('meta', $data);
     }
 
@@ -57,13 +54,10 @@ class PublisherTest extends \PHPUnit\Framework\TestCase
         $this->publisher->recycleToken($tokenProducer);
 
         $jsonResponse = $this->publisher->listArticle();
-
         $data = json_decode($jsonResponse, true);
 
         $this->assertArrayNotHasKey('message', $data);
-
         $this->assertArrayHasKey('data', $data);
-
         $this->assertArrayHasKey('meta', $data);
     }
 
@@ -183,7 +177,7 @@ class PublisherTest extends \PHPUnit\Framework\TestCase
                 case 1:
                     $ratio = Photo::RATIO_COVER;
                     break;
-                
+
                 case 2:
                     $ratio = Photo::RATIO_VERTICAL;
                     break;
@@ -423,7 +417,7 @@ class PublisherTest extends \PHPUnit\Framework\TestCase
 
         $article->attachVideo($video);
         $article->attachVideo($video2);
-        
+
         $articleCreated = $this->publisher->submitArticle($article);
         $articleCreatedId = $articleCreated->getId();
 

@@ -1,0 +1,28 @@
+<phpunit bootstrap="./test/bootstrap.php">
+  <testsuites>
+    <testsuite name="article">
+      <file>./test/Unit/ArticleTest.php</file>
+    </testsuite>
+     <testsuite name="collection">
+      <directory>./test/Unit/CollectionTest.php</directory>
+    </testsuite>
+    <testsuite name="format_mapping">
+      <file>./test/Unit/FormatMappingTest.php</file>
+    </testsuite>
+    <testsuite name="model">
+      <file>./test/Unit/ModelTest.php</file>
+    </testsuite>
+    <testsuite name="publisher">
+      <file>./test/Unit/PublisherTest.php</file>
+    </testsuite>
+    <testsuite name="uri">
+      <file>./test/Unit/UriTest.php</file>
+    </testsuite>
+    <testsuite name="response">
+      <file>./test/Unit/ResponseTest.php</file>
+    </testsuite>
+    <testsuite name="request">
+      <file>./test/Unit/RequestTest.php</file>
+    </testsuite>
+  </testsuites>
+</phpunit>

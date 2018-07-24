@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 
-	<title>Class One\Collection</title>
+	<title>Class One\Collection | KLY ONE APP PHP SDK</title>
 
 	<link rel="stylesheet" href="resources/style.css?e99947befd7bf673c6b43ff75e9e0f170c88a60e">
 
@@ -25,11 +25,21 @@
 
 						<ul>
 				<li>
+					<a href="namespace-One.Http.html">
+						Http					</a>
+
+						</li>
+				<li>
 					<a href="namespace-One.Model.html">
 						Model					</a>
 
 						</li>
 							</ul></li>
+				<li>
+					<a href="namespace-PHP.html">
+						PHP					</a>
+
+						</li>
 			</ul>
 		</div>
 
@@ -41,6 +51,11 @@
 			<ul>
 				<li class="active"><a href="class-One.Collection.html">Collection</a></li>
 				<li><a href="class-One.DummyLogger.html">DummyLogger</a></li>
+				<li><a href="class-One.FactoryArticle.html">FactoryArticle</a></li>
+				<li><a href="class-One.FactoryGallery.html">FactoryGallery</a></li>
+				<li><a href="class-One.FactoryPhoto.html">FactoryPhoto</a></li>
+				<li><a href="class-One.FactoryUri.html">FactoryUri</a></li>
+				<li><a href="class-one.FormatMapping.html">FormatMapping</a></li>
 				<li><a href="class-One.Publisher.html">Publisher</a></li>
 				<li><a href="class-One.Uri.html">Uri</a></li>
 			</ul>
@@ -56,8 +71,15 @@
 
 			<h3>Functions</h3>
 			<ul>
-				<li><a href="function-One.createuriFromServer.html">createuriFromServer</a></li>
+				<li><a href="function-One.copy_to_string.html">copy_to_string</a></li>
+				<li><a href="function-One.createArticleFromArray.html">createArticleFromArray</a></li>
+				<li><a href="function-One.createAttachmentGallery.html">createAttachmentGallery</a></li>
+				<li><a href="function-One.createAttachmentPhoto.html">createAttachmentPhoto</a></li>
+				<li><a href="function-One.createStream.html">createStream</a></li>
+				<li><a href="function-One.createUriFromServer.html">createUriFromServer</a></li>
 				<li><a href="function-One.createUriFromString.html">createUriFromString</a></li>
+				<li><a href="function-One.openStream.html">openStream</a></li>
+				<li><a href="function-One.stream_for.html">stream_for</a></li>
 			</ul>
 		</div>
 	</div>
@@ -85,6 +107,9 @@
 <span>Class</span>			</li>
 		</ul>
 		<ul>
+			<li>
+				<a href="tree.html" title="Tree view of classes, interfaces, traits and exceptions"><span>Tree</span></a>
+			</li>
 		</ul>
 		<ul>
 		</ul>
@@ -102,11 +127,11 @@
 		<dd style="padding-left:0px">
 <b><span>One\Collection</span></b>			
 			 implements 
-<span>ArrayAccess</span>, 
+				<a href="class-ArrayAccess.html"><span>ArrayAccess</span></a>, 
 			
-<span>IteratorAggregate</span>, 
+				<a href="class-IteratorAggregate.html"><span>IteratorAggregate</span></a>, 
 			
-<span>Countable</span>, 
+				<a href="class-Countable.html"><span>Countable</span></a>, 
 			
 				<a href="class-One.ToArrayInterface.html"><span>One\ToArrayInterface</span></a>, 
 			
@@ -203,7 +228,7 @@
 
 
 				<h4>Implementation of</h4>
-				<div class="list"><code>ArrayAccess::offsetExists()</code></div>
+				<div class="list"><code><a href="class-ArrayAccess.html#_offsetExists">ArrayAccess::offsetExists()</a></code></div>
 		</div>
 		</div></td>
 	</tr>
@@ -238,7 +263,7 @@
 
 
 				<h4>Implementation of</h4>
-				<div class="list"><code>ArrayAccess::offsetGet()</code></div>
+				<div class="list"><code><a href="class-ArrayAccess.html#_offsetGet">ArrayAccess::offsetGet()</a></code></div>
 		</div>
 		</div></td>
 	</tr>
@@ -273,7 +298,7 @@
 
 
 				<h4>Implementation of</h4>
-				<div class="list"><code>ArrayAccess::offsetSet()</code></div>
+				<div class="list"><code><a href="class-ArrayAccess.html#_offsetSet">ArrayAccess::offsetSet()</a></code></div>
 		</div>
 		</div></td>
 	</tr>
@@ -308,7 +333,7 @@
 
 
 				<h4>Implementation of</h4>
-				<div class="list"><code>ArrayAccess::offsetUnset()</code></div>
+				<div class="list"><code><a href="class-ArrayAccess.html#_offsetUnset">ArrayAccess::offsetUnset()</a></code></div>
 		</div>
 		</div></td>
 	</tr>
@@ -343,7 +368,7 @@
 
 
 				<h4>Implementation of</h4>
-				<div class="list"><code>IteratorAggregate::getIterator()</code></div>
+				<div class="list"><code><a href="class-IteratorAggregate.html#_getIterator">IteratorAggregate::getIterator()</a></code></div>
 		</div>
 		</div></td>
 	</tr>
@@ -378,7 +403,7 @@
 
 
 				<h4>Implementation of</h4>
-				<div class="list"><code>Countable::count()</code></div>
+				<div class="list"><code><a href="class-Countable.html#_count">Countable::count()</a></code></div>
 		</div>
 		</div></td>
 	</tr>
@@ -637,7 +662,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_map">#</a>
-		<code><a href="source-class-One.Collection.html#219-236" title="Go to source code">map</a>( <span>Closure <var>$callback</var></span>, <span>array <var>$context</var> = <span class="php-keyword1">array</span>()</span> )</code>
+		<code><a href="source-class-One.Collection.html#219-236" title="Go to source code">map</a>( <span><code><a href="class-Closure.html">Closure</a></code> <var>$callback</var></span>, <span>array <var>$context</var> = <span class="php-keyword1">array</span>()</span> )</code>
 
 		<div class="description short">
 			<p>map each props item against the callback and return the resulting object
@@ -680,7 +705,7 @@ IMMUTABLE</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_filter">#</a>
-		<code><a href="source-class-One.Collection.html#238-256" title="Go to source code">filter</a>( <span>Closure <var>$callback</var></span> )</code>
+		<code><a href="source-class-One.Collection.html#238-256" title="Go to source code">filter</a>( <span><code><a href="class-Closure.html">Closure</a></code> <var>$callback</var></span> )</code>
 
 		<div class="description short">
 			<p>filter the props againt rule on callback
@@ -848,7 +873,7 @@ IMMUTABLE</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#m_map">#</a>
-		<code><a href="source-class-One.Collection.html#11" title="Go to source code">map</a>( <span>Closure <var>$callback</var></span>, <span>array <var>$context</var></span> )</code>
+		<code><a href="source-class-One.Collection.html#11" title="Go to source code">map</a>( <span><code><a href="class-Closure.html">Closure</a></code> <var>$callback</var></span>, <span>array <var>$context</var></span> )</code>
 
 		<div class="description short">
 			
@@ -941,7 +966,7 @@ IMMUTABLE</p>
 </div>
 
 	<div id="footer">
-		 API documentation generated by <a href="http://apigen.org">ApiGen</a>
+		KLY ONE APP PHP SDK API documentation generated by <a href="http://apigen.org">ApiGen</a>
 	</div>
 </div>
 </div>

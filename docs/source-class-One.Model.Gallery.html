@@ -4,7 +4,7 @@
 	<meta charset="utf-8">
 	<meta name="robots" content="noindex">
 
-	<title>File Model/Gallery.php</title>
+	<title>File Model/Gallery.php | KLY ONE APP PHP SDK</title>
 
 	<link rel="stylesheet" href="resources/style.css?e99947befd7bf673c6b43ff75e9e0f170c88a60e">
 
@@ -26,11 +26,21 @@
 
 						<ul>
 				<li>
+					<a href="namespace-One.Http.html">
+						Http					</a>
+
+						</li>
+				<li>
 					<a href="namespace-One.Model.html">
 						Model					</a>
 
 						</li>
 							</ul></li>
+				<li>
+					<a href="namespace-PHP.html">
+						PHP					</a>
+
+						</li>
 			</ul>
 		</div>
 
@@ -40,8 +50,21 @@
 		<div id="elements">
 			<h3>Classes</h3>
 			<ul>
+				<li><a href="class-Closure.html">Closure</a></li>
 				<li><a href="class-One.Collection.html">One\Collection</a></li>
 				<li><a href="class-One.DummyLogger.html">One\DummyLogger</a></li>
+				<li><a href="class-One.FactoryArticle.html">One\FactoryArticle</a></li>
+				<li><a href="class-One.FactoryGallery.html">One\FactoryGallery</a></li>
+				<li><a href="class-One.FactoryPhoto.html">One\FactoryPhoto</a></li>
+				<li><a href="class-One.FactoryUri.html">One\FactoryUri</a></li>
+				<li><a href="class-one.FormatMapping.html">one\FormatMapping</a></li>
+				<li><a href="class-One.Http.BufferStream.html">One\Http\BufferStream</a></li>
+				<li><a href="class-One.Http.FnStream.html">One\Http\FnStream</a></li>
+				<li><a href="class-One.Http.Message.html">One\Http\Message</a></li>
+				<li><a href="class-One.Http.PumpStream.html">One\Http\PumpStream</a></li>
+				<li><a href="class-One.Http.Request.html">One\Http\Request</a></li>
+				<li><a href="class-One.Http.Response.html">One\Http\Response</a></li>
+				<li><a href="class-One.Http.Stream.html">One\Http\Stream</a></li>
 				<li><a href="class-One.Model.Article.html">One\Model\Article</a></li>
 				<li><a href="class-One.Model.Gallery.html">One\Model\Gallery</a></li>
 				<li><a href="class-One.Model.Model.html">One\Model\Model</a></li>
@@ -54,17 +77,39 @@
 
 			<h3>Interfaces</h3>
 			<ul>
+				<li><a href="class-ArrayAccess.html">ArrayAccess</a></li>
+				<li><a href="class-Countable.html">Countable</a></li>
+				<li><a href="class-DateTimeInterface.html">DateTimeInterface</a></li>
+				<li><a href="class-IteratorAggregate.html">IteratorAggregate</a></li>
 				<li><a href="class-One.JsonInterface.html">One\JsonInterface</a></li>
 				<li><a href="class-One.ToArrayInterface.html">One\ToArrayInterface</a></li>
+				<li><a href="class-Throwable.html">Throwable</a></li>
+				<li><a href="class-Traversable.html">Traversable</a></li>
 			</ul>
 
 
+			<h3>Exceptions</h3>
+			<ul>
+				<li><a href="class-BadFunctionCallException.html">BadFunctionCallException</a></li>
+				<li><a href="class-BadMethodCallException.html">BadMethodCallException</a></li>
+				<li><a href="class-Exception.html">Exception</a></li>
+				<li><a href="class-InvalidArgumentException.html">InvalidArgumentException</a></li>
+				<li><a href="class-LogicException.html">LogicException</a></li>
+				<li><a href="class-RuntimeException.html">RuntimeException</a></li>
+			</ul>
 
 
 			<h3>Functions</h3>
 			<ul>
-				<li><a href="function-One.createuriFromServer.html">One\createuriFromServer</a></li>
+				<li><a href="function-One.copy_to_string.html">One\copy_to_string</a></li>
+				<li><a href="function-One.createArticleFromArray.html">One\createArticleFromArray</a></li>
+				<li><a href="function-One.createAttachmentGallery.html">One\createAttachmentGallery</a></li>
+				<li><a href="function-One.createAttachmentPhoto.html">One\createAttachmentPhoto</a></li>
+				<li><a href="function-One.createStream.html">One\createStream</a></li>
+				<li><a href="function-One.createUriFromServer.html">One\createUriFromServer</a></li>
 				<li><a href="function-One.createUriFromString.html">One\createUriFromString</a></li>
+				<li><a href="function-One.openStream.html">One\openStream</a></li>
+				<li><a href="function-One.stream_for.html">One\stream_for</a></li>
 			</ul>
 		</div>
 	</div>
@@ -91,6 +136,9 @@
 <span>Class</span>			</li>
 		</ul>
 		<ul>
+			<li>
+				<a href="tree.html" title="Tree view of classes, interfaces, traits and exceptions"><span>Tree</span></a>
+			</li>
 		</ul>
 		<ul>
 		</ul>
@@ -131,41 +179,44 @@
 </span><span id="33" class="l"><a href="#33">33: </a>            <span class="php-var">$lead</span> = <span class="php-var">$this</span>-&gt;createLeadFromBody(<span class="php-var">$body</span>);
 </span><span id="34" class="l"><a href="#34">34: </a>        }
 </span><span id="35" class="l"><a href="#35">35: </a>
-</span><span id="36" class="l"><a href="#36">36: </a>        <span class="php-var">$this</span>-&gt;collection = <span class="php-keyword1">new</span> Collection(
-</span><span id="37" class="l"><a href="#37">37: </a>            <span class="php-keyword1">array</span>(
-</span><span id="38" class="l"><a href="#38">38: </a>                <span class="php-quote">'lead'</span> =&gt;  <span class="php-var">$lead</span>,
-</span><span id="39" class="l"><a href="#39">39: </a>                <span class="php-quote">'body'</span> =&gt; <span class="php-var">$body</span>,
-</span><span id="40" class="l"><a href="#40">40: </a>                <span class="php-quote">'source'</span> =&gt; <span class="php-var">$source</span>,
-</span><span id="41" class="l"><a href="#41">41: </a>                <span class="php-quote">'order'</span> =&gt; <span class="php-var">$order</span>,
-</span><span id="42" class="l"><a href="#42">42: </a>                <span class="php-quote">'photo'</span> =&gt; <span class="php-var">$photo</span>
-</span><span id="43" class="l"><a href="#43">43: </a>            )
-</span><span id="44" class="l"><a href="#44">44: </a>        );
-</span><span id="45" class="l"><a href="#45">45: </a>    }
-</span><span id="46" class="l"><a href="#46">46: </a>
-</span><span id="47" class="l"><a href="#47">47: </a>    <span class="php-comment">/**
-</span></span><span id="48" class="l"><a href="#48">48: </a><span class="php-comment">     * source taken from photo url if not available
-</span></span><span id="49" class="l"><a href="#49">49: </a><span class="php-comment">     *
-</span></span><span id="50" class="l"><a href="#50">50: </a><span class="php-comment">     * @param \Psr\Http\Message\UriInterface|string $source
-</span></span><span id="51" class="l"><a href="#51">51: </a><span class="php-comment">     * @param \Psr\Http\Message\UriInterface|string $photo
-</span></span><span id="52" class="l"><a href="#52">52: </a><span class="php-comment">     * @return string
-</span></span><span id="53" class="l"><a href="#53">53: </a><span class="php-comment">     */</span>
-</span><span id="54" class="l"><a href="#54">54: </a>    <span class="php-keyword1">private</span> <span class="php-keyword1">function</span> fillSource(<span class="php-var">$source</span>, <span class="php-var">$photo</span>)
-</span><span id="55" class="l"><a href="#55">55: </a>    {
-</span><span id="56" class="l"><a href="#56">56: </a>        <span class="php-keyword1">if</span> (!<span class="php-keyword1">empty</span>(<span class="php-var">$source</span>)) {
-</span><span id="57" class="l"><a href="#57">57: </a>            <span class="php-keyword1">return</span> <span class="php-var">$this</span>-&gt;filterUriInstance(<span class="php-var">$source</span>);
-</span><span id="58" class="l"><a href="#58">58: </a>        }
-</span><span id="59" class="l"><a href="#59">59: </a>
-</span><span id="60" class="l"><a href="#60">60: </a>        <span class="php-keyword1">return</span> (string) <span class="php-var">$photo</span>;
-</span><span id="61" class="l"><a href="#61">61: </a>    }
-</span><span id="62" class="l"><a href="#62">62: </a>}
-</span><span id="63" class="l"><a href="#63">63: </a></span></code></pre>
+</span><span id="36" class="l"><a href="#36">36: </a>        <span class="php-var">$lead</span> = <span class="php-var">$this</span>-&gt;filterStringInstance(<span class="php-var">$lead</span>);
+</span><span id="37" class="l"><a href="#37">37: </a>        <span class="php-var">$body</span> = <span class="php-var">$this</span>-&gt;filterStringInstance(<span class="php-var">$body</span>);
+</span><span id="38" class="l"><a href="#38">38: </a>
+</span><span id="39" class="l"><a href="#39">39: </a>        <span class="php-var">$this</span>-&gt;collection = <span class="php-keyword1">new</span> Collection(
+</span><span id="40" class="l"><a href="#40">40: </a>            <span class="php-keyword1">array</span>(
+</span><span id="41" class="l"><a href="#41">41: </a>                <span class="php-quote">'lead'</span> =&gt;  <span class="php-var">$lead</span>,
+</span><span id="42" class="l"><a href="#42">42: </a>                <span class="php-quote">'body'</span> =&gt; <span class="php-var">$body</span>,
+</span><span id="43" class="l"><a href="#43">43: </a>                <span class="php-quote">'source'</span> =&gt; <span class="php-var">$source</span>,
+</span><span id="44" class="l"><a href="#44">44: </a>                <span class="php-quote">'order'</span> =&gt; <span class="php-var">$order</span>,
+</span><span id="45" class="l"><a href="#45">45: </a>                <span class="php-quote">'photo'</span> =&gt; <span class="php-var">$photo</span>
+</span><span id="46" class="l"><a href="#46">46: </a>            )
+</span><span id="47" class="l"><a href="#47">47: </a>        );
+</span><span id="48" class="l"><a href="#48">48: </a>    }
+</span><span id="49" class="l"><a href="#49">49: </a>
+</span><span id="50" class="l"><a href="#50">50: </a>    <span class="php-comment">/**
+</span></span><span id="51" class="l"><a href="#51">51: </a><span class="php-comment">     * source taken from photo url if not available
+</span></span><span id="52" class="l"><a href="#52">52: </a><span class="php-comment">     *
+</span></span><span id="53" class="l"><a href="#53">53: </a><span class="php-comment">     * @param \Psr\Http\Message\UriInterface|string $source
+</span></span><span id="54" class="l"><a href="#54">54: </a><span class="php-comment">     * @param \Psr\Http\Message\UriInterface|string $photo
+</span></span><span id="55" class="l"><a href="#55">55: </a><span class="php-comment">     * @return string
+</span></span><span id="56" class="l"><a href="#56">56: </a><span class="php-comment">     */</span>
+</span><span id="57" class="l"><a href="#57">57: </a>    <span class="php-keyword1">private</span> <span class="php-keyword1">function</span> fillSource(<span class="php-var">$source</span>, <span class="php-var">$photo</span>)
+</span><span id="58" class="l"><a href="#58">58: </a>    {
+</span><span id="59" class="l"><a href="#59">59: </a>        <span class="php-keyword1">if</span> (!<span class="php-keyword1">empty</span>(<span class="php-var">$source</span>)) {
+</span><span id="60" class="l"><a href="#60">60: </a>            <span class="php-keyword1">return</span> <span class="php-var">$this</span>-&gt;filterUriInstance(<span class="php-var">$source</span>);
+</span><span id="61" class="l"><a href="#61">61: </a>        }
+</span><span id="62" class="l"><a href="#62">62: </a>
+</span><span id="63" class="l"><a href="#63">63: </a>        <span class="php-keyword1">return</span> (string) <span class="php-var">$photo</span>;
+</span><span id="64" class="l"><a href="#64">64: </a>    }
+</span><span id="65" class="l"><a href="#65">65: </a>}
+</span><span id="66" class="l"><a href="#66">66: </a></span></code></pre>
 
 	<div id="footer">
-		 API documentation generated by <a href="http://apigen.org">ApiGen</a>
+		KLY ONE APP PHP SDK API documentation generated by <a href="http://apigen.org">ApiGen</a>
 	</div>
 </div>
 </div>
-<script src="resources/combined.js?030bbb3c5f324fb6b91da70274261e670131ae33"></script>
-<script src="elementlist.js?bca26adfff8a4cb468f8d30409966add9256d180"></script>
+<script src="resources/combined.js?96df333659c06c6bf145472d22cd5f3c79d19321"></script>
+<script src="elementlist.js?8589e5741455ec43578d1811f5d542111764c7b6"></script>
 </body>
 </html>

@@ -140,7 +140,7 @@ class Publisher implements LoggerAwareInterface
      *
      * @param string $method
      * @param string $path
-     * @param \One\Collection|array $header
+     * @param array $header
      * @param \One\Collection|array $body
      * @param array $options
      * @return string
@@ -329,7 +329,7 @@ class Publisher implements LoggerAwareInterface
         $responseArticle = json_decode($responseArticle, true);
         $article->setId($responseArticle['data']['id']);
 
-        foreach (Article::getPossibleAttachment() as $field) {
+        foreach ($article->getPossibleAttachment() as $field) {
             if ($article->hasAttachment($field)) {
                 foreach ($article->getAttachmentByField($field) as $attachment) {
                     $this->submitAttachment(
@@ -449,7 +449,7 @@ class Publisher implements LoggerAwareInterface
      * get proxy
      *
      * @param string $path
-     * @param \One\Collection|array $header
+     * @param array $header
      * @param array $options
      * @return string
      */
@@ -469,7 +469,7 @@ class Publisher implements LoggerAwareInterface
      *
      * @param string $path
      * @param \One\Collection|array $body
-     * @param \One\Collection|array $header
+     * @param array $header
      * @param array $options
      * @return string
      */
@@ -493,7 +493,7 @@ class Publisher implements LoggerAwareInterface
      *
      * @param string $path
      * @param \One\Collection|array $body
-     * @param \One\Collection|array $header
+     * @param array $header
      * @param array $options
      * @return string
      */

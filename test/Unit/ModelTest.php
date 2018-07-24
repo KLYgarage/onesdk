@@ -3,7 +3,7 @@
 namespace One\Test\Unit;
 
 use One\Collection;
-use one\Model\Model;
+use One\Model\Model;
 
 class ModelTest extends \PHPUnit\Framework\TestCase
 {
