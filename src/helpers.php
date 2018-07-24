@@ -100,7 +100,6 @@ function stream_for($resource = '', array $options = [])
     if (is_scalar($resource)) {
         return openStream($resource, $options);
     }
-
     return createStream($resource, $options);
 }
 
@@ -165,7 +164,6 @@ function copy_to_string(StreamInterface $stream, $maxLen = -1)
         }
         return $buffer;
     }
-
     $len = 0;
     while (!$stream->eof() && $len < $maxLen) {
         $buf = $stream->read($maxLen - $len);
@@ -178,7 +176,6 @@ function copy_to_string(StreamInterface $stream, $maxLen = -1)
     }
     return $buffer;
 }
-
 /**
  * Open Stream when resource is a scalar type
  * @param mixed $resource

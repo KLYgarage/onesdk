@@ -110,7 +110,6 @@ class PublisherTest extends \PHPUnit\Framework\TestCase
 
         $this->assertTrue(!empty($this->publisher->deleteArticle($resultingArticle->getId())));
     }
-
     public function testSubmitArticleWithoutAttachment()
     {
         $article = new Article(
@@ -177,7 +176,6 @@ class PublisherTest extends \PHPUnit\Framework\TestCase
                 case 1:
                     $ratio = Photo::RATIO_COVER;
                     break;
-
                 case 2:
                     $ratio = Photo::RATIO_VERTICAL;
                     break;
