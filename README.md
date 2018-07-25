@@ -21,6 +21,8 @@ To use this SDK, there are several basic steps that should be done :
 
 2. Make Publisher Object
 
+3. Publish and fetch article(s)
+
 These are some examples code to perform those steps :
 
 ### Load credentials
@@ -63,24 +65,52 @@ These are some examples code to perform those steps :
 ### Create publisher object
 
 ```$env = \loadTestEnv();
-        if (empty($env)) {
-            $this->markTestSkipped("no .env defined. Need client ID and secret to continue this test, modify .env.example to .env on test/.env to run test");
-        }
-
         $this->publisher = new Publisher(
             $env['CLIENT_ID'],
             $env['CLIENT_SECRET']
         );
 ```
 
-There are several features currently supported for ```Publisher``` :
+## Publish
 
-*Submit an article
+If you want to publish an article, there are several steps should be done :
+
+1. Create article object
+
+```$article = new Article(
+            'Eius ad odit voluptatum occaecati ducimus rerum.',
+            'Facilis occaecati sequi animi corrupti. Ex sit voluptates accusamus. Quidem eum magnam veniam odio totam aut. Nobis possimus totam quasi tempora consectetur iste. Repellendus est veritatis quibusdam dicta. Sapiente modi perferendis quidem repudiandae voluptates.',
+            'https://www.zahn.de/home/',
+            'dummy-' . rand(0, 999),
+            Article::TYPE_TEXT,
+            Article::CATEGORY_BISNIS,
+            "Hans-Friedrich Hettner B.Sc.",
+            "Dolorum expedita repellendus ipsam. Omnis cupiditate enim. Itaque alias doloribus eligendi.",
+            "distinctio",
+            "2013-05-25"
+        );
+```
+
+2. Attach if there are some attachments
+
+Article class support attachments, like photo, page. To attach, create the related attachment object. E.g : photo
+
+```$photo = new Photo(
+            'https://aubry.fr/',
+            Photo::RATIO_RECTANGLE,
+            "Rerum asperiores nulla suscipit ex. Eligendi vero optio architecto dignissimos. Omnis autem ab ad hic quaerat omnis.",
+            "Eum assumenda ab accusamus quam blanditiis."
+        );
+$article->attachPhoto($photo);
+```
+
+3. Publish an article
 
 `$this->publisher->submitArticle($article);`
 
-*List articles
+## Fetch
 
+You can fetch all the articles by calling `listArticle()` on publisher object.
 `$this->publisher->listArticle();`
 
 
