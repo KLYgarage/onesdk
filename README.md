@@ -27,7 +27,8 @@ These are some examples code to perform those steps :
 
 ### Load credentials
 
-```function loadTestEnv()
+```
+function loadTestEnv()
 {
     if (!empty(getenv('CLIENT_ID')) && !empty(getenv('CLIENT_SECRET'))) {
         return array(
@@ -64,7 +65,8 @@ These are some examples code to perform those steps :
 
 ### Create publisher object
 
-```$env = \loadTestEnv();
+```
+$env = \loadTestEnv();
         $this->publisher = new Publisher(
             $env['CLIENT_ID'],
             $env['CLIENT_SECRET']
@@ -113,6 +115,7 @@ $article->attachPhoto($photo);
 ## Fetch
 
 You can fetch all the articles by calling `listArticle()` on publisher object.
+
 `$this->publisher->listArticle();`
 
 
