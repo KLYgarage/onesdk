@@ -94,7 +94,7 @@ function createAttachmentGallery($body, $order, $photo, $source, $lead = '')
  * @return StreamInterface
  * @throws \InvalidArgumentException if the $resource arg is not valid.
  */
-function stream_for($resource = '', array $options = [])
+function stream_for($resource = '', $options = array())
 {
     if (is_scalar($resource)) {
         return openStream($resource, $options);
