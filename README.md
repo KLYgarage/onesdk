@@ -29,49 +29,15 @@ These are some examples code to perform those steps :
 
 ### Load credentials
 
-```
-function loadTestEnv()
-{
-    if (!empty(getenv('CLIENT_ID')) && !empty(getenv('CLIENT_SECRET'))) {
-        return array(
-            'CLIENT_ID' => getenv('CLIENT_ID'),
-            'CLIENT_SECRET' => getenv('CLIENT_SECRET'),
-            'ACCESS_TOKEN' => getenv('ACCESS_TOKEN')
-        );
-    }
+Refer to [loadTestEnv()](https://github.com/KLYgarage/onesdk/blob/master/test/bootstrap.php) method. 
 
-    $envPath = realpath(__DIR__ . '/.env');
-
-    if (file_exists($envPath)) {
-        $env = array_reduce(
-            array_filter(
-                explode(
-                    "\n",
-                    file_get_contents($envPath)
-                )
-            ),
-            function ($carry, $item) {
-                list($key, $value) = explode('=', $item, 2);
-                $carry[$key] = $value;
-                return $carry;
-            },
-            array()
-        );
-    
-        return $env;
-    }
-
-    return null;
-}
-```
-
-### Create publisher object
+### Instance publisher object
 
 ```
 $env = \loadTestEnv();
         $this->publisher = new Publisher(
-            $env['CLIENT_ID'],
-            $env['CLIENT_SECRET']
+            $env['YOUR_CLIENT_ID'],
+            $env['YOUR_CLIENT_SECRET']
         );
 ```
 
@@ -79,7 +45,7 @@ $env = \loadTestEnv();
 
 If you want to publish an article, there are several steps should be done :
 
-1. Create article object
+1. Instance article object
 
 ```
 $article = new Article(
@@ -96,9 +62,9 @@ $article = new Article(
         );
 ```
 
-2. Attach if there are some attachments
+2. Attach if article contains some attachments
 
-  Article class support attachments, like photo, page. To attach, create the related attachment object. E.g : photo
+  Article supports multiple kind of attachment such as: photo, page.
 
 ```
 $photo = new Photo(
@@ -110,7 +76,7 @@ $photo = new Photo(
 $article->attachPhoto($photo);
 ```
 
-3. Publish an article
+3. Publish the article to ONE App REST API by submitting through instanced publisher object.
 
 `$this->publisher->submitArticle($article);`
 
