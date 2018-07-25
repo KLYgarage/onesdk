@@ -77,7 +77,8 @@ If you want to publish an article, there are several steps should be done :
 
 1. Create article object
 
-```$article = new Article(
+```
+$article = new Article(
             'Eius ad odit voluptatum occaecati ducimus rerum.',
             'Facilis occaecati sequi animi corrupti. Ex sit voluptates accusamus. Quidem eum magnam veniam odio totam aut. Nobis possimus totam quasi tempora consectetur iste. Repellendus est veritatis quibusdam dicta. Sapiente modi perferendis quidem repudiandae voluptates.',
             'https://www.zahn.de/home/',
@@ -93,9 +94,10 @@ If you want to publish an article, there are several steps should be done :
 
 2. Attach if there are some attachments
 
-Article class support attachments, like photo, page. To attach, create the related attachment object. E.g : photo
+  Article class support attachments, like photo, page. To attach, create the related attachment object. E.g : photo
 
-```$photo = new Photo(
+```
+$photo = new Photo(
             'https://aubry.fr/',
             Photo::RATIO_RECTANGLE,
             "Rerum asperiores nulla suscipit ex. Eligendi vero optio architecto dignissimos. Omnis autem ab ad hic quaerat omnis.",
