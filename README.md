@@ -6,13 +6,83 @@
 
 This SDK is used for easier intergration and API usage of ONE.co.id SDK. For publisher only. Usage still limited, check docs for supported features.
 
+## Prerequisite
+- PHP >=5.3.3
+
 ## Installation
 
 If you are using composer you could get it with `composer require kly/onesdk` and you are all set. Load up the autoloader and Call the classes or factory you need.
 
 ## Usage
 
-Example Usage:
+To use this SDK, there are several basic steps that should be done :
+
+1. Load credentials
+
+2. Make Publisher Object
+
+These are some examples code to perform those steps :
+
+### Load credentials
+
+```function loadTestEnv()
+{
+    if (!empty(getenv('CLIENT_ID')) && !empty(getenv('CLIENT_SECRET'))) {
+        return array(
+            'CLIENT_ID' => getenv('CLIENT_ID'),
+            'CLIENT_SECRET' => getenv('CLIENT_SECRET'),
+            'ACCESS_TOKEN' => getenv('ACCESS_TOKEN')
+        );
+    }
+
+    $envPath = realpath(__DIR__ . '/.env');
+
+    if (file_exists($envPath)) {
+        $env = array_reduce(
+            array_filter(
+                explode(
+                    "\n",
+                    file_get_contents($envPath)
+                )
+            ),
+            function ($carry, $item) {
+                list($key, $value) = explode('=', $item, 2);
+                $carry[$key] = $value;
+                return $carry;
+            },
+            array()
+        );
+    
+        return $env;
+    }
+
+    return null;
+}
+```
+
+### Create publisher object
+
+```$env = \loadTestEnv();
+        if (empty($env)) {
+            $this->markTestSkipped("no .env defined. Need client ID and secret to continue this test, modify .env.example to .env on test/.env to run test");
+        }
+
+        $this->publisher = new Publisher(
+            $env['CLIENT_ID'],
+            $env['CLIENT_SECRET']
+        );
+```
+
+There are several features currently supported for ```Publisher``` :
+
+*Submit an article
+
+`$this->publisher->submitArticle($article);`
+
+*List articles
+
+`$this->publisher->listArticle();`
+
 
 ## Steps to contribute :
 
