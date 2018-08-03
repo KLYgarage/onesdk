@@ -165,7 +165,7 @@ class FormatMapping
 
     /**
      * Attachment(s) of a single article
-     * @param  assoc array $dataArticle
+     * @param  array $dataArticle
      * @return array attachments
      */
     private function attachment(string $attachmentType, array $attributes, assoc $dataArticle): array
@@ -208,7 +208,7 @@ class FormatMapping
      * @param  array<string> $attrReferences
      * @param  array<string> $item
      */
-    private function makeAttachmentObject(string $attachmentType, array $attrReferences, array $item): \object
+    private function makeAttachmentObject(string $attachmentType, array $attrReferences, array $item): ?\object
     {
         $attrValues = [];
 
@@ -270,7 +270,7 @@ class FormatMapping
     /**
      * Create page object
      */
-    private function createPage(string $title, string $body, string $source, string $order, string $cover, string $lead): \One\Model\Page
+    private function createPage(string $title, string $body, string $source, int $order, string $cover, string $lead): \One\Model\Page
     {
         return new Page(
             $title,
@@ -285,7 +285,7 @@ class FormatMapping
     /**
      * Create Gallery object
      */
-    private function createGallery(string $body, string $order, string $photo, string $source, string $lead): \One\Model\Gallery
+    private function createGallery(string $body, int $order, string $photo, string $source, string $lead): \One\Model\Gallery
     {
         return new Gallery(
             $body,
@@ -299,7 +299,7 @@ class FormatMapping
     /**
      * Create Video object
      */
-    private function createVideo(string $body, string $source, string $order, string $cover, string $lead): \One\Model\Video
+    private function createVideo(string $body, string $source, int $order, string $cover, string $lead): \One\Model\Video
     {
         return new Video(
 

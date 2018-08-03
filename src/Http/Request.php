@@ -20,7 +20,7 @@ class Request extends Message implements \Psr\Http\Message\RequestInterface
 
     /**
      * Uri
-     * @var \One\Uri
+     * @var \Psr\Http\Message\UriInterface
      */
     private $uri;
 

@@ -9,7 +9,7 @@ class Response extends Message implements ResponseInterface
 {
     /**
      * array Map of standard HTTP status code/reason phrases
-     * @var array<string[]>
+     * @var array<string>
      */
     private static $phrases = [
         100 => 'Continue',
