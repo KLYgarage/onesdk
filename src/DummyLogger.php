@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace One;
 
@@ -21,7 +21,7 @@ class DummyLogger implements LoggerInterface
     /**
      * {@inheritdoc}
      */
-    public function emergency($message, array $context = array())
+    public function emergency($message, array $context = []): void
     {
         echo $message . "\n";
     }
@@ -29,7 +29,7 @@ class DummyLogger implements LoggerInterface
     /**
      * {@inheritdoc}
      */
-    public function alert($message, array $context = array())
+    public function alert($message, array $context = []): void
     {
         echo $message . "\n";
     }
@@ -37,49 +37,55 @@ class DummyLogger implements LoggerInterface
     /**
      * {@inheritdoc}
      */
-    public function critical($message, array $context = array())
+    public function critical($message, array $context = []): void
     {
         echo $message . "\n";
     }
+
     /**
      * {@inheritdoc}
      */
-    public function error($message, array $context = array())
+    public function error($message, array $context = []): void
     {
         echo $message . "\n";
     }
+
     /**
      * {@inheritdoc}
      */
-    public function warning($message, array $context = array())
+    public function warning($message, array $context = []): void
     {
         echo $message . "\n";
     }
+
     /**
      * {@inheritdoc}
      */
-    public function notice($message, array $context = array())
+    public function notice($message, array $context = []): void
     {
         echo $message . "\n";
     }
+
     /**
      * {@inheritdoc}
      */
-    public function info($message, array $context = array())
+    public function info($message, array $context = []): void
     {
         echo $message . "\n";
     }
+
     /**
      * {@inheritdoc}
      */
-    public function debug($message, array $context = array())
+    public function debug($message, array $context = []): void
     {
         echo $message . "\n";
     }
+
     /**
      * {@inheritdoc}
      */
-    public function log($level, $message, array $context = array())
+    public function log($level, $message, array $context = []): void
     {
         echo $message . "\n";
     }

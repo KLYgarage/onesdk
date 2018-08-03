@@ -1,20 +1,31 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace One\Http;
 
-use Psr\Http\Message\StreamInterface;
-
-/**
- *
- */
 class Message implements \Psr\Http\Message\MessageInterface
 {
+    /**
+     * Headers
+     * @var array<string[]>
+     */
     protected $headers = [];
 
+    /**
+     * Header names
+     * @var array<string[]>
+     */
     protected $headerNames = [];
 
+    /**
+     * Protocol version
+     * @var string
+     */
     protected $protocol = '1.1';
 
+    /**
+     * Stream
+     * @var \Psr\Http\Message\StreamInterface
+     */
     protected $stream;
 
     /**
@@ -24,13 +35,13 @@ class Message implements \Psr\Http\Message\MessageInterface
     {
         return $this->protocol;
     }
-  
+
     /**
      * @inheritDoc
      */
     public function withProtocolVersion($version)
     {
-        if ($this->protocol == $version) {
+        if ($this->protocol === $version) {
             return $this;
         }
 
@@ -40,7 +51,7 @@ class Message implements \Psr\Http\Message\MessageInterface
 
         return $new;
     }
-  
+
     /**
      * @inheritDoc
      */
@@ -48,7 +59,7 @@ class Message implements \Psr\Http\Message\MessageInterface
     {
         return $this->headers;
     }
-  
+
     /**
      * @inheritDoc
      */
@@ -56,7 +67,7 @@ class Message implements \Psr\Http\Message\MessageInterface
     {
         return isset($this->headerNames[strtolower($name)]);
     }
-  
+
     /**
      * @inheritDoc
      */
@@ -64,13 +75,13 @@ class Message implements \Psr\Http\Message\MessageInterface
     {
         $lower = strtolower($name);
 
-        if (!isset($this->headerNames[$lower])) {
-            return array();
+        if (! isset($this->headerNames[$lower])) {
+            return [];
         }
 
         return $this->headers[$this->headerNames[$lower]];
     }
-  
+
     /**
      * @inheritDoc
      */
@@ -78,73 +89,73 @@ class Message implements \Psr\Http\Message\MessageInterface
     {
         return implode(', ', $this->getHeader($header));
     }
-  
+
     /**
      * @inheritDoc
      */
     public function withHeader($header, $value)
     {
-        if (!is_array($value)) {
+        if (! is_array($value)) {
             $value = [$value];
         }
-        $value      = $this->trimHeaderValues($value);
+        $value = $this->trimHeaderValues($value);
         $normalized = strtolower($header);
-        $new        = clone $this;
+        $new = clone $this;
         if (isset($new->headerNames[$normalized])) {
             unset($new->headers[$new->headerNames[$normalized]]);
         }
         $new->headerNames[$normalized] = $header;
-        $new->headers[$header]         = $value;
+        $new->headers[$header] = $value;
         return $new;
     }
-  
+
     /**
      * @inheritDoc
      */
     public function withAddedHeader($header, $value)
     {
-        if (!is_array($value)) {
+        if (! is_array($value)) {
             $value = [$value];
         }
-        $value      = $this->trimHeaderValues($value);
+        $value = $this->trimHeaderValues($value);
         $normalized = strtolower($header);
-        $new        = clone $this;
+        $new = clone $this;
         if (isset($new->headerNames[$normalized])) {
-            $header                = $this->headerNames[$normalized];
+            $header = $this->headerNames[$normalized];
             $new->headers[$header] = array_merge($this->headers[$header], $value);
         } else {
             $new->headerNames[$normalized] = $header;
-            $new->headers[$header]         = $value;
+            $new->headers[$header] = $value;
         }
         return $new;
     }
-  
+
     /**
      * @inheritDoc
      */
     public function withoutHeader($header)
     {
         $normalized = strtolower($header);
-        if (!isset($this->headerNames[$normalized])) {
+        if (! isset($this->headerNames[$normalized])) {
             return $this;
         }
         $header = $this->headerNames[$normalized];
-        $new    = clone $this;
+        $new = clone $this;
         unset($new->headers[$header], $new->headerNames[$normalized]);
         return $new;
     }
-  
+
     /**
      * @inheritDoc
      */
     public function getBody()
     {
-        if (!$this->stream) {
+        if (! $this->stream) {
             $this->stream = \One\stream_for('');
         }
         return $this->stream;
     }
-  
+
     /**
      * @inheritDoc
      */
@@ -157,16 +168,15 @@ class Message implements \Psr\Http\Message\MessageInterface
         $new->stream = $body;
         return $new;
     }
-  
+
     /**
      * Set header
-     * @param array $headers
      */
-    protected function setHeaders(array $headers)
+    protected function setHeaders(array $headers): void
     {
         $this->headerNames = $this->headers = [];
         foreach ($headers as $header => $value) {
-            if (!is_array($value)) {
+            if (! is_array($value)) {
                 $value = [$value];
             }
             $value = $this->trimHeaderValues($value);
@@ -180,7 +190,7 @@ class Message implements \Psr\Http\Message\MessageInterface
             }
         }
     }
-    
+
     /**
      * Trims whitespace from the header values.
      *
@@ -195,7 +205,7 @@ class Message implements \Psr\Http\Message\MessageInterface
      *
      * @see https://tools.ietf.org/html/rfc7230#section-3.2.4
      */
-    protected function trimHeaderValues(array $values)
+    protected function trimHeaderValues(array $values): array
     {
         return array_map(function ($value) {
             return trim($value, " \t");

@@ -1,17 +1,20 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace One\Model;
 
 use One\Collection;
-use Psr\Http\Message\UriInterface;
 
 class Photo extends Model
 {
-    const RATIO_SQUARE = '1:1';
-    const RATIO_RECTANGLE = '2:1';
-    const RATIO_HEADLINE = '3:2';
-    const RATIO_VERTICAL = '9:16';
-    const RATIO_COVER = 'cover';
+    public const RATIO_SQUARE = '1:1';
+
+    public const RATIO_RECTANGLE = '2:1';
+
+    public const RATIO_HEADLINE = '3:2';
+
+    public const RATIO_VERTICAL = '9:16';
+
+    public const RATIO_COVER = 'cover';
 
     /**
      * constructor
@@ -29,36 +32,34 @@ class Photo extends Model
     ) {
         $url = $this->filterUriInstance($url);
 
-        if (!in_array($ratio, $this->getAvailableRatios())) {
-            throw new \Exception("ratio $ratio not allowed, allowed ratio are " . implode(', ', $this->getAvailableRatios()));
+        if (! in_array($ratio, $this->getAvailableRatios(), true)) {
+            throw new \Exception("ratio ${ratio} not allowed, allowed ratio are " . implode(', ', $this->getAvailableRatios()));
         }
 
         $description = $this->filterStringInstance($description);
         $information = $this->filterStringInstance($information);
 
         $this->collection = new Collection(
-            array(
+            [
                 'url' => $url,
                 'ratio' => $ratio,
                 'description' => $description,
                 'information' => $information,
-            )
+            ]
         );
     }
 
     /**
      * get available ratio for photo attachment
-     *
-     * @return array
      */
-    private function getAvailableRatios()
+    private function getAvailableRatios(): array
     {
-        return array(
+        return [
             self::RATIO_SQUARE,
             self::RATIO_RECTANGLE,
             self::RATIO_HEADLINE,
             self::RATIO_VERTICAL,
-            self::RATIO_COVER
-        );
+            self::RATIO_COVER,
+        ];
     }
 }

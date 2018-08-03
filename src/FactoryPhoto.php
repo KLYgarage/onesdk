@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types=1);
+
 namespace One;
 
 use One\Model\Photo;
@@ -14,14 +15,10 @@ use One\Model\Photo;
  */
 class FactoryPhoto
 {
-
     /**
      * function Create Photo Attachment
-     *
-     * @param String $string
-     * @return object Uri
      */
-    public static function create($data)
+    public static function create(array $data): \One\Model\Photo
     {
         $url = self::validateUrl((string) self::checkData($data, 'url', ''));
         $ratio = self::validateString((string) self::checkData($data, 'ratio', ''));
@@ -34,52 +31,44 @@ class FactoryPhoto
 
     /**
      * Make Sure Url in string with correct url format
-     *
-     * @param String $string
-     * @return string
+     * @throws \Exception
      */
-    private static function validateUrl($url)
+    private static function validateUrl(string $url): string
     {
         if (filter_var($url, FILTER_VALIDATE_URL) === false) {
-            throw new \Exception("Invalid url : $url");
+            throw new \Exception("Invalid url : ${url}");
         }
         return $url;
     }
 
     /**
-     * functionality to check whether a variable is set or not.
-     *
-     * @param array $parts
-     * @return array
+     * functionality to check whether a variable is set or not
+     * @param array<mixed>
+     * @param mixed $key
+     * @param string $default
      */
-    private static function checkData($data, $key, $default = '')
+    private static function checkData(array $data, $key, $default = ''): string
     {
-        return isset($data[$key]) ? $data[$key] : $default;
+        return $data[$key] ?? $default;
     }
 
     /**
      * functionality validity for string variables
-     *
-     * @param String $var
-     * @return String
+     * @param mixed $var
+     * @throws \Exception
      */
-    private static function validateString($var)
+    private static function validateString($var): string
     {
-        if (gettype($var) === "string") {
+        if (gettype($var) === 'string') {
             return $var;
         }
-        throw new \Exception("The variable type must String :" . $var);
+        throw new \Exception('The variable type must String :' . $var);
     }
 
     /**
      * Create Photo Object
-     *
-     * @param String $url
-     * @param String $ratio
-     * @param String $description
-     * @param String $information
      */
-    private static function createPhoto($url, $ratio, $description, $information)
+    private static function createPhoto(String $url, String $ratio, String $description, String $information): \One\Model\Photo
     {
         return new Photo(
             $url,

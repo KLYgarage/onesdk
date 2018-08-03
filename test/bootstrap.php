@@ -1,14 +1,18 @@
-<?php
+<?php declare(strict_types=1);
+
 include __DIR__ . '/../vendor/autoload.php';
 
-function loadTestEnv()
+/**
+ * Load env
+ */
+function loadTestEnv(): ?array
 {
-    if (!empty(getenv('CLIENT_ID')) && !empty(getenv('CLIENT_SECRET'))) {
-        return array(
+    if (! empty(getenv('CLIENT_ID')) && ! empty(getenv('CLIENT_SECRET'))) {
+        return [
             'CLIENT_ID' => getenv('CLIENT_ID'),
             'CLIENT_SECRET' => getenv('CLIENT_SECRET'),
-            'ACCESS_TOKEN' => getenv('ACCESS_TOKEN')
-        );
+            'ACCESS_TOKEN' => getenv('ACCESS_TOKEN'),
+        ];
     }
 
     $envPath = realpath(__DIR__ . '/.env');
@@ -22,13 +26,13 @@ function loadTestEnv()
                 )
             ),
             function ($carry, $item) {
-                list($key, $value) = explode('=', $item, 2);
+                [$key, $value] = explode('=', $item, 2);
                 $carry[$key] = $value;
                 return $carry;
             },
-            array()
+            []
         );
-    
+
         return $env;
     }
 
