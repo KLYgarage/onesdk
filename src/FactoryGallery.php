@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types=1);
+
 namespace One;
 
 use One\Model\Gallery;
@@ -15,14 +16,10 @@ use One\Model\Gallery;
  */
 class FactoryGallery
 {
-
     /**
      * function Create attachment Gallery
-     *
-     * @param Array $data
-     * @return object Gallery
      */
-    public static function create($data)
+    public static function create(array $data): \One\Model\Gallery
     {
         $body = self::validateString((string) self::checkData($data, 'body', ''));
         $order = self::validateInteger((int) self::checkData($data, 'order', null));
@@ -34,14 +31,12 @@ class FactoryGallery
 
     /**
      * Make Sure Url in string with correct url format
-     *
-     * @param String $string
-     * @return string
+     * @throws \Exception
      */
-    private static function validateUrl($string)
+    private static function validateUrl(string $string): string
     {
         if (filter_var($string, FILTER_VALIDATE_URL) === false) {
-            throw new \Exception("Invalid url : $string");
+            throw new \Exception("Invalid url : ${string}");
         }
         return $string;
     }
@@ -49,52 +44,44 @@ class FactoryGallery
     /**
      * functionality to check whether a variable is set or not.
      *
-     * @param array $parts
-     * @return array
+     * @param mixed $key
+     * @param string $default
      */
-    private static function checkData($data, $key, $default = '')
+    private static function checkData(array $data, $key, $default = ''): string
     {
-        return isset($data[$key]) ? $data[$key] : $default;
+        return $data[$key] ?? $default;
     }
 
     /**
      * functionality validity for int variables
-     *
-     * @param int $var
-     * @return int
+     * @param mixed $var
+     * @throws \Exception
      */
-    private static function validateInteger($var)
+    private static function validateInteger($var): int
     {
         if (filter_var($var, FILTER_VALIDATE_INT) === false) {
-            throw new \Exception("The variable must be a integer :" . $var);
+            throw new \Exception('The variable must be a integer :' . $var);
         }
         return $var;
     }
 
     /**
      * functionality validity for string variables
-     *
-     * @param String $var
-     * @return String
+     * @param mixed $var
+     * @throws \Exception
      */
-    private static function validateString($var)
+    private static function validateString($var): string
     {
-        if (gettype($var) === "string") {
+        if (gettype($var) === 'string') {
             return $var;
         }
-        throw new \Exception("The variable type must String :" . $var);
+        throw new \Exception('The variable type must String :' . $var);
     }
 
     /**
      * Create Gallery Object
-     *
-     * @param String $body
-     * @param int $order
-     * @param String $photo
-     * @param String $source
-     * @param string $lead
      */
-    private static function createGallery($body, $order, $photo, $source, $lead)
+    private static function createGallery(String $body, int $order, String $photo, String $source, string $lead): \One\Model\Gallery
     {
         return new Gallery(
             $body,

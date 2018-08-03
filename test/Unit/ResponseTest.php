@@ -1,14 +1,14 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace One\Test\Unit;
 
-use One\Http\Response;
 use One\Http\FnStream;
+use One\Http\Response;
 use function One\stream_for;
 
 class ResponseTest extends \PHPUnit\Framework\TestCase
 {
-    public function testDefaultConstructor()
+    public function testDefaultConstructor(): void
     {
         $response = new Response();
 
@@ -20,70 +20,69 @@ class ResponseTest extends \PHPUnit\Framework\TestCase
         $this->assertSame('', (string) $response->getBody());
     }
 
-    public function testCanConstructWithStatusCode()
+    public function testCanConstructWithStatusCode(): void
     {
         $response = new Response(404);
-        
+
         $this->assertSame(404, $response->getStatusCode());
         $this->assertSame('Not Found', $response->getReasonPhrase());
     }
 
-    public function testConstructorDoesNotReadStreamBody()
+    public function testConstructorDoesNotReadStreamBody(): void
     {
         $streamIsRead = false;
         $body = FnStream::decorate(stream_for(''), [
             '__toString' => function () use (&$streamIsRead) {
                 $streamIsRead = true;
                 return '';
-            }
+            },
         ]);
 
         $response = new Response(200, [], $body);
-        
+
         $this->assertFalse($streamIsRead);
         $this->assertSame($body, $response->getBody());
     }
 
-    public function testStatusCanBeNumericString()
+    public function testStatusCanBeNumericString(): void
     {
-        $response = new Response('404');
+        $response = new Response(200, [], null, '1.1', '404');
+
         $response2 = $response->withStatus('201');
-        
-        $this->assertSame(404, $response->getStatusCode());
-        $this->assertSame('Not Found', $response->getReasonPhrase());
+
         $this->assertSame(201, $response2->getStatusCode());
         $this->assertSame('Created', $response2->getReasonPhrase());
     }
 
-    public function testCanConstructWithHeaders()
+    public function testCanConstructWithHeaders(): void
     {
-        $response = new Response('200', ['Foo'=>'Bar']);
-        
+        $response = new Response(200, ['Foo' => 'Bar']);
+
         $this->assertSame(200, $response->getStatusCode());
         $this->assertSame('Bar', $response->getHeaderLine('Foo'));
         $this->assertSame(['Bar'], $response->getHeader('Foo'));
     }
 
-    public function testCanConstructWithHeadersAsArray()
+    public function testCanConstructWithHeadersAsArray(): void
     {
-        $response = new Response('200', ['Foo'=>['Bar'=>'Baz']]);
-        
+        $response = new Response(200, ['Foo' => ['Bar' => 'Baz']]);
+
         $this->assertSame(200, $response->getStatusCode());
-        $this->assertSame(['Foo'=>['Bar'=>'Baz']], $response->getHeaders());
+        $this->assertSame(['Foo' => ['Bar' => 'Baz']], $response->getHeaders());
         $this->assertSame('Baz', $response->getHeaderLine('Foo'));
-        $this->assertSame(['Bar'=>'Baz'], $response->getHeader('Foo'));
+        $this->assertSame(['Bar' => 'Baz'], $response->getHeader('Foo'));
     }
 
-    public function canConstructWithBody()
+    public function canConstructWithBody(): void
     {
         $response = new Response(200, [], 'baz');
         $body = $response->getBody();
-        
+
         $this->assertInstanceOf('Psr\Http\Message\StreamInterface', $body);
         $this->assertSame('baz', (string) $body);
     }
 
-    public function testNullBody()
+    public function testNullBody(): void
     {
         $response = new Response(200, [], null);
 
@@ -91,21 +90,21 @@ class ResponseTest extends \PHPUnit\Framework\TestCase
         $this->assertSame('', (string) $response->getBody());
     }
 
-    public function testCanConstructWithReason()
+    public function testCanConstructWithReason(): void
     {
         $response = new Response(200, [], null, '1.1', 'bar');
-        
+
         $this->assertSame('bar', $response->getReasonPhrase());
     }
 
-    public function testCanConstructWithProtocol()
+    public function testCanConstructWithProtocol(): void
     {
         $response = new Response(200, [], null, '1.22', 'bar');
-        
+
         $this->assertSame('1.22', $response->getProtocolVersion());
     }
 
-    public function testWithStatusCodeAndNoReason()
+    public function testWithStatusCodeAndNoReason(): void
     {
         $response = new Response();
         $newResponse = $response->withStatus(201);
@@ -114,7 +113,7 @@ class ResponseTest extends \PHPUnit\Framework\TestCase
         $this->assertSame('Created', $newResponse->getReasonPhrase());
     }
 
-    public function testWithStatusCodeAndReason()
+    public function testWithStatusCodeAndReason(): void
     {
         $response = new Response();
         $newResponse = $response->withStatus(201, 'Success');
@@ -123,7 +122,7 @@ class ResponseTest extends \PHPUnit\Framework\TestCase
         $this->assertSame('Success', $newResponse->getReasonPhrase());
     }
 
-    public function testWithProtocolVersion()
+    public function testWithProtocolVersion(): void
     {
         $response = new Response();
         $newResponse = $response->withProtocolVersion('1.23');
@@ -131,34 +130,34 @@ class ResponseTest extends \PHPUnit\Framework\TestCase
         $this->assertSame('1.23', $newResponse->getProtocolVersion());
     }
 
-    public function testSameInstanceWhenSameProtocol()
+    public function testSameInstanceWhenSameProtocol(): void
     {
         $response = new Response();
-        
+
         $this->assertSame($response, $response->withProtocolVersion('1.1'));
     }
 
-    public function testWithBody()
+    public function testWithBody(): void
     {
         $body = stream_for('0');
         $response = (new Response())->withBody($body);
-        
+
         $this->assertInstanceOf('Psr\Http\Message\StreamInterface', $response->getBody());
         $this->assertSame('0', (string) $response->getBody());
     }
 
-    public function testWithHeaderAsArray()
+    public function testWithHeaderAsArray(): void
     {
-        $response = new Response(200, ['Foo'=>'Bar']);
+        $response = new Response(200, ['Foo' => 'Bar']);
         $newResponse = $response->withHeader('Baz', ['Bam', 'Bar']);
 
-        $this->assertSame(['Foo'=>['Bar']], $response->getHeaders());
-        $this->assertSame(['Foo'=>['Bar'],'Baz'=>['Bam', 'Bar']], $newResponse->getHeaders());
+        $this->assertSame(['Foo' => ['Bar']], $response->getHeaders());
+        $this->assertSame(['Foo' => ['Bar'], 'Baz' => ['Bam', 'Bar']], $newResponse->getHeaders());
         $this->assertSame('Bam, Bar', $newResponse->getHeaderLine('Baz'));
         $this->assertSame(['Bam', 'Bar'], $newResponse->getHeader('Baz'));
     }
 
-    public function testWithHeaderReplaced()
+    public function testWithHeaderReplaced(): void
     {
         $response = new Response(200, ['Foo' => 'Bar']);
         $newResponse = $response->withHeader('FoO', 'Bzz');
@@ -169,9 +168,9 @@ class ResponseTest extends \PHPUnit\Framework\TestCase
         $this->assertSame(['Bzz'], $newResponse->getHeader('Foo'));
     }
 
-    public function testWithAddedHeader()
+    public function testWithAddedHeader(): void
     {
-        $response = new Response(200, ['Foo'=>'Bar']);
+        $response = new Response(200, ['Foo' => 'Bar']);
         $newResponse = $response->withAddedHeader('foO', 'Baz');
 
         $this->assertSame(['Foo' => ['Bar']], $response->getHeaders());
@@ -180,27 +179,27 @@ class ResponseTest extends \PHPUnit\Framework\TestCase
         $this->assertSame(['Bar', 'Baz'], $newResponse->getHeader('FOo'));
     }
 
-    public function testWithAddedHeaderAsArray()
+    public function testWithAddedHeaderAsArray(): void
     {
-        $response = new Response(200, ['Foo'=>'Bar']);
+        $response = new Response(200, ['Foo' => 'Bar']);
         $newResponse = $response->withAddedHeader('fOO', ['Baz', 'Bam']);
 
-        $this->assertSame(['Foo'=>['Bar']], $response->getHeaders());
-        $this->assertSame(['Foo'=>['Bar', 'Baz', 'Bam']], $newResponse->getHeaders());
+        $this->assertSame(['Foo' => ['Bar']], $response->getHeaders());
+        $this->assertSame(['Foo' => ['Bar', 'Baz', 'Bam']], $newResponse->getHeaders());
         $this->assertSame('Bar, Baz, Bam', $newResponse->getHeaderLine('Foo'));
         $this->assertSame(['Bar', 'Baz', 'Bam'], $newResponse->getHeader('Foo'));
     }
 
-    public function testWithAddedHeaderThatDoesntExists()
+    public function testWithAddedHeaderThatDoesntExists(): void
     {
         $response = new Response(200, ['Foo' => 'Bar']);
         $newResponse = $response->withAddedHeader('new', 'Baz');
 
-        $this->assertSame(['Foo'=>['Bar'], 'new'=>['Baz']], $newResponse->getHeaders());
+        $this->assertSame(['Foo' => ['Bar'], 'new' => ['Baz']], $newResponse->getHeaders());
         $this->assertSame('Baz', $newResponse->getHeaderLine('new'));
     }
 
-    public function testWithoutHeaderThatExists()
+    public function testWithoutHeaderThatExists(): void
     {
         $response = new Response(200, ['Foo' => 'Bar', 'Baz' => 'Bam']);
         $newResponse = $response->withoutHeader('Foo');
@@ -209,29 +208,29 @@ class ResponseTest extends \PHPUnit\Framework\TestCase
         $this->assertSame(['Baz' => ['Bam']], $newResponse->getHeaders());
     }
 
-    public function testWithoutHeaderThatDoesntExists()
+    public function testWithoutHeaderThatDoesntExists(): void
     {
         $response = new Response(200, ['Baz' => 'Bam']);
         $newResponse = $response->withoutHeader('Foo');
 
-        $this->assertEquals($response, $newResponse);
+        $this->assertSame($response, $newResponse);
         $this->assertFalse($newResponse->hasHeader('Foo'));
         $this->assertSame(['Baz' => ['Bam']], $newResponse->getHeaders());
     }
 
-    public function testSameInstanceWhenRemovingMissingHeader()
+    public function testSameInstanceWhenRemovingMissingHeader(): void
     {
         $response = new Response();
 
         $this->assertSame($response, $response->withoutHeader('Baz'));
     }
 
-    public function testHeaderValuesAreTrimmed()
+    public function testHeaderValuesAreTrimmed(): void
     {
         $response1 = new Response(200, ['OWS' => " \t \tFoo\t \t "]);
         $response2 = (new Response())->withHeader('OWS', " \t \tFoo\t \t ");
         $response3 = (new Response())->withAddedHeader('OWS', " \t \tFoo\t \t ");
-        
+
         foreach ([$response1, $response2, $response3] as $response) {
             $this->assertSame(['OWS' => ['Foo']], $response->getHeaders());
             $this->assertSame('Foo', $response->getHeaderLine('OWS'));

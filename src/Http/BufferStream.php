@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace One\Http;
 
@@ -16,8 +16,16 @@ use Psr\Http\Message\StreamInterface;
  */
 class BufferStream implements StreamInterface
 {
+    /**
+     * High water mark
+     * @var int
+     */
     private $hwm;
 
+    /**
+     * buffer
+     * @var string
+     */
     private $buffer = '';
 
     /**
@@ -27,7 +35,7 @@ class BufferStream implements StreamInterface
      *                 but will return false to inform writers to slow down
      *                 until the buffer has been drained by reading from it.
      */
-    public function __construct($hwm = 16384)
+    public function __construct(int $hwm = 16384)
     {
         $this->hwm = $hwm;
     }
@@ -39,7 +47,7 @@ class BufferStream implements StreamInterface
     {
         return $this->getContents();
     }
-    
+
     /**
      * @inheritdoc
      */
@@ -53,7 +61,7 @@ class BufferStream implements StreamInterface
     /**
      * @inheritdoc
      */
-    public function close()
+    public function close(): void
     {
         $this->buffer = '';
     }
@@ -61,7 +69,7 @@ class BufferStream implements StreamInterface
     /**
      * @inheritdoc
      */
-    public function detach()
+    public function detach(): void
     {
         $this->close();
     }
@@ -101,7 +109,7 @@ class BufferStream implements StreamInterface
     /**
      * @inheritdoc
      */
-    public function rewind()
+    public function rewind(): void
     {
         $this->seek(0);
     }
@@ -109,7 +117,7 @@ class BufferStream implements StreamInterface
     /**
      * @inheritdoc
      */
-    public function seek($offset, $whence = SEEK_SET)
+    public function seek($offset, $whence = SEEK_SET): void
     {
         throw new \RuntimeException('Cannot seek a BufferStream');
     }
@@ -125,7 +133,7 @@ class BufferStream implements StreamInterface
     /**
      * @inheritdoc
      */
-    public function tell()
+    public function tell(): void
     {
         throw new \RuntimeException('Cannot determine the position of a BufferStream');
     }
@@ -166,7 +174,7 @@ class BufferStream implements StreamInterface
      */
     public function getMetadata($key = null)
     {
-        if ($key == 'hwm') {
+        if ($key === 'hwm') {
             return $this->hwm;
         }
         return $key ? null : [];

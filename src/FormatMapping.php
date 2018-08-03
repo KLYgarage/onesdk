@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace one;
 
@@ -10,49 +10,50 @@ use One\Model\Video;
 
 class FormatMapping
 {
-
-    /**
-     * Possible attributes of JSON data
-     * @var array
-     */
-    private $listAttributes;
-
     /**
      * JSON field constants
      */
-    const JSON_PHOTO_FIELD = "photos";
-    const JSON_PAGE_FIELD = "pages";
-    const JSON_GALLERY_FIELD = "galleries";
-    const JSON_VIDEO_FIELD = "videos";
+    public const JSON_PHOTO_FIELD = 'photos';
+
+    public const JSON_PAGE_FIELD = 'pages';
+
+    public const JSON_GALLERY_FIELD = 'galleries';
+
+    public const JSON_VIDEO_FIELD = 'videos';
+
+    /**
+     * Possible attributes of JSON data
+     * @var array<string[]>
+     */
+    private $listAttributes;
 
     /**
      * Construct JSON attributes
      */
     public function __construct()
     {
-        $this->listAttributes = array(
-            Article::ATTACHMENT_FIELD_PHOTO   => array(
+        $this->listAttributes = [
+            Article::ATTACHMENT_FIELD_PHOTO => [
                 '_id', '_url', '_ratio', '_description', '_information',
-            ),
-            Article::ATTACHMENT_FIELD_PAGE    => array(
+            ],
+            Article::ATTACHMENT_FIELD_PAGE => [
                 '_id', '_title', '_lead', '_body', '_source', '_order', '_cover',
-            ),
-            Article::ATTACHMENT_FIELD_GALLERY => array(
+            ],
+            Article::ATTACHMENT_FIELD_GALLERY => [
                 '_id', '_lead', '_body', '_source', '_order', '_photo',
-            ),
-            Article::ATTACHMENT_FIELD_VIDEO   => array(
+            ],
+            Article::ATTACHMENT_FIELD_VIDEO => [
                 '_id', '_lead', '_body', '_source', '_order', '_cover',
-            ),
-        );
+            ],
+        ];
     }
 
     /**
      * map a single article to main attributes in Article Class
      * @param  string $singleJsonArticle JSON response
-     * @return Article
      * @throws Exception
      */
-    public function article($singleJsonArticle)
+    public function article(string $singleJsonArticle): Article
     {
         if (json_decode($singleJsonArticle, true)) {
             $dataArticle = json_decode($singleJsonArticle, true)['data'];
@@ -62,83 +63,68 @@ class FormatMapping
                 $this->filterString(
                     $this->getValue('title', $dataArticle)
                 ),
-
                 $this->filterString(
                     $this->getValue('body', $dataArticle)
                 ),
-
                 $this->filterString(
                     $this->getValue('source', $dataArticle)
                 ),
-
                 $this->getValue('unique_id', $dataArticle),
-
                 $this->filterInteger(
                     $this->getValue(
                         'type_id',
                         $dataArticle['type']
                     )
                 ),
-
                 $this->filterInteger(
                     $this->getValue(
                         'category_id',
                         $dataArticle['category']
                     )
                 ),
-
                 $this->getValue('reporter', $dataArticle),
-
                 $this->filterString(
                     $this->getValue('lead', $dataArticle)
                 ),
-
                 $this->getValue('tag_name', $dataArticle['tags']),
-
                 $this->filterString(
                     $this->getValue('published_at', $dataArticle)
                 ),
-
                 $this->filterInteger(
                     $this->getValue('id', $dataArticle)
                 )
-
             );
 
-            $attachmentConstants = array(
+            $attachmentConstants = [
                 Article::ATTACHMENT_FIELD_PHOTO,
                 Article::ATTACHMENT_FIELD_PAGE,
                 Article::ATTACHMENT_FIELD_GALLERY,
                 Article::ATTACHMENT_FIELD_VIDEO,
-            );
+            ];
 
-            $attachmentTypes = array(
+            $attachmentTypes = [
                 self::JSON_PHOTO_FIELD, self::JSON_PAGE_FIELD,
                 self::JSON_GALLERY_FIELD, self::JSON_VIDEO_FIELD,
-            );
+            ];
 
             $attachmentAttributes = $this->lookUp($attachmentConstants);
 
-            $article = $this->generalAttachment(
+            return $this->generalAttachment(
                 $article,
                 $attachmentConstants,
                 $attachmentTypes,
                 $attachmentAttributes,
                 $dataArticle
             );
-
-            return $article;
         }
 
-        throw new \Exception("Empty or invalid JSON Response", 1);
+        throw new \Exception('Empty or invalid JSON Response', 1);
     }
 
     /**
      * Create list attributes based on Article attachment type
-     * @param  array $articleConstant
-     * @return array
      */
-    private function lookUp($articleConstant)
+    private function lookUp(array $articleConstant): array
     {
         $copyListAttributes = $this->listAttributes;
 
@@ -154,20 +140,14 @@ class FormatMapping
 
     /**
      * Attach attachments to article
-     * @param  Article $article
-     * @param  array $attachmentConst
-     * @param  array $attachmentype
-     * @param  array $attributes
-     * @param  array $dataArticle
-     * @return Article
      */
     private function generalAttachment(
-        $article,
-        $attachmentConst,
-        $attachmentype,
-        $attributes,
-        $dataArticle
-    ) {
+        Article $article,
+        array $attachmentConst,
+        array $attachmentype,
+        array $attributes,
+        array $dataArticle
+    ): Article {
         $numOfAttachments = count($attachmentConst);
 
         for ($i = 0; $i < $numOfAttachments; $i++) {
@@ -185,18 +165,16 @@ class FormatMapping
 
     /**
      * Attachment(s) of a single article
-     * @param  string $attachmentType
-     * @param  array $attributes
-     * @param  assoc array $dataArticle
+     * @param  array $dataArticle
      * @return array attachments
      */
-    private function attachment($attachmentType, $attributes, $dataArticle)
+    private function attachment(string $attachmentType, array $attributes, assoc $dataArticle): array
     {
         $data = $dataArticle[$attachmentType];
 
         $encoded = json_encode($data);
 
-        $attachments = array();
+        $attachments = [];
 
         if ($this->filterArray($data)) {
             $decodedData = json_decode($encoded, true);
@@ -218,24 +196,21 @@ class FormatMapping
             }
         }
 
-        $structure = array(
+        return [
             'numberOfItems' => count($attachments),
-            'attachments'   => $attachments,
-        );
-
-        return $structure;
+            'attachments' => $attachments,
+        ];
     }
 
     /**
      * Make attachment object
      * @param  string $attachmentType json field of attachment
-     * @param  array  $attributes     attributes of attachment
-     * @param  assoc array $item
-     * @return object
+     * @param  array<string> $attrReferences
+     * @param  array<string> $item
      */
-    private function makeAttachmentObject($attachmentType, $attrReferences, $item)
+    private function makeAttachmentObject(string $attachmentType, array $attrReferences, array $item): ?\object
     {
-        $attrValues = array();
+        $attrValues = [];
 
         foreach ($attrReferences as $attrReference) {
             $attrValues[$attrReference] = $this->getValue($attrReference, $item);
@@ -281,10 +256,8 @@ class FormatMapping
 
     /**
      * Create photo object
-     * @param  array $values
-     * @return Photo
      */
-    private function createPhoto($url, $ratio, $desc, $info)
+    private function createPhoto(string $url, string $ratio, string $desc, string $info): \One\Model\Photo
     {
         return new Photo(
             $url,
@@ -296,10 +269,8 @@ class FormatMapping
 
     /**
      * Create page object
-     * @param  array $values
-     * @return Page
      */
-    private function createPage($title, $body, $source, $order, $cover, $lead)
+    private function createPage(string $title, string $body, string $source, int $order, string $cover, string $lead): \One\Model\Page
     {
         return new Page(
             $title,
@@ -313,10 +284,8 @@ class FormatMapping
 
     /**
      * Create Gallery object
-     * @param  array $values
-     * @return Gallery
      */
-    private function createGallery($body, $order, $photo, $source, $lead)
+    private function createGallery(string $body, int $order, string $photo, string $source, string $lead): \One\Model\Gallery
     {
         return new Gallery(
             $body,
@@ -329,10 +298,8 @@ class FormatMapping
 
     /**
      * Create Video object
-     * @param  array $values
-     * @return Video
      */
-    private function createVideo($body, $source, $order, $cover, $lead)
+    private function createVideo(string $body, string $source, int $order, string $cover, string $lead): \One\Model\Video
     {
         return new Video(
 
@@ -347,69 +314,65 @@ class FormatMapping
     /**
      * Make sure value is integer
      * @param  mixed $int
-     * @return int
-     * @throws Exception
+     * @throws \Exception
      */
-    private function filterInteger($int)
+    private function filterInteger($int): int
     {
         if (is_int($int)) {
             return $int;
         }
-        throw new \Exception("Invalid Integer", 1);
+        throw new \Exception('Invalid Integer', 1);
     }
 
     /**
      * Make sure string is not null or empty
      * @param   mixed $str
      * @return string if it is valid or exception
-     * @throws Exception
+     * @throws \Exception
      */
-    private function filterString($str)
+    private function filterString($str): string
     {
-        if (is_string($str) && strlen($str) > 0 && !is_null($str)) {
+        if (is_string($str) && strlen($str) > 0 && $str !== null) {
             return $str;
         }
-        throw new \Exception("String required", 1);
+        throw new \Exception('String required', 1);
     }
 
     /**
      * Handle string when it will throw exception
      * @param  mixed $str
-     * @return string
      */
-    private function handleString($str)
+    private function handleString($str): string
     {
         return (is_string($str) &&
             strlen($str) > 0
-            && !is_null($str)) ? $str : "";
+            && $str !== null) ? $str : '';
     }
 
     /**
      * Make sure variable is type of array
      * @param  mixed $array
-     * @return array
      * @throws Exception
      */
-    private function filterArray($array)
+    private function filterArray($array): array
     {
         if (is_array($array)) {
             return $array;
         }
-        throw new \Exception("Array required", 1);
+        throw new \Exception('Array required', 1);
     }
 
     /**
      * Make sure attachment object not null
      * @param  mixed $object
-     * @return object
-     * @throws Exception
+     * @throws \Exception
      */
-    private function filterAttachmentObject($object)
+    private function filterAttachmentObject($object): object
     {
-        if (!is_null($object)) {
+        if ($object !== null) {
             return $object;
         }
-        throw new \Exception("Attachment object required", 1);
+        throw new \Exception('Attachment object required', 1);
     }
 
     /**
@@ -420,6 +383,6 @@ class FormatMapping
      */
     private function getValue($attribute, $data)
     {
-        return isset($data[$attribute]) ? $data[$attribute] : null;
+        return $data[$attribute] ?? null;
     }
 }

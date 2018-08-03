@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace One;
 
@@ -11,8 +11,6 @@ interface ToArrayInterface
 {
     /**
      * toArray function
-     *
-     * @return array
      */
-    public function toArray();
+    public function toArray(): array;
 }

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace One\Test\Unit;
 
@@ -6,11 +6,15 @@ use One\Collection;
 
 class CollectionTest extends \PHPUnit\Framework\TestCase
 {
+    /**
+     * Collection
+     * @var \One\Collection
+     */
     protected $dummy;
 
-    public function setUp()
+    protected function setUp(): void
     {
-        $this->dummy = new Collection(array(
+        $this->dummy = new Collection([
             'name' => 'Prof. Hermann Seip B.Sc.',
             'address' => '688 Anthony Ferry Suite 661
             West Heathermouth, WA 21818',
@@ -19,16 +23,16 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
             'atr' => null,
             'age' => 87,
             'thing' => 'Cupiditate libero nulla aperiam culpa. Dolorum consequuntur quae ad. Atque pariatur odio veniam magnam possimus.',
-            'posts' => array(
-                'title' => 'Veniam libero eveniet molestias cupiditate corporis.'
-            )
-        ));
+            'posts' => [
+                'title' => 'Veniam libero eveniet molestias cupiditate corporis.',
+            ],
+        ]);
     }
 
     /**
      * @covers Collection::count()
      */
-    public function testCountable()
+    public function testCountable(): void
     {
         $this->assertCount(count($this->dummy), $this->dummy);
         return;
@@ -38,10 +42,10 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
      * @covers Collection::getIterator()
      * @covers Collection::offsetGet()
      */
-    public function testIteratorAggregator()
+    public function testIteratorAggregator(): void
     {
         foreach ($this->dummy as $key => $value) {
-            $this->assertEquals($value, $this->dummy[$key]);
+            $this->assertSame($value, $this->dummy[$key]);
         }
         return;
     }
@@ -53,10 +57,10 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
      * @covers Collection::set()
      * @covers Collection::add()
      */
-    public function testArrayImplementation()
+    public function testArrayImplementation(): void
     {
         $this->assertTrue(is_array($this->dummy->toArray()));
-        $this->assertEquals($this->dummy->get('name'), $this->dummy['name']);
+        $this->assertSame($this->dummy->get('name'), $this->dummy['name']);
 
         $oldDummy = clone $this->dummy;
         $this->dummy->set('name', 'Olga Angulo Reguera');
@@ -68,7 +72,7 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
             )
         );
 
-        $this->assertEquals(
+        $this->assertSame(
             array_keys($oldDummy->toArray()),
             array_keys($this->dummy->toArray())
         );
@@ -83,13 +87,13 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
             )
         );
 
-        $this->assertTrue(!is_array($this->dummy['statement']));
+        $this->assertTrue(! is_array($this->dummy['statement']));
         $this->dummy->add('statement', 'Alias similique corrupti reprehenderit ex corrupti id.');
         $this->assertTrue(is_array($this->dummy->get('statement')));
 
         $this->assertTrue(is_array($this->dummy['posts']));
         $this->assertCount(1, $this->dummy['posts']);
-        $this->dummy->add('posts', array('title' => 'Nulla eaque modi.'));
+        $this->dummy->add('posts', ['title' => 'Nulla eaque modi.']);
         $this->assertTrue(is_array($this->dummy['posts']));
         $this->assertCount(2, $this->dummy['posts']);
     }
@@ -98,7 +102,7 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
      * @covers Collection::map()
      * @covers Collection::filter()
      */
-    public function testMap()
+    public function testMap(): void
     {
         $newDummy = $this->dummy->map(
             function ($value) {
@@ -106,10 +110,10 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
             }
         );
 
-        $this->assertEquals(
-            $this->dummy,
-            $newDummy
-        );
+
+        $this->assertInstanceOf(Collection::class, $this->dummy);
+
+        $this->assertInstanceOf(Collection::class, $newDummy);
 
         $context = ' - added';
         $newDummy = $this->dummy->map(
@@ -122,17 +126,17 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
             $context
         );
 
-        $this->assertNotEquals($this->dummy, $newDummy);
-        $this->assertEquals($this->dummy['name'] . $context, $newDummy['name']);
+        $this->assertNotSame($this->dummy, $newDummy);
+        $this->assertSame($this->dummy['name'] . $context, $newDummy['name']);
 
         $newDummy = $this->dummy->filter(
             function ($value) {
-                return !empty($value) ? true : false;
+                return ! empty($value) ? true : false;
             }
         );
 
-        $this->assertNotEquals($this->dummy, $newDummy);
-        $this->assertNotEquals(count($this->dummy), count($newDummy));
-        $this->assertTrue(!isset($newDummy['atr']));
+        $this->assertNotSame($this->dummy, $newDummy);
+        $this->assertNotSame(count($this->dummy), count($newDummy));
+        $this->assertTrue(! isset($newDummy['atr']));
     }
 }

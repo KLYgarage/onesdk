@@ -1,23 +1,27 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace One\Test\Unit;
 
+use One\Model\Article;
+use One\Model\Photo;
+use One\Uri;
 use function One\createArticleFromArray;
 use function One\createAttachmentGallery;
 use function One\createAttachmentPhoto;
 use function One\createUriFromServer;
 use function One\createUriFromString;
-use One\Model\Article;
-use One\Model\Photo;
-use One\Uri;
 
 class FactoryTest extends \PHPUnit\Framework\TestCase
 {
+    /**
+     * dummy array
+     * @var array<string[]>
+     */
     protected $dummy;
 
-    public function setUp()
+    protected function setUp(): void
     {
-        $this->dummy = array('title' => 'Recusandae natus ', 'body' => 'Nulla labore earum. Perspiciatis odio nostrum molestias voluptatem quidem error. ', 'source' => 'http://example.com/url-detail.html', 'unique_id' => 'dummy-1', 'type_id' => 2, 'category_id' => 1, 'reporter' => 'earum');
+        $this->dummy = ['title' => 'Recusandae natus ', 'body' => 'Nulla labore earum. Perspiciatis odio nostrum molestias voluptatem quidem error. ', 'source' => 'http://example.com/url-detail.html', 'unique_id' => 'dummy-1', 'type_id' => 2, 'category_id' => 1, 'reporter' => 'earum'];
     }
 
     /**
@@ -44,7 +48,7 @@ class FactoryTest extends \PHPUnit\Framework\TestCase
      * @covers Uri::filterQuery
      * @covers Uri::hasStandardPort
      */
-    public function testFactoryUriFromServer()
+    public function testFactoryUriFromServer(): void
     {
         $_SERVER['HTTPS'] = 'https://';
         $_SERVER['HTTP_HOST'] = 'www.foobar.com';
@@ -55,13 +59,13 @@ class FactoryTest extends \PHPUnit\Framework\TestCase
         $_SERVER['PHP_AUTH_PW'] = 'password';
         $uri = createUriFromServer();
         $this->assertInstanceOf(Uri::class, $uri);
-        $this->assertEquals('https', $uri->getScheme());
-        $this->assertEquals('username:password', $uri->getUserInfo());
-        $this->assertEquals('www.foobar.com', $uri->getHost());
-        $this->assertEquals('85', $uri->getPort());
-        $this->assertEquals('/path', $uri->getPath());
-        $this->assertEquals('page=1', $uri->getQuery());
-        $this->assertEquals('https://username:password@www.foobar.com:85', $uri->getBaseUrl());
+        $this->assertSame('https', $uri->getScheme());
+        $this->assertSame('username:password', $uri->getUserInfo());
+        $this->assertSame('www.foobar.com', $uri->getHost());
+        $this->assertSame('85', $uri->getPort());
+        $this->assertSame('/path', $uri->getPath());
+        $this->assertSame('page=1', $uri->getQuery());
+        $this->assertSame('https://username:password@www.foobar.com:85', $uri->getBaseUrl());
         $uri2 = $uri->withHost('www.phpunit.de')
             ->withUserInfo('user2:pass2')
             ->withPort(80)
@@ -93,22 +97,22 @@ class FactoryTest extends \PHPUnit\Framework\TestCase
      * @covers Uri::filterQuery
      * @covers Uri::hasStandardPort
      */
-    public function testFactoryUriFromString()
+    public function testFactoryUriFromString(): void
     {
         $string = 'https://username:password@www.example.com:85/kerap/254?page=1#idkomentar';
         $uri = createUriFromString($string);
 
         $this->assertInstanceOf(Uri::class, $uri);
 
-        $this->assertEquals('https', $uri->getScheme());
-        $this->assertEquals('username:password', $uri->getUserInfo());
-        $this->assertEquals('www.example.com', $uri->getHost());
-        $this->assertEquals('85', $uri->getPort());
-        $this->assertEquals('/kerap/254', $uri->getPath());
-        $this->assertEquals('page=1', $uri->getQuery());
-        $this->assertEquals('idkomentar', $uri->getFragment());
-        $this->assertEquals('https://username:password@www.example.com:85', $uri->getBaseUrl());
-        $this->assertEquals($string, (string) $uri);
+        $this->assertSame('https', $uri->getScheme());
+        $this->assertSame('username:password', $uri->getUserInfo());
+        $this->assertSame('www.example.com', $uri->getHost());
+        $this->assertSame('85', $uri->getPort());
+        $this->assertSame('/kerap/254', $uri->getPath());
+        $this->assertSame('page=1', $uri->getQuery());
+        $this->assertSame('idkomentar', $uri->getFragment());
+        $this->assertSame('https://username:password@www.example.com:85', $uri->getBaseUrl());
+        $this->assertSame($string, (string) $uri);
         $uri2 = $uri->withHost('www.phpunit.de')
             ->withUserInfo('user2:pass2')
             ->withPort(80)
@@ -117,28 +121,24 @@ class FactoryTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @covers Helper::createArticleFromArray
-     *
-     * @return void
      */
-    public function testFactoryArticleFromArray()
+    public function testFactoryArticleFromArray(): void
     {
         $article = createArticleFromArray($this->dummy);
         $data = $article->toJson();
         $data = json_decode($data);
-        $this->assertEquals($this->dummy['title'], $data->title);
-        $this->assertEquals($this->dummy['body'], $data->body);
-        $this->assertEquals($this->dummy['unique_id'], $data->uniqueId);
-        $this->assertEquals($this->dummy['category_id'], $data->category_id);
-        $this->assertEquals($this->dummy['reporter'], $data->reporter);
+        $this->assertSame($this->dummy['title'], $data->title);
+        $this->assertSame($this->dummy['body'], $data->body);
+        $this->assertSame($this->dummy['unique_id'], $data->uniqueId);
+        $this->assertSame($this->dummy['category_id'], $data->category_id);
+        $this->assertSame($this->dummy['reporter'], $data->reporter);
     }
 
     /**
      * @covers Helper::createArticleFromArray
      * @covers Helper::createAttachmentPhoto
-     *
-     * @return void
      */
-    public function testAttachmentPhoto()
+    public function testAttachmentPhoto(): void
     {
         $article = createArticleFromArray($this->dummy);
 
@@ -152,10 +152,8 @@ class FactoryTest extends \PHPUnit\Framework\TestCase
     /**
      * @covers Helper::createArticleFromArray
      * @covers Helper::createAttachmentGallery
-     *
-     * @return void
      */
-    public function testAttachmentGallery()
+    public function testAttachmentGallery(): void
     {
         $article = createArticleFromArray($this->dummy);
 

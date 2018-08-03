@@ -1,8 +1,7 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace One\Model;
 
-use Psr\Http\Message\UriInterface;
 use One\Collection;
 
 class Page extends Model
@@ -10,16 +9,14 @@ class Page extends Model
     /**
      * constuctor
      *
-     * @param string $title
-     * @param string $body
      * @param integer $order
      * @param \Psr\Http\Message\UriInterface|string $cover
      * @param \Psr\Http\Message\UriInterface|string $source
      * @param string $lead
      */
     public function __construct(
-        $title,
-        $body,
+        string $title,
+        string $body,
         $source,
         $order,
         $cover,
@@ -32,19 +29,19 @@ class Page extends Model
             $lead = $this->createLeadFromBody($body);
         }
 
-        $title  = $this->filterStringInstance($title);
-        $lead   = $this->filterStringInstance($lead);
-        $body   = $this->filterStringInstance($body);
+        $title = $this->filterStringInstance($title);
+        $lead = $this->filterStringInstance($lead);
+        $body = $this->filterStringInstance($body);
 
         $this->collection = new Collection(
-            array(
+            [
                 'title' => $title,
                 'lead' => $lead,
                 'body' => $body,
                 'source' => $source,
                 'order' => $order,
-                'cover' => $cover
-            )
+                'cover' => $cover,
+            ]
         );
     }
 }

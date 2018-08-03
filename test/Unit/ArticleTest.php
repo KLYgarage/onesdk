@@ -1,19 +1,23 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace One\Test\Unit;
 
 use One\Model\Article;
-use One\Model\Photo;
-use One\Model\Page;
 use One\Model\Gallery;
-use One\Model\Video;
 use One\Model\Model;
+use One\Model\Page;
+use One\Model\Photo;
+use One\Model\Video;
 
 class ArticleTest extends \PHPUnit\Framework\TestCase
 {
+    /**
+     * Article
+     * @var \One\Model\Article
+     */
     protected $dummy;
 
-    public function setUp()
+    protected function setUp(): void
     {
         $this->dummy = new Article(
             'Recusandae natus soluta similique molestiae.',
@@ -23,24 +27,22 @@ class ArticleTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    public function testInstance()
+    public function testInstance(): void
     {
         $this->assertInstanceOf('One\Model\Model', $this->dummy);
         $this->assertInstanceOf('One\Model\Article', $this->dummy);
 
-        $collection =  $this->dummy->getCollection();
+        $collection = $this->dummy->getCollection();
         $this->assertInstanceOf('One\Collection', $collection);
 
-        $this->assertEquals($collection->toJson(), $this->dummy->toJson());
+        $this->assertSame($collection->toJson(), $this->dummy->toJson());
     }
 
     /**
      * @covers Article::attach()
      * @covers Article::attachPhoto()
-     *
-     * @return void
      */
-    public function testAttachment()
+    public function testAttachment(): void
     {
         $article = clone $this->dummy;
 
@@ -85,8 +87,8 @@ class ArticleTest extends \PHPUnit\Framework\TestCase
         $this->assertCount(2, $article->getAttachmentByField(Article::ATTACHMENT_FIELD_PAGE));
 
         $page = $article->getAttachmentByField(Article::ATTACHMENT_FIELD_PAGE)[0];
-        $this->assertEquals(1, $page->get('order'));
-        $this->assertTrue(!empty($page->get('lead')));
+        $this->assertSame(1, $page->get('order'));
+        $this->assertTrue(! empty($page->get('lead')));
 
         $article->attachGallery(new Gallery(
             'Est illum cupiditate quidem alias.',
@@ -108,7 +110,7 @@ class ArticleTest extends \PHPUnit\Framework\TestCase
 
         $this->assertCount(1, $article->getAttachmentByField(Article::ATTACHMENT_FIELD_VIDEO));
 
-        $this->assertEquals(
+        $this->assertSame(
             count(Article::getPossibleAttachment()),
             count($article->getAttachments())
         );

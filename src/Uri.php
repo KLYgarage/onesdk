@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace One;
 
@@ -79,14 +79,14 @@ class Uri implements UriInterface
      * @param string $password Uri password.
      */
     public function __construct(
-        $scheme,
-        $host = '',
-        $port = null,
-        $path = '/',
-        $query = '',
-        $fragment = '',
-        $user = '',
-        $password = ''
+        string $scheme,
+        string $host = '',
+        ?int $port = null,
+        string $path = '/',
+        string $query = '',
+        string $fragment = '',
+        string $user = '',
+        string $password = ''
     ) {
         $this->scheme = $this->filterScheme($scheme);
         $this->host = $host;
@@ -96,6 +96,24 @@ class Uri implements UriInterface
         $this->fragment = $this->filterQuery($fragment);
         $this->user = $user;
         $this->password = $password;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function __toString()
+    {
+        $scheme = $this->getScheme();
+        $authority = $this->getAuthority();
+        $path = $this->getPath();
+        $query = $this->getQuery();
+        $fragment = $this->getFragment();
+
+        return ($scheme ? $scheme . ':' : '')
+            . ($authority ? '//' . $authority : '')
+            . $path
+            . ($query ? '?' . $query : '')
+            . ($fragment ? '#' . $fragment : '');
     }
 
     /**
@@ -139,7 +157,7 @@ class Uri implements UriInterface
      */
     public function getPort()
     {
-        return $this->port !== null && !$this->hasStandardPort() ? $this->port : null;
+        return $this->port !== null && ! $this->hasStandardPort() ? $this->port : null;
     }
 
     /**
@@ -185,7 +203,7 @@ class Uri implements UriInterface
     {
         $clone = clone $this;
         $clone->user = $user;
-        $clone->password = $password ? $password : '';
+        $clone->password = $password ?: '';
 
         return $clone;
     }
@@ -241,38 +259,32 @@ class Uri implements UriInterface
     }
 
     /**
-     * withString function.
+     * get Base Url
      *
-     * @access protected
-     * @param string $string
-     * @param string $name (default: 'query')
-     * @return Uri
+     * @access public
      */
-    protected function withString($string, $name = 'query')
-    {
-        $string = ltrim((string) $string, '#');
-        $clone = clone $this;
-        $clone->$name = $this->filterQuery($string);
-
-        return $clone;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function __toString()
+    public function getBaseUrl(): string
     {
         $scheme = $this->getScheme();
         $authority = $this->getAuthority();
-        $path = $this->getPath();
-        $query = $this->getQuery();
-        $fragment = $this->getFragment();
 
         return ($scheme ? $scheme . ':' : '')
-            . ($authority ? '//' . $authority : '')
-            . $path
-            . ($query ? '?' . $query : '')
-            . ($fragment ? '#' . $fragment : '');
+            . ($authority ? '//' . $authority : '');
+    }
+
+    /**
+     * withString function.
+     *
+     * @access protected
+     * @param string $name (default: 'query')
+     */
+    protected function withString(string $string, string $name = 'query'): self
+    {
+        $string = ltrim((string) $string, '#');
+        $clone = clone $this;
+        $clone->{$name} = $this->filterQuery($string);
+
+        return $clone;
     }
 
     /*
@@ -283,36 +295,33 @@ class Uri implements UriInterface
      * filter scheme given to only allow certain scheme, no file:// or ftp:// or other scheme because its http message uri interface
      *
      * @access protected
-     * @param string $scheme
      * @return string $scheme
      * @throws InvalidArgumentException if not corret scheme is present
      */
-    protected function filterScheme($scheme)
+    protected function filterScheme(string $scheme): string
     {
-        static $valid = array(
+        static $valid = [
             '' => true,
             'https' => true,
             'http' => true,
-        );
-        
+        ];
+
         $scheme = str_replace('://', '', strtolower($scheme));
-        if (!isset($valid[$scheme])) {
+        if (! isset($valid[$scheme])) {
             throw new InvalidArgumentException('Uri scheme must be one of: "", "https", "http"');
         }
 
         return $scheme;
     }
 
-
     /**
      * Filter allowable port to minimize risk
      *
      * @access protected
-     * @param integer|null $port
      * @return null|integer $port
      * @throws InvalidArgumentException for incorrect port assigned
      */
-    protected function filterPort($port)
+    protected function filterPort(?int $port): ?int
     {
         if ((integer) $port >= 0 && (integer) $port <= 65535) {
             return $port;
@@ -325,10 +334,9 @@ class Uri implements UriInterface
      * Path allowed chars filter, no weird path on uri yes?.
      *
      * @access protected
-     * @param string $path
      * @return string of cleared path
      */
-    protected function filterPath($path)
+    protected function filterPath(string $path): string
     {
         return preg_replace_callback(
             '/(?:[^a-zA-Z0-9_\-\.~:@&=\+\$,\/;%]+|%(?![A-Fa-f0-9]{2}))/',
@@ -343,10 +351,9 @@ class Uri implements UriInterface
      * replace query to clear not allowed chars
      *
      * @access protected
-     * @param string $query
      * @return string of replaced query
      */
-    protected function filterQuery($query)
+    protected function filterQuery(string $query): string
     {
         return preg_replace_callback(
             '/(?:[^a-zA-Z0-9_\-\.~!\$&\'\(\)\*\+,;=%:@\/\?]+|%(?![A-Fa-f0-9]{2}))/',
@@ -361,25 +368,9 @@ class Uri implements UriInterface
      * cek if current uri scheme use standard port
      *
      * @access protected
-     * @return boolean
      */
-    protected function hasStandardPort()
+    protected function hasStandardPort(): bool
     {
         return ($this->scheme === 'http' && $this->port === 80) || ($this->scheme === 'https' && $this->port === 443);
-    }
-
-    /**
-     * get Base Url
-     *
-     * @access public
-     * @return string
-     */
-    public function getBaseUrl()
-    {
-        $scheme = $this->getScheme();
-        $authority = $this->getAuthority();
-
-        return ($scheme ? $scheme . ':' : '')
-            . ($authority ? '//' . $authority : '');
     }
 }
