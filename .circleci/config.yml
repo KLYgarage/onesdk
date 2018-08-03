@@ -2,7 +2,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/php:5-browsers
+      - image: circleci/php:7-cli-browsers
     working_directory: ~/repo
     steps:
       - checkout
@@ -22,5 +22,5 @@ jobs:
           paths:
             - ./vendor
           key: v1-dependencies-{{ checksum "composer.json" }}
-      - run: composer run cs-fix
+      - run: composer run cs-check
       - run: composer run test

@@ -9,13 +9,32 @@
             "email": "me@chars.me",
             "homepage": "https://chars.me",
             "role": "Developer"
+        },
+        {
+            "name": "Kenny Karnama",
+            "email": "kenny.karnama@kly.id",
+            "role": "Developer"
+        },
+        {
+            "name": "Martino Catur",
+            "email": "martino.yoganta@kly.id",
+            "role": "Developer"
+        },
+        {
+            "name": "Denta Zamzam Yasin Muhajir",
+            "email": "denta.muhajir@kly.id",
+            "role": "Developer"
         }
     ],
     "require": {
-        "guzzlehttp/guzzle": "~3.8",
+        "guzzlehttp/guzzle": "~6.2",
         "psr/log": "^1.0",
         "psr/http-message": "^1.0",
         "symfony/polyfill-intl-normalizer": "^1.8"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^7.2",
+        "symplify/easy-coding-standard": "^4.5"
     },
     "autoload": {
         "psr-4": {
@@ -29,19 +48,15 @@
         }
     },
     "scripts": {
-        "test": "php ./phpunit --bootstrap ./test/bootstrap.php ./test/",
-        "test:verbose": "php ./phpunit --bootstrap ./test/bootstrap.php ./test/ -vvv --debug ",
-        "test:article:verbose":"php ./phpunit --configuration=phpunit.xml --testsuite article -vvv --debug",
-        "test:collection:verbose":"php ./phpunit --configuration=phpunit.xml --testsuite collection -vvv --debug",
-        "test:format_mapping:verbose":"php ./phpunit --configuration=phpunit.xml --testsuite format_mapping -vvv --debug",
-        "test:model:verbose":"php ./phpunit --configuration=phpunit.xml --testsuite model -vvv --debug",
-        "test:publisher:verbose":"php ./phpunit --configuration=phpunit.xml --testsuite publisher -vvv --debug",
-        "test:response:verbose":"php ./phpunit --configuration=phpunit.xml --testsuite response -vvv --debug",
-        "test:request:verbose":"php ./phpunit --configuration=phpunit.xml --testsuite request -vvv --debug",
-        "test:windows": "@test",
-        "cs-fix": "php ./php-cs-fixer fix ./src -vvv --rules=@PSR2",
-        "cs-fix:test": "php ./php-cs-fixer fix ./test -vvv --rules=@PSR2"
-    },
-    "support": {
+        "test": "phpunit --bootstrap ./test/bootstrap.php ./test/",
+        "test:article":"phpunit --configuration=phpunit.xml --testsuite article",
+        "test:collection":"phpunit --configuration=phpunit.xml --testsuite collection",
+        "test:format_mapping":"phpunit --configuration=phpunit.xml --testsuite format_mapping",
+        "test:model":"phpunit --configuration=phpunit.xml --testsuite model",
+        "test:publisher":"phpunit --configuration=phpunit.xml --testsuite publisher",
+        "test:response":"phpunit --configuration=phpunit.xml --testsuite response",
+        "test:request":"phpunit --configuration=phpunit.xml --testsuite request",
+        "cs-check": "ecs check src test",
+        "cs-fix": "ecs check src test --fix"
     }
 }

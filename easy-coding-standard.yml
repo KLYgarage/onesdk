@@ -1,0 +1,39 @@
+imports:
+    - { resource: 'vendor/symplify/easy-coding-standard/config/common.yml' }
+    - { resource: 'vendor/symplify/easy-coding-standard/config/clean-code.yml' }
+    - { resource: 'vendor/symplify/easy-coding-standard/config/psr2.yml' }
+    - { resource: 'vendor/symplify/easy-coding-standard/config/php71.yml' }
+services:
+    # array(    );
+    PhpCsFixer\Fixer\ArrayNotation\ArraySyntaxFixer:
+        syntax: short
+
+    # new methods
+    PhpCsFixer\Fixer\Alias\RandomApiMigrationFixer:
+        mt_rand: random_int
+        rand: random_int
+
+    # ?? operator
+    PhpCsFixer\Fixer\Operator\TernaryToNullCoalescingFixer: ~
+
+    # strict types
+    PhpCsFixer\Fixer\Strict\DeclareStrictTypesFixer: ~
+    Symplify\CodingStandard\Fixer\Strict\BlankLineAfterStrictTypesFixer: ~
+    PhpCsFixer\Fixer\LanguageConstruct\DeclareEqualNormalizeFixer: ~
+
+    # typehints
+    PhpCsFixer\Fixer\FunctionNotation\ReturnTypeDeclarationFixer: ~
+    SlevomatCodingStandard\Sniffs\TypeHints\TypeHintDeclarationSniff:
+        enableEachParameterAndReturnInspection: true
+        enableVoidTypeHint: true
+        enableNullableTypeHints: true
+
+    # throwable
+    SlevomatCodingStandard\Sniffs\Exceptions\ReferenceThrowableOnlySniff: ~
+
+parameters:
+    skip:
+        # disable random annotation removal of this Sniff
+        SlevomatCodingStandard\Sniffs\TypeHints\TypeHintDeclarationSniff.UselessDocComment: ~
+        SlevomatCodingStandard\Sniffs\TypeHints\TypeHintDeclarationSniff.MissingTraversableReturnTypeHintSpecification: ~
+        SlevomatCodingStandard\Sniffs\TypeHints\TypeHintDeclarationSniff.MissingTraversableParameterTypeHintSpecification: ~
