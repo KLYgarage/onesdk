@@ -2,11 +2,12 @@
 
 namespace One;
 
-use Guzzle\Http\Client;
 use Guzzle\Http\Exception\ClientErrorResponseException;
-use Guzzle\Http\Message\RequestInterface;
+use GuzzleHttp\Client;
+use GuzzleHttp\Psr7\MultipartStream;
 use One\Model\Article;
 use One\Model\Model;
+use Psr\Http\Message\RequestInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 
@@ -113,7 +114,7 @@ class Publisher implements LoggerAwareInterface
         );
 
         $responseArticle = json_decode($responseArticle, true);
-        $article->setId($responseArticle['data']['id']);
+        $article->setId((string) $responseArticle['data']['id']);
 
         foreach ($article->getPossibleAttachment() as $field) {
             if ($article->hasAttachment($field)) {
@@ -226,10 +227,8 @@ class Publisher implements LoggerAwareInterface
      * post proxy
      *
      * @param \One\Collection|array $body
-     * @param array $header
-     * @param array $options
      */
-    final public function post(string $path, $body, $header = [], $options = []): string
+    final public function post(string $path, array $body = [], array $header = [], array $options = []): string
     {
         if ($this->hasLogger()) {
             $this->logger->info('Post to ' . $path);
@@ -248,10 +247,9 @@ class Publisher implements LoggerAwareInterface
      * delete proxy
      *
      * @param \One\Collection|array $body
-     * @param array $header
-     * @param array $options
+     * @param array $body
      */
-    final public function delete(string $path, $body = [], $header = [], $options = []): string
+    final public function delete(string $path, array $body = [], array $header = [], array $options = []): string
     {
         return $this->requestGate(
             'DELETE',
@@ -295,35 +293,44 @@ class Publisher implements LoggerAwareInterface
             $this->setAuthorizationHeader($options['access_token']);
         }
 
-        $this->httpClient = new Client(
-            $this->options->get('rest_server')
-        );
+        $this->httpClient = new Client([
+            'base_uri' => $this->options->get('rest_server'),
+        ]);
     }
 
     /**
      * one gate menu for request creation.
      *
      * @param \One\Collection|array $body
-     * @param array $options
      */
-    private function requestGate(string $method, string $path, array $header = [], $body = [], $options = []): string
+    private function requestGate(string $method, string $path, array $header = [], array $body = [], array $options = []): string
     {
         if (empty($this->accessToken)) {
             $this->renewAuthToken();
         }
 
-        return (string) $this->sendRequest(
-            $this->httpClient->createRequest(
-                $method,
-                $path,
-                array_merge(
-                    $this->options->get('default_headers'),
-                    $header
-                ),
-                $body,
-                $options
+        $request = new \GuzzleHttp\Psr7\Request(
+            $method,
+            $path,
+            array_merge(
+                $this->options->get('default_headers'),
+                $header
+            ),
+            $this->createBodyForRequest(
+                $this->prepareMultipartData($body)
             )
         );
+
+        return (string) $this->httpClient->send($request, $options)->getBody();
+    }
+
+    private function prepareMultipartData(array $data = []): array
+    {
+        $result = [];
+        foreach ($data as $key => $value) {
+            array_push($result, ['name' => $key, 'contents' => $value]);
+        }
+        return $result;
     }
 
     /**
@@ -341,7 +348,7 @@ class Publisher implements LoggerAwareInterface
         }
 
         try {
-            $response = $request->send();
+            $response = $this->httpClient->send($request);
             if ($response->getStatusCode() === 200) {
                 return $response->getBody();
             }
@@ -363,23 +370,38 @@ class Publisher implements LoggerAwareInterface
     }
 
     /**
+     * createBodyForRequest
+     */
+    private function createBodyForRequest(array $body = []): ?\GuzzleHttp\Psr7\MultiPartStream
+    {
+        if (empty($body)) {
+            return null;
+        }
+        return new MultipartStream($body);
+    }
+
+    /**
      * renewing access_token
      *
      * @throws \Exception
      */
     private function renewAuthToken(): self
     {
-        $token = (string) $this->sendRequest(
-            $this->httpClient->post(
-                self::AUTHENTICATION,
-                $this->options->get('default_headers'),
-                [
-                    'grant_type' => 'client_credentials',
-                    'client_id' => $this->clientId,
-                    'client_secret' => $this->clientSecret,
-                ]
-            )
+        $request = new \GuzzleHttp\Psr7\Request(
+            'POST',
+            self::AUTHENTICATION,
+            $this->options->get('default_headers'),
+            $this->createBodyForRequest([
+                ['name' => 'grant_type',
+                    'contents' => 'client_credentials', ],
+                ['name' => 'client_id',
+                    'contents' => $this->clientId, ],
+                ['name' => 'client_secret',
+                    'contents' => $this->clientSecret, ],
+            ])
         );
+
+        $token = (string) $this->sendRequest($request);
 
         $token = json_decode($token, true);
 
