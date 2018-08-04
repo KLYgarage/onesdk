@@ -295,12 +295,9 @@ class Publisher implements LoggerAwareInterface
             $this->setAuthorizationHeader($options['access_token']);
         }
 
-        // $this->httpClient = new Client(
-        //     $this->options->get('rest_server')
-        // );
-        $this->httpClient = new Client([
-            'base_uri' => $this->options->get('rest_server'),
-        ]);
+        $this->httpClient = new Client(
+            $this->options->get('rest_server')
+        );
     }
 
     /**
@@ -316,7 +313,7 @@ class Publisher implements LoggerAwareInterface
         }
 
         return (string) $this->sendRequest(
-            $this->httpClient->request(
+            $this->httpClient->createRequest(
                 $method,
                 $path,
                 array_merge(
