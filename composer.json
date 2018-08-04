@@ -54,6 +54,7 @@
         "test:format_mapping":"phpunit --configuration=phpunit.xml --testsuite format_mapping",
         "test:model":"phpunit --configuration=phpunit.xml --testsuite model",
         "test:publisher":"phpunit --configuration=phpunit.xml --testsuite publisher",
+        "test:publisher_new":"phpunit --configuration=phpunit.xml --testsuite publisher_new",
         "test:response":"phpunit --configuration=phpunit.xml --testsuite response",
         "test:request":"phpunit --configuration=phpunit.xml --testsuite request",
         "cs-check": "ecs check src test",
