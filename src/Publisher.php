@@ -4,7 +4,7 @@ namespace One;
 
 use Guzzle\Http\Exception\ClientErrorResponseException;
 use Guzzle\Http\Message\RequestInterface;
-use GuzzleHttp\Client;
+use Guzzle\Http\Client;
 use One\Model\Article;
 use One\Model\Model;
 use Psr\Log\LoggerAwareInterface;
