@@ -15,6 +15,9 @@
     <testsuite name="publisher">
       <file>./test/Unit/PublisherTest.php</file>
     </testsuite>
+    <testsuite name="publisher_new">
+      <file>./test/Unit/PublisherNewTest.php</file>
+    </testsuite>
     <testsuite name="uri">
       <file>./test/Unit/UriTest.php</file>
     </testsuite>

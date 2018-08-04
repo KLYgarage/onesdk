@@ -4,7 +4,7 @@ namespace One;
 
 use Guzzle\Http\Exception\ClientErrorResponseException;
 use Guzzle\Http\Message\RequestInterface;
-use Guzzle\Http\Client;
+use GuzzleHttp\Client;
 use One\Model\Article;
 use One\Model\Model;
 use Psr\Log\LoggerAwareInterface;
@@ -14,7 +14,7 @@ use Psr\Log\LoggerInterface;
  * Publisher class
  * main class to be used that interfacing to the API
  */
-class Publisher implements LoggerAwareInterface
+class PublisherNew implements LoggerAwareInterface
 {
     public const DEFAULT_MAX_ATTEMPT = 4;
 
@@ -295,9 +295,9 @@ class Publisher implements LoggerAwareInterface
             $this->setAuthorizationHeader($options['access_token']);
         }
 
-        $this->httpClient = new Client(
-            $this->options->get('rest_server')
-        );
+        $this->httpClient = new Client([
+            'base_uri' => $this->options->get('rest_server'),
+        ]);
     }
 
     /**
@@ -312,18 +312,16 @@ class Publisher implements LoggerAwareInterface
             $this->renewAuthToken();
         }
 
-        return (string) $this->sendRequest(
-            $this->httpClient->createRequest(
-                $method,
-                $path,
-                array_merge(
-                    $this->options->get('default_headers'),
-                    $header
-                ),
-                $body,
-                $options
+        $request = new \GuzzleHttp\Psr7\Request(
+            $method,
+            $path,
+            array_merge(
+                $this->options->get('default_headers'),
+                $header
             )
         );
+
+        return (string) $this->httpClient->send($request, $options)->getBody();
     }
 
     /**
@@ -369,17 +367,22 @@ class Publisher implements LoggerAwareInterface
      */
     private function renewAuthToken(): self
     {
-        $token = (string) $this->sendRequest(
-            $this->httpClient->post(
-                self::AUTHENTICATION,
-                $this->options->get('default_headers'),
-                [
-                    'grant_type' => 'client_credentials',
-                    'client_id' => $this->clientId,
-                    'client_secret' => $this->clientSecret,
-                ]
-            )
+        $request = new \GuzzleHttp\Psr7\Request(
+            'POST',
+            self::AUTHENTICATION,
+            $this->options->get('default_headers')
         );
+
+        $token = (string) $this->httpClient->send($request, [
+            'multipart' => [
+                ['name' => 'grant_type',
+                    'contents' => 'client_credentials', ],
+                ['name' => 'client_id',
+                    'contents' => $this->clientId, ],
+                ['name' => 'client_secret',
+                    'contents' => $this->clientSecret, ],
+            ],
+        ])->getBody();
 
         $token = json_decode($token, true);
 
