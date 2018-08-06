@@ -3,29 +3,6 @@
     "description": "One SDK Publisher php package",
     "type": "library",
     "license": "MIT",
-    "authors": [
-        {
-            "name": "Charis",
-            "email": "me@chars.me",
-            "homepage": "https://chars.me",
-            "role": "Developer"
-        },
-        {
-            "name": "Kenny Karnama",
-            "email": "kenny.karnama@kly.id",
-            "role": "Developer"
-        },
-        {
-            "name": "Martino Catur",
-            "email": "martino.yoganta@kly.id",
-            "role": "Developer"
-        },
-        {
-            "name": "Denta Zamzam Yasin Muhajir",
-            "email": "denta.muhajir@kly.id",
-            "role": "Developer"
-        }
-    ],
     "require": {
         "guzzlehttp/guzzle": "~6.2",
         "psr/log": "^1.0",
@@ -59,5 +36,28 @@
         "test:request":"phpunit --configuration=phpunit.xml --testsuite request",
         "cs-check": "ecs check src test",
         "cs-fix": "ecs check src test --fix"
-    }
+    },
+    "authors": [
+        {
+            "name": "Charis",
+            "email": "me@chars.me",
+            "homepage": "https://chars.me",
+            "role": "Developer"
+        },
+        {
+            "name": "Kenny Karnama",
+            "email": "kenny.karnama@kly.id",
+            "role": "Developer"
+        },
+        {
+            "name": "Martino Catur",
+            "email": "martino.yoganta@kly.id",
+            "role": "Developer"
+        },
+        {
+            "name": "Denta Zamzam Yasin Muhajir",
+            "email": "denta.muhajir@kly.id",
+            "role": "Developer"
+        }
+    ]
 }
