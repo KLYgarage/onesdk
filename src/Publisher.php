@@ -351,9 +351,6 @@ class Publisher implements LoggerAwareInterface
             if ($response->getStatusCode() === 200) {
                 return $response->getBody();
             }
-            if ($response->getStatusCode() === 429) {
-                $this->renewAuthToken();
-            }
 
             return $this->sendRequest($request, $attempt++);
         } catch (ClientException $err) {

@@ -116,7 +116,7 @@ class Collection implements \ArrayAccess, \IteratorAggregate, \Countable, ToArra
     /**
      * @inheritDoc
      */
-    public static function fromJson($stream): JsonInterface
+    public static function fromJson(string $stream): JsonInterface
     {
         $props = json_decode((string) $stream);
 

@@ -4,6 +4,7 @@ namespace one;
 
 use One\Model\Article;
 use One\Model\Gallery;
+use One\Model\Model;
 use One\Model\Page;
 use One\Model\Photo;
 use One\Model\Video;
@@ -364,10 +365,10 @@ class FormatMapping
 
     /**
      * Make sure attachment object not null
-     * @param  mixed $object
+     * @param mixed $object
      * @throws \Exception
      */
-    private function filterAttachmentObject($object): object
+    private function filterAttachmentObject($object): Model
     {
         if ($object !== null) {
             return $object;
