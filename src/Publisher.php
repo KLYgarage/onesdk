@@ -2,8 +2,8 @@
 
 namespace One;
 
-use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Psr7\MultipartStream;
 use One\Model\Article;
 use One\Model\Model;
@@ -29,7 +29,7 @@ class Publisher implements LoggerAwareInterface
 
     /**
      * attachment url destination
-     * @var array<string[]>
+     * @var array<string>
      */
     private $attachmentUrl;
 
@@ -70,7 +70,7 @@ class Publisher implements LoggerAwareInterface
     /**
      * http transaction Client
      *
-     * @var \Guzzle\Http\Client
+     * @var \GuzzleHttp\Client;
      */
     private $httpClient;
 
@@ -174,7 +174,7 @@ class Publisher implements LoggerAwareInterface
     /**
      * delete article based on id
      */
-    public function deleteArticle(string $idArticle): string
+    public function deleteArticle(string $idArticle): ?string
     {
         $articleOnRest = $this->getArticle($idArticle);
 
@@ -336,15 +336,14 @@ class Publisher implements LoggerAwareInterface
     /**
      * actually send request created here, separated for easier attempt count and handling exception
      *
-     * @return \Guzzle\Http\EntityBodyInterface|string|null
      * @throws \Exception
      * @throws \GuzzleHttp\Exception\ClientException
      * @throws \GuzzleHttp\Exception\BadResponseException
      */
-    private function sendRequest(RequestInterface $request, int $attempt = 0)
+    private function sendRequest(RequestInterface $request, int $attempt = 0): \Psr\Http\Message\StreamInterface
     {
         if ($attempt >= $this->options->get('max_attempt')) {
-            throw new \Exception('MAX attempt reached for ' . $request->getUrl() . ' with payload ' . (string) $request);
+            throw new \Exception('MAX attempt reached for ' . $request->getUri() . ' with payload ' . (string) $request);
         }
 
         try {
