@@ -29,9 +29,9 @@ class FormatMappingTest extends \PHPUnit\Framework\TestCase
     protected function setUp(): void
     {
         $env = \loadTestEnv();
-        if (empty($env)) {
-            $this->markTestSkipped('no .env defined. Need client ID and secret to continue this test, modify .env.example to .env to run test');
-        }
+        // if (empty($env)) {
+        //     $this->markTestSkipped('no .env defined. Need client ID and secret to continue this test, modify .env.example to .env to run test');
+        // }
 
         $this->publisher = new Publisher(
             $env['CLIENT_ID'],

@@ -21,9 +21,9 @@ class PublisherTest extends \PHPUnit\Framework\TestCase
     {
         $env = \loadTestEnv();
 
-        if (empty($env)) {
-            $this->markTestSkipped('no .env defined. Need client ID and secret to continue this test, modify .env.example to .env on test/.env to run test');
-        }
+        // if (empty($env)) {
+        //     $this->markTestSkipped('no .env defined. Need client ID and secret to continue this test, modify .env.example to .env on test/.env to run test');
+        // }
 
         $this->publisher = new Publisher(
             $env['CLIENT_ID'],
