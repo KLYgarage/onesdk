@@ -165,10 +165,9 @@ class FormatMapping
 
     /**
      * Attachment(s) of a single article
-     * @param  array $dataArticle
      * @return array attachments
      */
-    private function attachment(string $attachmentType, array $attributes, assoc $dataArticle): array
+    private function attachment(string $attachmentType, array $attributes, array $dataArticle): array
     {
         $data = $dataArticle[$attachmentType];
 
@@ -208,7 +207,7 @@ class FormatMapping
      * @param  array<string> $attrReferences
      * @param  array<string> $item
      */
-    private function makeAttachmentObject(string $attachmentType, array $attrReferences, array $item): ?\object
+    private function makeAttachmentObject(string $attachmentType, array $attrReferences, array $item): object
     {
         $attrValues = [];
 
