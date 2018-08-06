@@ -3,9 +3,6 @@ jobs:
   build:
     docker:
       - image: circleci/php:7-cli-browsers
-    environment:
-      CLIENTID=${CLIENTID}
-      CLIENTSECRET=${CLIENTSECRET}
     working_directory: ~/repo
     steps:
       - checkout
