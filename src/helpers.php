@@ -21,7 +21,7 @@ function createUriFromString(string $uri): \One\Uri
  */
 function createUriFromServer(): \One\Uri
 {
-    return FactoryUri::create();
+    return FactoryUri::createFromServer();
 }
 
 /**
@@ -37,7 +37,7 @@ function createArticleFromArray(array $data): \One\Model\Article
  * createAttachmentPhoto
  * @covers FactoryPhoto::create
  */
-function createAttachmentPhoto(String $url, String $ratio, String $description, String $information): \One\Model\Photo
+function createAttachmentPhoto(string $url, string $ratio, string $description, string $information): \One\Model\Photo
 {
     return FactoryPhoto::create(
         [
@@ -52,9 +52,8 @@ function createAttachmentPhoto(String $url, String $ratio, String $description, 
 /**
  * createAttachmentGallery
  * @covers FactoryGalery::create
- * @param \One\Model\Photo
  */
-function createAttachmentGallery(String $body, Int $order, \One\Model\Photo $photo, String $source, String $lead = ''): \One\Model\Gallery
+function createAttachmentGallery(String $body, Int $order, string $photo, String $source, String $lead = ''): \One\Model\Gallery
 {
     return FactoryGallery::create(
         [

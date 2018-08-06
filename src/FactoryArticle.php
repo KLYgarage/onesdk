@@ -63,8 +63,9 @@ class FactoryArticle
      * functionality to check whether a variable is set or not.
      * @param mixed $key
      * @param string $default
+     * @return mixed
      */
-    private static function checkData(array $data, $key, $default = ''): string
+    private static function checkData(array $data, $key, $default = '')
     {
         return $data[$key] ?? $default;
     }

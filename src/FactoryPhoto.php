@@ -68,7 +68,7 @@ class FactoryPhoto
     /**
      * Create Photo Object
      */
-    private static function createPhoto(String $url, String $ratio, String $description, String $information): \One\Model\Photo
+    private static function createPhoto(string $url, string $ratio, string $description, string $information): \One\Model\Photo
     {
         return new Photo(
             $url,

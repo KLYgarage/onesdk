@@ -45,7 +45,7 @@ class FormatMappingTest extends \PHPUnit\Framework\TestCase
     {
         $newArticleId = (string) 10998;
 
-        $jsonArticle = $this->publisher->getArticle($newArticleId);
+        $jsonArticle = $this->publisher->getArticle((string) $newArticleId);
 
         if ($jsonArticle === null && empty($jsonArticle)) {
             $this->markTestSkipped('Test skipped');
@@ -57,7 +57,7 @@ class FormatMappingTest extends \PHPUnit\Framework\TestCase
 
         $this->assertNotNull($this->article);
 
-        $this->assertSame($newArticleId, $this->article->getId());
+        $this->assertSame((string) $newArticleId, $this->article->getId());
 
         $this->assertTrue($this->article->hasAttachment(Article::ATTACHMENT_FIELD_PHOTO));
         $this->assertFalse($this->article->hasAttachment(Article::ATTACHMENT_FIELD_PAGE));

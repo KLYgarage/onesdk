@@ -6,6 +6,9 @@
      <testsuite name="collection">
       <directory>./test/Unit/CollectionTest.php</directory>
     </testsuite>
+     <testsuite name="factory">
+      <directory>./test/Unit/FactoryTest.php</directory>
+    </testsuite>
     <testsuite name="format_mapping">
       <file>./test/Unit/FormatMappingTest.php</file>
     </testsuite>

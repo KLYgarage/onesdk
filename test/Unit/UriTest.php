@@ -42,7 +42,7 @@ class UriTest extends \PHPUnit\Framework\TestCase
         $this->assertSame('https', $uri->getScheme());
         $this->assertSame('username:password', $uri->getUserInfo());
         $this->assertSame('www.example.com', $uri->getHost());
-        $this->assertSame('85', $uri->getPort());
+        $this->assertSame(85, $uri->getPort());
         $this->assertSame('/kerap/254', $uri->getPath());
         $this->assertSame('page=1', $uri->getQuery());
         $this->assertSame('idkomentar', $uri->getFragment());
