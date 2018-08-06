@@ -214,7 +214,7 @@ class FormatMapping
         foreach ($attrReferences as $attrReference) {
             $attrValues[$attrReference] = $this->getValue($attrReference, $item);
         }
-        
+
         switch ($attachmentType) {
             case self::JSON_PHOTO_FIELD:
                 return $this->createPhoto(
