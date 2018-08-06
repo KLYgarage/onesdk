@@ -2,7 +2,7 @@
 
 namespace One;
 
-use Guzzle\Http\Exception\ClientErrorResponseException;
+use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\MultipartStream;
 use One\Model\Article;
@@ -338,8 +338,8 @@ class Publisher implements LoggerAwareInterface
      *
      * @return \Guzzle\Http\EntityBodyInterface|string|null
      * @throws \Exception
-     * @throws \Guzzle\Http\Exception\ClientErrorResponseException
-     * @throws \Guzzle\Http\Exception\BadResponseException
+     * @throws \GuzzleHttp\Exception\ClientException
+     * @throws \GuzzleHttp\Exception\BadResponseException
      */
     private function sendRequest(RequestInterface $request, int $attempt = 0)
     {
@@ -357,7 +357,7 @@ class Publisher implements LoggerAwareInterface
             }
 
             return $this->sendRequest($request, $attempt++);
-        } catch (ClientErrorResponseException $err) {
+        } catch (ClientException $err) {
             if ($err->getResponse()->getStatusCode() === 429) {
                 $this->renewAuthToken();
                 return $this->sendRequest($err->getRequest(), $attempt++);
