@@ -1,24 +1,26 @@
 <?php declare(strict_types=1);
 
-namespace One\Test\Unit;
+namespace One\Test;
 
+use \One\Publisher;
 use One\Model\Article;
 use One\Model\Gallery;
 use One\Model\Page;
 use One\Model\Photo;
 use One\Model\Video;
-use One\Publisher;
 
 class PublisherTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var One\Publisher
+     * Publisher
+     * @var \One\PublisherNew
      */
     private $publisher;
 
     protected function setUp(): void
     {
         $env = \loadTestEnv();
+
         if (empty($env)) {
             $this->markTestSkipped('no .env defined. Need client ID and secret to continue this test, modify .env.example to .env on test/.env to run test');
         }
@@ -27,6 +29,11 @@ class PublisherTest extends \PHPUnit\Framework\TestCase
             $env['CLIENT_ID'],
             $env['CLIENT_SECRET']
         );
+    }
+
+    public function testInstanceNotNull(): void
+    {
+        $this->assertNotNull($this->publisher);
     }
 
     public function testAuthentication(): void
@@ -334,7 +341,7 @@ class PublisherTest extends \PHPUnit\Framework\TestCase
         for ($i = 0; $i < $maxPhotos; $i++) {
             $gallery = new Gallery(
                 'dummy' . random_int(0, 999),
-                (string) ($i * random_int(12, 76) * random_int(1, 99)),
+                ($i * random_int(12, 76) * random_int(1, 99)),
                 'http://www.kovacek.org/magni-omnis-consequuntur-sapiente-magni-architecto-soluta-voluptas-corrupti' . $i,
                 'http://www.kovacek.org/magni-omnis-consequuntur-sapiente-magni-architecto-soluta-voluptas-corrupti' . $i
             );
