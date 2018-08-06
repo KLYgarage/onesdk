@@ -162,7 +162,7 @@ class Article extends Model
         );
 
         if ($identifier) {
-            $this->setId($identifier);
+            $this->setId((string) $identifier);
         }
     }
 
