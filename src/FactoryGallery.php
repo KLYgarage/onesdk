@@ -46,8 +46,9 @@ class FactoryGallery
      *
      * @param mixed $key
      * @param string $default
+     * @return mixed
      */
-    private static function checkData(array $data, $key, $default = ''): string
+    private static function checkData(array $data, $key, $default = '')
     {
         return $data[$key] ?? $default;
     }

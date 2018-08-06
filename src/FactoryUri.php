@@ -20,10 +20,10 @@ class FactoryUri
      */
     public static function create(string $string = ''): \One\Uri
     {
-        if (! empty($string)) {
-            return self::createFromString($string);
+        if (empty($string)) {
+            $string = '/';
         }
-        return self::createFromServer();
+        return self::createFromString($string);
     }
 
     /**

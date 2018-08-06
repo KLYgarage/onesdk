@@ -52,7 +52,7 @@ class FactoryTest extends \PHPUnit\Framework\TestCase
     {
         $_SERVER['HTTPS'] = 'https://';
         $_SERVER['HTTP_HOST'] = 'www.foobar.com';
-        $_SERVER['SERVER_PORT'] = '85';
+        $_SERVER['SERVER_PORT'] = 85;
         $_SERVER['REQUEST_URI'] = 'path';
         $_SERVER['QUERY_STRING'] = 'page=1';
         $_SERVER['PHP_AUTH_USER'] = 'username';
@@ -62,7 +62,7 @@ class FactoryTest extends \PHPUnit\Framework\TestCase
         $this->assertSame('https', $uri->getScheme());
         $this->assertSame('username:password', $uri->getUserInfo());
         $this->assertSame('www.foobar.com', $uri->getHost());
-        $this->assertSame('85', $uri->getPort());
+        $this->assertSame(85, $uri->getPort());
         $this->assertSame('/path', $uri->getPath());
         $this->assertSame('page=1', $uri->getQuery());
         $this->assertSame('https://username:password@www.foobar.com:85', $uri->getBaseUrl());
@@ -107,7 +107,7 @@ class FactoryTest extends \PHPUnit\Framework\TestCase
         $this->assertSame('https', $uri->getScheme());
         $this->assertSame('username:password', $uri->getUserInfo());
         $this->assertSame('www.example.com', $uri->getHost());
-        $this->assertSame('85', $uri->getPort());
+        $this->assertSame(85, $uri->getPort());
         $this->assertSame('/kerap/254', $uri->getPath());
         $this->assertSame('page=1', $uri->getQuery());
         $this->assertSame('idkomentar', $uri->getFragment());

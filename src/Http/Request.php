@@ -32,7 +32,7 @@ class Request extends Message implements \Psr\Http\Message\RequestInterface
      */
     public function __construct(
         string $method,
-        $uri,
+        $uri = null,
         array $headers = [],
         $body = null,
         $version = '1.1'
@@ -57,7 +57,7 @@ class Request extends Message implements \Psr\Http\Message\RequestInterface
      */
     public function getRequestTarget()
     {
-        if ($this->requestTarget !== null) {
+        if (! empty($this->requestTarget)) {
             return $this->requestTarget;
         }
         $target = $this->uri->getPath();

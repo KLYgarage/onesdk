@@ -90,7 +90,7 @@ class FormatMapping
                 $this->filterString(
                     $this->getValue('published_at', $dataArticle)
                 ),
-                $this->filterInteger(
+                (string) $this->filterInteger(
                     $this->getValue('id', $dataArticle)
                 )
             );
@@ -165,10 +165,9 @@ class FormatMapping
 
     /**
      * Attachment(s) of a single article
-     * @param  array $dataArticle
      * @return array attachments
      */
-    private function attachment(string $attachmentType, array $attributes, assoc $dataArticle): array
+    private function attachment(string $attachmentType, array $attributes, array $dataArticle): array
     {
         $data = $dataArticle[$attachmentType];
 
@@ -207,8 +206,9 @@ class FormatMapping
      * @param  string $attachmentType json field of attachment
      * @param  array<string> $attrReferences
      * @param  array<string> $item
+     * @return \One\Model\Photo|\One\Model\Gallery|\One\Model\Video|\One\Model\Page|null
      */
-    private function makeAttachmentObject(string $attachmentType, array $attrReferences, array $item): ?\object
+    private function makeAttachmentObject(string $attachmentType, array $attrReferences, array $item)
     {
         $attrValues = [];
 
