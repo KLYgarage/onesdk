@@ -1,84 +1,72 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace One;
 
 use One\Http\PumpStream;
 use One\Http\Stream;
+use One\Model\Article;
+use One\Model\Gallery;
+use One\Model\Photo;
 use Psr\Http\Message\StreamInterface;
 use Psr\Http\Message\UriInterface;
 
 /**
  * createUriFromString
- * @param string $uri
- * @return UriInterface
- *
+ * @covers FactoryUri::create
  */
-function createUriFromString($uri)
+function createUriFromString(string $uri): UriInterface
 {
     return FactoryUri::create($uri);
 }
 
 /**
  * createuriFromServer
- * @return UriInterface
+ * @covers FactoryUri::create
  */
-function createUriFromServer()
+function createUriFromServer(): UriInterface
 {
-    return FactoryUri::create();
+    return FactoryUri::createFromServer();
 }
 
 /**
  * createArticleFromArray
- * @param array $data
- * @return \One\Models\Article
- *
+ * @covers FactoryArticle::create
  */
-function createArticleFromArray($data)
+function createArticleFromArray(array $data): Article
 {
     return FactoryArticle::create($data);
 }
 
 /**
  * createAttachmentPhoto
- * @param string $url
- * @param string $ratio
- * @param string $description
- * @param string $information
- * @return \One\Models\Photo
- *
+ * @covers FactoryPhoto::create
  */
-function createAttachmentPhoto($url, $ratio, $description, $information)
+function createAttachmentPhoto(string $url, string $ratio, string $description, string $information): Photo
 {
     return FactoryPhoto::create(
-        array(
+        [
             'url' => $url,
             'ratio' => $ratio,
             'description' => $description,
             'information' => $information,
-        )
+        ]
     );
 }
 
 /**
  * createAttachmentGallery
- * @param string $body
- * @param int $order
- * @param string $photo
- * @param string $source
- * @param string $lead
- * @return \One\Model\Gallery
- *
+ * @covers FactoryGalery::create
  */
-function createAttachmentGallery($body, $order, $photo, $source, $lead = '')
+function createAttachmentGallery(String $body, Int $order, string $photo, String $source, String $lead = ''): Gallery
 {
     return FactoryGallery::create(
-        array(
+        [
             'body' => $body,
             'order' => $order,
             'photo' => $photo,
             'source' => $source,
             'lead' => $lead,
-        )
+        ]
     );
 }
 
@@ -90,12 +78,11 @@ function createAttachmentGallery($body, $order, $photo, $source, $lead = '')
  * - size: Size of the stream.
  *
  * @param mixed $resource Entity body data
- * @param array                                                                  $options  Additional options
+ * @param array $options Additional options
  *
- * @return StreamInterface
  * @throws \InvalidArgumentException if the $resource arg is not valid.
  */
-function stream_for($resource = '', array $options = [])
+function stream_for($resource = '', $options = []): StreamInterface
 {
     if (is_scalar($resource)) {
         return openStream($resource, $options);
@@ -107,10 +94,9 @@ function stream_for($resource = '', array $options = [])
  * Helper to create stream based on resource and options
  * @param mixed $resource
  * @param  array $options
- * @return StreamInterface
  * @throws \InvalidArgumentException if the $resource arg is not valid.
  */
-function createStream($resource, $options)
+function createStream($resource, $options): StreamInterface
 {
     switch (gettype($resource)) {
         case 'resource':
@@ -122,7 +108,7 @@ function createStream($resource, $options)
                 return stream_for((string) $resource, $options);
             }
             return new PumpStream(function () use ($resource) {
-                if (!$resource->valid()) {
+                if (! $resource->valid()) {
                     return false;
                 }
                 $result = $resource->current();
@@ -134,7 +120,7 @@ function createStream($resource, $options)
     }
 
     if (is_callable($resource)) {
-        return new \One\Http\PumpStream($resource, $options);
+        return new PumpStream($resource, $options);
     }
 
     throw new \InvalidArgumentException('Invalid resource type: ' . gettype($resource));
@@ -147,17 +133,16 @@ function createStream($resource, $options)
  * @param StreamInterface $stream Stream to read
  * @param int             $maxLen Maximum number of bytes to read. Pass -1
  *                                to read the entire stream.
- * @return string
  * @throws \RuntimeException on error.
  */
-function copy_to_string(StreamInterface $stream, $maxLen = -1)
+function copy_to_string(StreamInterface $stream, int $maxLen = -1): string
 {
     $buffer = '';
     if ($maxLen === -1) {
-        while (!$stream->eof()) {
+        while (! $stream->eof()) {
             $buf = $stream->read(1048576);
             // Using a loose equality here to match on '' and false.
-            if ($buf == null) {
+            if ($buf === null) {
                 break;
             }
             $buffer .= $buf;
@@ -165,10 +150,10 @@ function copy_to_string(StreamInterface $stream, $maxLen = -1)
         return $buffer;
     }
     $len = 0;
-    while (!$stream->eof() && $len < $maxLen) {
+    while (! $stream->eof() && $len < $maxLen) {
         $buf = $stream->read($maxLen - $len);
         // Using a loose equality here to match on '' and false.
-        if ($buf == null) {
+        if ($buf === null) {
             break;
         }
         $buffer .= $buf;
@@ -180,9 +165,8 @@ function copy_to_string(StreamInterface $stream, $maxLen = -1)
  * Open Stream when resource is a scalar type
  * @param mixed $resource
  * @param array $options
- * @return StreamInterface
  */
-function openStream($resource, $options)
+function openStream($resource, $options): StreamInterface
 {
     $stream = fopen('php://temp', 'r+');
     if ($resource !== '' && $stream !== false) {

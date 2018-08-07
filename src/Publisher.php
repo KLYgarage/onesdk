@@ -1,13 +1,13 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace One;
 
-use Guzzle\Http\Client;
-use Guzzle\Http\Exception\BadResponseException;
-use Guzzle\Http\Exception\ClientErrorResponseException;
-use Guzzle\Http\Message\RequestInterface;
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Psr7\MultipartStream;
 use One\Model\Article;
 use One\Model\Model;
+use Psr\Http\Message\RequestInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 
@@ -17,17 +17,19 @@ use Psr\Log\LoggerInterface;
  */
 class Publisher implements LoggerAwareInterface
 {
-    const DEFAULT_MAX_ATTEMPT = 4;
+    public const DEFAULT_MAX_ATTEMPT = 4;
 
-    const REST_SERVER = 'https://dev.one.co.id';
-    const AUTHENTICATION = '/oauth/token';
-    const ARTICLE_CHECK_ENDPOINT = '/api/article';
-    const ARTICLE_ENDPOINT = '/api/publisher/article';
+    public const REST_SERVER = 'https://dev.one.co.id';
 
-    /*
+    public const AUTHENTICATION = '/oauth/token';
+
+    public const ARTICLE_CHECK_ENDPOINT = '/api/article';
+
+    public const ARTICLE_ENDPOINT = '/api/publisher/article';
+
+    /**
      * attachment url destination
-     *
-     * @var array
+     * @var array<string>
      */
     private $attachmentUrl;
 
@@ -41,283 +43,68 @@ class Publisher implements LoggerAwareInterface
     /**
      * credentials props
      *
-     * @var string $clientId
-     * @var string $clientSecret
+     * @var string
      */
     private $clientId;
+
+    /**
+     * client secret
+     * @var string
+     */
     private $clientSecret;
 
     /**
      * Oauth access token response
      *
-     * @var string $accessToken
+     * @var string
      */
     private $accessToken = null;
 
     /**
      * publisher custom options
      *
-     * @var \One\Collection $options
+     * @var \One\Collection
      */
     private $options;
 
     /**
      * http transaction Client
      *
-     * @var \Guzzle\Http\Client
+     * @var \GuzzleHttp\Client;
      */
     private $httpClient;
-    
+
     /**
      * constructor
-     *
-     * @param string $clientId
-     * @param string $clientSecret
-     * @param array $options
      */
-    public function __construct($clientId, $clientSecret, $options = array())
+    public function __construct(string $clientId, string $clientSecret, array $options = [])
     {
         $this->clientId = $clientId;
         $this->clientSecret = $clientSecret;
 
         $this->assessOptions($options);
- 
-        $this->attachmentUrl = array(
-            Article::ATTACHMENT_FIELD_GALLERY => self::ARTICLE_ENDPOINT . '/{article_id}/gallery',
-            Article::ATTACHMENT_FIELD_PAGE    => self::ARTICLE_ENDPOINT . '/{article_id}/page',
-            Article::ATTACHMENT_FIELD_PHOTO   => self::ARTICLE_ENDPOINT . '/{article_id}/photo',
-            Article::ATTACHMENT_FIELD_VIDEO   => self::ARTICLE_ENDPOINT . '/{article_id}/video'
 
-        );
+        $this->attachmentUrl = [
+            Article::ATTACHMENT_FIELD_GALLERY => self::ARTICLE_ENDPOINT . '/{article_id}/gallery',
+            Article::ATTACHMENT_FIELD_PAGE => self::ARTICLE_ENDPOINT . '/{article_id}/page',
+            Article::ATTACHMENT_FIELD_PHOTO => self::ARTICLE_ENDPOINT . '/{article_id}/photo',
+            Article::ATTACHMENT_FIELD_VIDEO => self::ARTICLE_ENDPOINT . '/{article_id}/video',
+
+        ];
     }
 
     /**
      * recycleToken from callback. If use external token storage could leveraged on this
-     *
-     * @param \Closure $tokenProducer
-     * @return self
      */
-    public function recycleToken(\Closure $tokenProducer)
+    public function recycleToken(\Closure $tokenProducer): self
     {
         return $this->setAuthorizationHeader($tokenProducer());
     }
 
     /**
-     * assessing and custom option
-     *
-     * @param array $options
-     * @return void
-     */
-    private function assessOptions($options)
-    {
-        $defaultOptions = array(
-            'rest_server' => self::REST_SERVER,
-            'auth_url' => self::AUTHENTICATION,
-            'max_attempt' => self::DEFAULT_MAX_ATTEMPT,
-            'default_headers' => array(
-                "Accept" => "application/json",
-            ),
-        );
-
-        $this->options = new Collection(
-            array_merge(
-                $defaultOptions,
-                $options
-            )
-        );
-
-        if (isset($options['access_token'])) {
-            $this->setAuthorizationHeader($options['access_token']);
-        }
-
-        $this->httpClient = new Client(
-            $this->options->get('rest_server')
-        );
-    }
-
-    /**
-     * one gate menu for request creation.
-     *
-     * @param string $method
-     * @param string $path
-     * @param array $header
-     * @param \One\Collection|array $body
-     * @param array $options
-     * @return string
-     */
-    private function requestGate($method, $path, $header = array(), $body = array(), $options = array())
-    {
-        if (empty($this->accessToken)) {
-            $this->renewAuthToken();
-        }
-
-        return (string) $this->sendRequest(
-            $this->httpClient->createRequest(
-                $method,
-                $path,
-                array_merge(
-                    $this->options->get('default_headers'),
-                    $header
-                ),
-                $body,
-                $options
-            )
-        );
-    }
-
-    /**
-     * actually send request created here, separated for easier attempt count and handling exception
-     *
-     * @param \Guzzle\Http\Message\RequestInterface $request
-     * @param integer $attempt
-     * @return \Guzzle\Http\EntityBodyInterface|string|null
-     * @throws \Exception
-     * @throws \Guzzle\Http\Exception\ClientErrorResponseException
-     * @throws \Guzzle\Http\Exception\BadResponseException
-     */
-    private function sendRequest(RequestInterface $request, $attempt = 0)
-    {
-        if ($attempt >= $this->options->get('max_attempt')) {
-            throw new \Exception("MAX attempt reached for " . $request->getUrl() . " with payload " . (string) $request);
-        }
-
-        try {
-            $response = $request->send();
-            if ($response->getStatusCode() == 200) {
-                return $response->getBody();
-            }
-            if ($response->getStatusCode() == 429) {
-                $this->renewAuthToken();
-            }
-
-            return $this->sendRequest($request, $attempt++);
-        } catch (ClientErrorResponseException $err) {
-            if ($err->getResponse()->getStatusCode() == 429) {
-                $this->renewAuthToken();
-                return $this->sendRequest($err->getRequest(), $attempt++);
-            }
-
-            throw $err;
-        } catch (\Exception $err) {
-            throw $err;
-        }
-    }
-
-    /**
-     * renewing access_token
-     *
-     * @return self
-     * @throws \Exception
-     */
-    private function renewAuthToken()
-    {
-        $token = (string) $this->sendRequest(
-            $this->httpClient->post(
-                self::AUTHENTICATION,
-                $this->options->get('default_headers'),
-                array(
-                    "grant_type" => "client_credentials",
-                    "client_id" => $this->clientId,
-                    "client_secret" => $this->clientSecret,
-                )
-            )
-        );
-
-        $token = json_decode($token, true);
-
-        if (empty($token)) {
-            throw new \Exception("Access token request return empty response");
-        }
-
-        return $this->setAuthorizationHeader(
-            $token['access_token']
-        );
-    }
-
-    /**
-     * set header for OAuth 2.0
-     *
-     * @param string $accessToken
-     * @return self
-     */
-    private function setAuthorizationHeader($accessToken)
-    {
-        $this->accessToken = $accessToken;
-
-        $this->options->set(
-            'default_headers',
-            array_merge(
-                $this->options->get('default_headers'),
-                array(
-                    "Authorization" => "Bearer " . $accessToken,
-                )
-            )
-        );
-
-        return $this;
-    }
-
-    /**
-     * get Attachment Submission url Endpoint at rest API
-     *
-     * @param string $idArticle
-     * @param string $field
-     * @return string
-     */
-    private function getAttachmentEndPoint($idArticle, $field)
-    {
-        return $this->replaceEndPointId(
-
-            $idArticle,
-            $this->attachmentUrl[$field]
-        );
-    }
-
-    /**
-     * get article endpoint for deleting api
-     *
-     * @param string $identifier
-     * @return string
-     */
-    private function getArticleWithIdEndPoint($identifier)
-    {
-        return self::ARTICLE_ENDPOINT . "/$identifier";
-    }
-
-    /**
-     * function that actually replace article_id inside endpoint pattern
-     *
-     * @param string $identifier
-     * @param string $url
-     * @return string
-     */
-    private function replaceEndPointId($identifier, $url)
-    {
-        return str_replace(
-            '{article_id}',
-            $identifier,
-            $url
-        );
-    }
-
-    /**
-     * normalizing payload. not yet implemented totally, currently just bypass a toArray() function from collection.
-     *
-     * @param \One\Collection $collection
-     * @return array
-     */
-    private function normalizePayload(Collection $collection)
-    {
-        return $collection->toArray();
-    }
-
-    /**
      * submitting article here, return new Object cloned from original
-     *
-     * @param \One\Model\Article $article
-     * @return \One\Model\Article
      */
-    public function submitArticle(Article $article)
+    public function submitArticle(Article $article): \One\Model\Article
     {
         $responseArticle = $this->post(
             self::ARTICLE_ENDPOINT,
@@ -327,7 +114,7 @@ class Publisher implements LoggerAwareInterface
         );
 
         $responseArticle = json_decode($responseArticle, true);
-        $article->setId($responseArticle['data']['id']);
+        $article->setId((string) $responseArticle['data']['id']);
 
         foreach ($article->getPossibleAttachment() as $field) {
             if ($article->hasAttachment($field)) {
@@ -346,13 +133,8 @@ class Publisher implements LoggerAwareInterface
 
     /**
      * submit each attachment of an article here
-     *
-     * @param string $idArticle
-     * @param \One\Model\Model $attachment
-     * @param string $field
-     * @return array
      */
-    public function submitAttachment($idArticle, Model $attachment, $field)
+    public function submitAttachment(string $idArticle, Model $attachment, string $field): array
     {
         return json_decode(
             $this->post(
@@ -368,13 +150,12 @@ class Publisher implements LoggerAwareInterface
     /**
      * get article from rest API
      *
-     * @param string $idArticle
      * @return string json
      */
-    public function getArticle($idArticle)
+    public function getArticle(string $idArticle): string
     {
         return $this->get(
-            self::ARTICLE_CHECK_ENDPOINT . "/$idArticle"
+            self::ARTICLE_CHECK_ENDPOINT . "/${idArticle}"
         );
     }
 
@@ -383,7 +164,7 @@ class Publisher implements LoggerAwareInterface
      *
      * @return string json
      */
-    public function listArticle()
+    public function listArticle(): string
     {
         return $this->get(
             self::ARTICLE_ENDPOINT
@@ -392,15 +173,12 @@ class Publisher implements LoggerAwareInterface
 
     /**
      * delete article based on id
-     *
-     * @param string $idArticle
-     * @return string
      */
-    public function deleteArticle($idArticle)
+    public function deleteArticle(string $idArticle): ?string
     {
         $articleOnRest = $this->getArticle($idArticle);
 
-        if (!empty($articleOnRest)) {
+        if (! empty($articleOnRest)) {
             $articleOnRest = json_decode($articleOnRest, true);
 
             if (isset($articleOnRest['data'])) {
@@ -423,43 +201,24 @@ class Publisher implements LoggerAwareInterface
 
     /**
      * delete attachment of an article
-     *
-     * @param string $idArticle
-     * @param string $field
-     * @param string $order
-     * @return string
      */
-    public function deleteAttachment($idArticle, $field, $order)
+    public function deleteAttachment(string $idArticle, string $field, string $order): string
     {
         return $this->delete(
-            $this->getAttachmentEndPoint($idArticle, $field) . "/$order"
+            $this->getAttachmentEndPoint($idArticle, $field) . "/${order}"
         );
     }
 
     /**
-     * Checks if Logger instance exists
-     * @return boolean
-     */
-    private function hasLogger()
-    {
-        return isset($this->logger) && !is_null($this->logger);
-    }
-
-    /**
      * get proxy
-     *
-     * @param string $path
-     * @param array $header
-     * @param array $options
-     * @return string
      */
-    final public function get($path, $header = array(), $options = array())
+    final public function get(string $path, array $header = [], array $options = []): string
     {
         return $this->requestGate(
             'GET',
             $path,
             $header,
-            array(),
+            [],
             $options
         );
     }
@@ -467,16 +226,12 @@ class Publisher implements LoggerAwareInterface
     /**
      * post proxy
      *
-     * @param string $path
      * @param \One\Collection|array $body
-     * @param array $header
-     * @param array $options
-     * @return string
      */
-    final public function post($path, $body, $header = array(), $options = array())
+    final public function post(string $path, array $body = [], array $header = [], array $options = []): string
     {
         if ($this->hasLogger()) {
-            $this->logger->info("Post to " . $path);
+            $this->logger->info('Post to ' . $path);
         }
 
         return $this->requestGate(
@@ -491,13 +246,10 @@ class Publisher implements LoggerAwareInterface
     /**
      * delete proxy
      *
-     * @param string $path
      * @param \One\Collection|array $body
-     * @param array $header
-     * @param array $options
-     * @return string
+     * @param array $body
      */
-    final public function delete($path, $body = array(), $header = array(), $options = array())
+    final public function delete(string $path, array $body = [], array $header = [], array $options = []): string
     {
         return $this->requestGate(
             'DELETE',
@@ -511,8 +263,218 @@ class Publisher implements LoggerAwareInterface
     /**
      * @inheritDoc
      */
-    public function setLogger(LoggerInterface $logger)
+    public function setLogger(LoggerInterface $logger): void
     {
         $this->logger = $logger;
+    }
+
+    /**
+     * assessing and custom option
+     */
+    private function assessOptions(array $options): void
+    {
+        $defaultOptions = [
+            'rest_server' => self::REST_SERVER,
+            'auth_url' => self::AUTHENTICATION,
+            'max_attempt' => self::DEFAULT_MAX_ATTEMPT,
+            'default_headers' => [
+                'Accept' => 'application/json',
+            ],
+        ];
+
+        $this->options = new Collection(
+            array_merge(
+                $defaultOptions,
+                $options
+            )
+        );
+
+        if (isset($options['access_token'])) {
+            $this->setAuthorizationHeader($options['access_token']);
+        }
+
+        $this->httpClient = new Client([
+            'base_uri' => $this->options->get('rest_server'),
+        ]);
+    }
+
+    /**
+     * one gate menu for request creation.
+     *
+     * @param \One\Collection|array $body
+     */
+    private function requestGate(string $method, string $path, array $header = [], array $body = [], array $options = []): string
+    {
+        if (empty($this->accessToken)) {
+            $this->renewAuthToken();
+        }
+
+        $request = new \GuzzleHttp\Psr7\Request(
+            $method,
+            $path,
+            array_merge(
+                $this->options->get('default_headers'),
+                $header
+            ),
+            $this->createBodyForRequest(
+                $this->prepareMultipartData($body)
+            )
+        );
+
+        return (string) $this->httpClient->send($request, $options)->getBody();
+    }
+
+    private function prepareMultipartData(array $data = []): array
+    {
+        $result = [];
+        foreach ($data as $key => $value) {
+            array_push($result, ['name' => $key, 'contents' => $value]);
+        }
+        return $result;
+    }
+
+    /**
+     * actually send request created here, separated for easier attempt count and handling exception
+     *
+     * @throws \Exception
+     * @throws \GuzzleHttp\Exception\ClientException
+     * @throws \GuzzleHttp\Exception\BadResponseException
+     */
+    private function sendRequest(RequestInterface $request, int $attempt = 0): \Psr\Http\Message\StreamInterface
+    {
+        if ($attempt >= $this->options->get('max_attempt')) {
+            throw new \Exception('MAX attempt reached for ' . $request->getUri() . ' with payload ' . (string) $request);
+        }
+
+        try {
+            $response = $this->httpClient->send($request);
+            if ($response->getStatusCode() === 200) {
+                return $response->getBody();
+            }
+
+            return $this->sendRequest($request, $attempt++);
+        } catch (ClientException $err) {
+            if ($err->getResponse()->getStatusCode() === 429) {
+                $this->renewAuthToken();
+                return $this->sendRequest($err->getRequest(), $attempt++);
+            }
+
+            throw $err;
+        } catch (\Throwable $err) {
+            throw $err;
+        }
+    }
+
+    /**
+     * createBodyForRequest
+     */
+    private function createBodyForRequest(array $body = []): ?\GuzzleHttp\Psr7\MultiPartStream
+    {
+        if (empty($body)) {
+            return null;
+        }
+        return new MultipartStream($body);
+    }
+
+    /**
+     * renewing access_token
+     *
+     * @throws \Exception
+     */
+    private function renewAuthToken(): self
+    {
+        $request = new \GuzzleHttp\Psr7\Request(
+            'POST',
+            self::AUTHENTICATION,
+            $this->options->get('default_headers'),
+            $this->createBodyForRequest([
+                ['name' => 'grant_type',
+                    'contents' => 'client_credentials', ],
+                ['name' => 'client_id',
+                    'contents' => $this->clientId, ],
+                ['name' => 'client_secret',
+                    'contents' => $this->clientSecret, ],
+            ])
+        );
+
+        $token = (string) $this->sendRequest($request);
+
+        $token = json_decode($token, true);
+
+        if (empty($token)) {
+            throw new \Exception('Access token request return empty response');
+        }
+
+        return $this->setAuthorizationHeader(
+            $token['access_token']
+        );
+    }
+
+    /**
+     * set header for OAuth 2.0
+     */
+    private function setAuthorizationHeader(string $accessToken): self
+    {
+        $this->accessToken = $accessToken;
+
+        $this->options->set(
+            'default_headers',
+            array_merge(
+                $this->options->get('default_headers'),
+                [
+                    'Authorization' => 'Bearer ' . $accessToken,
+                ]
+            )
+        );
+
+        return $this;
+    }
+
+    /**
+     * get Attachment Submission url Endpoint at rest API
+     */
+    private function getAttachmentEndPoint(string $idArticle, string $field): string
+    {
+        return $this->replaceEndPointId(
+
+            $idArticle,
+            $this->attachmentUrl[$field]
+        );
+    }
+
+    /**
+     * get article endpoint for deleting api
+     */
+    private function getArticleWithIdEndPoint(string $identifier): string
+    {
+        return self::ARTICLE_ENDPOINT . "/${identifier}";
+    }
+
+    /**
+     * function that actually replace article_id inside endpoint pattern
+     */
+    private function replaceEndPointId(string $identifier, string $url): string
+    {
+        return str_replace(
+            '{article_id}',
+            $identifier,
+            $url
+        );
+    }
+
+    /**
+     * normalizing payload. not yet implemented totally, currently just bypass a toArray() function from collection.
+     */
+    private function normalizePayload(Collection $collection): array
+    {
+        return $collection->toArray();
+    }
+
+    /**
+     * Checks if Logger instance exists
+     */
+    private function hasLogger(): bool
+    {
+        return isset($this->logger) && $this->logger !== null;
     }
 }

@@ -1,9 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace One\Http;
 
 use Psr\Http\Message\StreamInterface;
-use One\Http\BufferStream;
 
 /**
  * Provides a read only stream that pumps data from a PHP callable.
@@ -22,14 +21,34 @@ use One\Http\BufferStream;
  */
 class PumpStream implements StreamInterface
 {
+    /**
+     * Source
+     * @var mixed
+     */
     private $source;
 
+    /**
+     * size
+     * @var int
+     */
     private $size;
 
+    /**
+     * tell pos
+     * @var mixed
+     */
     private $tellPos;
 
+    /**
+     * Metadata
+     * @var mixed
+     */
     private $metadata;
 
+    /**
+     * buffer
+     * @var mixed
+     */
     private $buffer;
 
     /**
@@ -45,9 +64,9 @@ class PumpStream implements StreamInterface
     public function __construct(callable $source, array $options = [])
     {
         $this->source = $source;
-        $this->size = isset($options['size']) ? $options['size'] : null;
+        $this->size = $options['size'] ?? null;
         $this->tellPos = 0;
-        $this->metadata = isset($options['metadata']) ? $options['metadata'] : [];
+        $this->metadata = $options['metadata'] ?? [];
         $this->buffer = new BufferStream();
     }
 
@@ -58,28 +77,28 @@ class PumpStream implements StreamInterface
     {
         try {
             return \One\copy_to_string($this);
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             return '';
         }
     }
-  
+
     /**
      * @inheritDoc
      */
-    public function close()
+    public function close(): void
     {
         $this->detach();
     }
-  
+
     /**
      * @inheritDoc
      */
-    public function detach()
+    public function detach(): void
     {
         $this->tellPos = false;
         $this->source = null;
     }
-  
+
     /**
      * @inheritDoc
      */
@@ -87,7 +106,7 @@ class PumpStream implements StreamInterface
     {
         return $this->size;
     }
-  
+
     /**
      * @inheritDoc
      */
@@ -95,15 +114,15 @@ class PumpStream implements StreamInterface
     {
         return $this->tellPos;
     }
-  
+
     /**
      * @inheritDoc
      */
     public function eof()
     {
-        return !$this->source;
+        return ! $this->source;
     }
-  
+
     /**
      * @inheritDoc
      */
@@ -111,23 +130,23 @@ class PumpStream implements StreamInterface
     {
         return false;
     }
-  
+
     /**
      * @inheritDoc
      */
-    public function rewind()
+    public function rewind(): void
     {
         $this->seek(0);
     }
-  
+
     /**
      * @inheritDoc
      */
-    public function seek($offset, $whence = SEEK_SET)
+    public function seek($offset, $whence = SEEK_SET): void
     {
         throw new \RuntimeException('Cannot seek a PumpStream');
     }
-  
+
     /**
      * @inheritDoc
      */
@@ -135,15 +154,15 @@ class PumpStream implements StreamInterface
     {
         return false;
     }
-  
+
     /**
      * @inheritDoc
      */
-    public function write($string)
+    public function write($string): void
     {
         throw new \RuntimeException('Cannot write to a PumpStream');
     }
-  
+
     /**
      * @inheritDoc
      */
@@ -151,7 +170,7 @@ class PumpStream implements StreamInterface
     {
         return true;
     }
-  
+
     /**
      * @inheritDoc
      */
@@ -170,36 +189,36 @@ class PumpStream implements StreamInterface
 
         return $data;
     }
-  
+
     /**
      * @inheritDoc
      */
     public function getContents()
     {
         $result = '';
-        while (!$this->eof()) {
+        while (! $this->eof()) {
             $result .= $this->read(1000000);
         }
 
         return $result;
     }
-  
+
     /**
      * @inheritDoc
      */
     public function getMetadata($key = null)
     {
-        if (!$key) {
+        if (! $key) {
             return $this->metadata;
         }
 
         return isset($this->metadata[$key]) ? $this->metadata[$key] : null;
     }
-  
+
     /**
      * @inheritdoc
      */
-    private function pump($length)
+    private function pump($length): void
     {
         if ($this->source) {
             do {

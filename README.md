@@ -4,7 +4,12 @@
 [![Build Status](https://scrutinizer-ci.com/g/KLYgarage/onesdk/badges/build.png?b=master)](https://scrutinizer-ci.com/g/KLYgarage/onesdk/build-status/master)
 [![Code Intelligence Status](https://scrutinizer-ci.com/g/KLYgarage/onesdk/badges/code-intelligence.svg?b=master)](https://scrutinizer-ci.com/code-intelligence)
 
-This SDK is used for easier intergration and API usage of ONE.co.id SDK. For publisher only. Usage still limited, check docs for supported features.
+This SDK is created for easier intergration and API usage of ONE APP.
+
+**For publisher only** 
+
+## Prerequisite
+- PHP Version >=5.3.3
 
 ## Installation
 
@@ -12,7 +17,75 @@ If you are using composer you could get it with `composer require kly/onesdk` an
 
 ## Usage
 
-Example Usage:
+To use this SDK, there are several basic steps that should be done :
+
+1. Create and load credentials (client_id and client_secret or separated *one use* access_token)
+2. Instance your content into `\One\Model\Article` object
+3. Attach any necessary details (Photos, Videos, Galleries, Or extra Pages)
+4. Instance `\One\Publisher` Object
+5. Send your Article object through `submitArticle` method on `Publisher`
+
+These are some examples code to perform those steps :
+
+### Load credentials
+
+Refer to [loadTestEnv()](https://github.com/KLYgarage/onesdk/blob/master/test/bootstrap.php) method. 
+
+### Instance publisher object
+
+```
+$env = \loadTestEnv();
+        $this->publisher = new Publisher(
+            $env['YOUR_CLIENT_ID'],
+            $env['YOUR_CLIENT_SECRET']
+        );
+```
+
+## Publish
+
+If you want to publish an article, there are several steps should be done :
+
+1. Instance article object
+
+```
+$article = new Article(
+            'Eius ad odit voluptatum occaecati ducimus rerum.',
+            'Facilis occaecati sequi animi corrupti. Ex sit voluptates accusamus. Quidem eum magnam veniam odio totam aut. Nobis possimus totam quasi tempora consectetur iste. Repellendus est veritatis quibusdam dicta. Sapiente modi perferendis quidem repudiandae voluptates.',
+            'https://www.zahn.de/home/',
+            'dummy-' . rand(0, 999),
+            Article::TYPE_TEXT,
+            Article::CATEGORY_BISNIS,
+            "Hans-Friedrich Hettner B.Sc.",
+            "Dolorum expedita repellendus ipsam. Omnis cupiditate enim. Itaque alias doloribus eligendi.",
+            "distinctio",
+            "2013-05-25"
+        );
+```
+
+2. Attach if article contains some attachments
+
+  Article supports multiple kind of attachment such as: photo, page.
+
+```
+$photo = new Photo(
+            'https://aubry.fr/',
+            Photo::RATIO_RECTANGLE,
+            "Rerum asperiores nulla suscipit ex. Eligendi vero optio architecto dignissimos. Omnis autem ab ad hic quaerat omnis.",
+            "Eum assumenda ab accusamus quam blanditiis."
+        );
+$article->attachPhoto($photo);
+```
+
+3. Publish the article to ONE App REST API by submitting through instanced publisher object.
+
+`$this->publisher->submitArticle($article);`
+
+## Fetch
+
+You can fetch all the articles by calling `listArticle()` on publisher object.
+
+`$this->publisher->listArticle();`
+
 
 ## Steps to contribute :
 

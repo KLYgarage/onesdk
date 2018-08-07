@@ -1,67 +1,75 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace One\Http;
 
-use One\Http\Message;
 use One\Uri;
 
-/**
- *
- */
 class Request extends Message implements \Psr\Http\Message\RequestInterface
 {
+    /**
+     * Method
+     * @var string
+     */
     private $method;
-   
+
+    /**
+     * Request Target
+     * @var string
+     */
     private $requestTarget;
-    
+
+    /**
+     * Uri
+     * @var \Psr\Http\Message\UriInterface
+     */
     private $uri;
 
     /**
      * Default Constructor
-     * @param string $method
      * @param string|\Psr\Http\Message\UriInterface $uri
-     * @param array  $headers
      * @param mixed $body
      * @param string $version
      */
     public function __construct(
-        $method,
-        $uri,
+        string $method,
+        $uri = null,
         array $headers = [],
         $body = null,
         $version = '1.1'
     ) {
-        if (!($uri instanceof \Psr\Http\Message\UriInterface)) {
+        if (! ($uri instanceof \Psr\Http\Message\UriInterface)) {
             $uri = \One\createUriFromString($uri);
         }
         $this->method = strtoupper($method);
-        $this->uri    = $uri;
+        $this->uri = $uri;
         $this->setHeaders($headers);
         $this->protocol = $version;
-        if (!$this->hasHeader('Host')) {
+        if (! $this->hasHeader('Host')) {
             $this->updateHostFromUri();
         }
         if ($body !== '' && $body !== null) {
             $this->stream = \One\stream_for($body);
         }
     }
+
     /**
      * @inheritDoc
      */
     public function getRequestTarget()
     {
-        if ($this->requestTarget !== null) {
+        if (! empty($this->requestTarget)) {
             return $this->requestTarget;
         }
         $target = $this->uri->getPath();
-        if ($target == '') {
+        if ($target === '') {
             $target = '/';
         }
-        if ($this->uri->getQuery() != '') {
+        if ($this->uri->getQuery() !== '') {
             $target .= '?' . $this->uri->getQuery();
         }
         return $target;
     }
+
     /**
      * @inheritDoc
      */
@@ -72,10 +80,11 @@ class Request extends Message implements \Psr\Http\Message\RequestInterface
                 'Invalid request target provided; cannot contain whitespace'
             );
         }
-        $new                = clone $this;
+        $new = clone $this;
         $new->requestTarget = $requestTarget;
         return $new;
     }
+
     /**
      * @inheritDoc
      */
@@ -83,15 +92,17 @@ class Request extends Message implements \Psr\Http\Message\RequestInterface
     {
         return $this->method;
     }
+
     /**
      * @inheritDoc
      */
     public function withMethod($method)
     {
-        $new         = clone $this;
+        $new = clone $this;
         $new->method = strtoupper($method);
         return $new;
     }
+
     /**
      * @inheritDoc
      */
@@ -99,6 +110,7 @@ class Request extends Message implements \Psr\Http\Message\RequestInterface
     {
         return $this->uri;
     }
+
     /**
      * @inheritDoc
      */
@@ -107,33 +119,35 @@ class Request extends Message implements \Psr\Http\Message\RequestInterface
         if ($uri === $this->uri) {
             return $this;
         }
-        $new      = clone $this;
+        $new = clone $this;
         $new->uri = $uri;
-        if (!$preserveHost) {
+        if (! $preserveHost) {
             $new->updateHostFromUri();
         }
         return $new;
     }
+
     /**
      * Ensure Host is the first header
      * See: http://tools.ietf.org/html/rfc7230#section-5.4
      */
-    private function updateHostFromUri()
+    private function updateHostFromUri(): void
     {
         $host = $this->uri->getHost();
-        if ($host == '') {
+        $port = $this->uri->getPort();
+        if ($host === '') {
             return;
         }
-        if (($port = $this->uri->getPort()) !== null) {
+        if ($port !== null) {
             $host .= ':' . $port;
         }
         if (isset($this->headerNames['host'])) {
             $header = $this->headerNames['host'];
         } else {
-            $header                    = 'Host';
+            $header = 'Host';
             $this->headerNames['host'] = 'Host';
         }
-       
+
         $this->headers = [$header => [$host]] + $this->headers;
     }
 }

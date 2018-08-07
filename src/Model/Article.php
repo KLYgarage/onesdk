@@ -1,8 +1,7 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace One\Model;
 
-use Psr\Http\Message\UriInterface;
 use One\Collection;
 
 /**
@@ -10,53 +9,73 @@ use One\Collection;
  */
 class Article extends Model
 {
-    const CATEGORY_NASIONAL = 1;
-    const CATEGORY_INTERNASIONAL = 2;
-    const CATEGORY_BISNIS = 3;
-    const CATEGORY_SEPAK_BOLA = 4;
-    const CATEGORY_OLAHRAGA = 5;
-    const CATEGORY_HIBURAN = 6;
-    const CATEGORY_TEKNOLOGI = 7;
-    const CATEGORY_TRAVEL = 8;
-    const CATEGORY_LIFESTYLE = 9;
-    const CATEGORY_WANITA = 10;
-    const CATEGORY_HIJAB = 11;
-    const CATEGORY_KULINER = 12;
-    const CATEGORY_SEHAT = 13;
-    const CATEGORY_OTOMOTIF = 14;
-    const CATEGORY_INSPIRASI = 15;
-    const CATEGORY_UNIK = 16;
-    const CATEGORY_EVENT = 17;
-    const CATEGORY_KOMUNITAS = 18;
+    public const CATEGORY_NASIONAL = 1;
 
-    const TYPE_TEXT = 1;
-    const TYPE_PHOTO = 2;
-    const TYPE_VIDEO = 3;
+    public const CATEGORY_INTERNASIONAL = 2;
 
-    const ATTACHMENT_FIELD_PHOTO = 'photo';
-    const ATTACHMENT_FIELD_PAGE = 'page';
-    const ATTACHMENT_FIELD_VIDEO = 'video';
-    const ATTACHMENT_FIELD_GALLERY = 'gallery';
+    public const CATEGORY_BISNIS = 3;
 
-    /**
-     * attachment property
-     *
-     * @var array $attachment
-     */
-    private $attachment = array();
+    public const CATEGORY_SEPAK_BOLA = 4;
+
+    public const CATEGORY_OLAHRAGA = 5;
+
+    public const CATEGORY_HIBURAN = 6;
+
+    public const CATEGORY_TEKNOLOGI = 7;
+
+    public const CATEGORY_TRAVEL = 8;
+
+    public const CATEGORY_LIFESTYLE = 9;
+
+    public const CATEGORY_WANITA = 10;
+
+    public const CATEGORY_HIJAB = 11;
+
+    public const CATEGORY_KULINER = 12;
+
+    public const CATEGORY_SEHAT = 13;
+
+    public const CATEGORY_OTOMOTIF = 14;
+
+    public const CATEGORY_INSPIRASI = 15;
+
+    public const CATEGORY_UNIK = 16;
+
+    public const CATEGORY_EVENT = 17;
+
+    public const CATEGORY_KOMUNITAS = 18;
+
+    public const TYPE_TEXT = 1;
+
+    public const TYPE_PHOTO = 2;
+
+    public const TYPE_VIDEO = 3;
+
+    public const ATTACHMENT_FIELD_PHOTO = 'photo';
+
+    public const ATTACHMENT_FIELD_PAGE = 'page';
+
+    public const ATTACHMENT_FIELD_VIDEO = 'video';
+
+    public const ATTACHMENT_FIELD_GALLERY = 'gallery';
 
     /**
      * identifier
      *
-     * @var string $identifier
+     * @var string
      */
     protected $identifier = null;
 
     /**
+     * attachment property
+     *
+     * @var array<mixed>
+     */
+    private $attachment = [];
+
+    /**
      * constructor
      *
-     * @param string $title
-     * @param string $body
      * @param \Psr\Http\Message\UriInterface|string $source
      * @param string $uniqueId
      * @param integer $typeId
@@ -67,8 +86,8 @@ class Article extends Model
      * @param \DateTimeInterface|string $publishedAt
      */
     public function __construct(
-        $title,
-        $body,
+        string $title,
+        string $body,
         $source,
         $uniqueId,
         $typeId = self::TYPE_TEXT,
@@ -86,17 +105,17 @@ class Article extends Model
             $lead = $this->createLeadFromBody($body);
         }
 
-        $allowedType = array(
+        $allowedType = [
             self::TYPE_PHOTO,
             self::TYPE_TEXT,
-            self::TYPE_VIDEO
-        );
+            self::TYPE_VIDEO,
+        ];
 
-        if (!in_array($typeId, $allowedType)) {
-            throw new \InvalidArgumentException("Invalid typeId : $typeId, allowed typeId are " . implode(', ', $allowedType));
+        if (! in_array($typeId, $allowedType, true)) {
+            throw new \InvalidArgumentException("Invalid typeId : ${typeId}, allowed typeId are " . implode(', ', $allowedType));
         }
 
-        $allowedCategory = array(
+        $allowedCategory = [
             self::CATEGORY_NASIONAL,
             self::CATEGORY_INTERNASIONAL,
             self::CATEGORY_BISNIS,
@@ -115,20 +134,20 @@ class Article extends Model
             self::CATEGORY_UNIK,
             self::CATEGORY_EVENT,
             self::CATEGORY_KOMUNITAS,
-        );
+        ];
 
-        if (!in_array($categoryId, $allowedCategory)) {
-            throw new \InvalidArgumentException("Invalid categoryId : $categoryId, allowed category are " . implode(', ', $allowedCategory));
+        if (! in_array($categoryId, $allowedCategory, true)) {
+            throw new \InvalidArgumentException("Invalid categoryId : ${categoryId}, allowed category are " . implode(', ', $allowedCategory));
         }
 
-        $title    = $this->filterStringInstance($title);
+        $title = $this->filterStringInstance($title);
         $reporter = $this->filterStringInstance($reporter);
-        $lead     = $this->filterStringInstance($lead);
-        $body     = $this->filterStringInstance($body);
-        $tags     = $this->filterStringInstance($tags);
+        $lead = $this->filterStringInstance($lead);
+        $body = $this->filterStringInstance($body);
+        $tags = $this->filterStringInstance($tags);
 
         $this->collection = new Collection(
-            array(
+            [
                 'title' => $title,
                 'reporter' => $reporter,
                 'lead' => $lead,
@@ -138,12 +157,12 @@ class Article extends Model
                 'type_id' => $typeId,
                 'category_id' => $categoryId,
                 'tags' => $tags,
-                'published_at' => $publishedAt
-            )
+                'published_at' => $publishedAt,
+            ]
         );
 
         if ($identifier) {
-            $this->setId($identifier);
+            $this->setId((string) $identifier);
         }
     }
 
@@ -153,13 +172,13 @@ class Article extends Model
      *
      * @return string[]
      */
-    public static function getPossibleAttachment()
+    public static function getPossibleAttachment(): array
     {
         return array_merge(
             self::getDeleteableAttachment(),
-            array(
-                self::ATTACHMENT_FIELD_PHOTO
-            )
+            [
+                self::ATTACHMENT_FIELD_PHOTO,
+            ]
         );
     }
 
@@ -168,80 +187,63 @@ class Article extends Model
      *
      * @return string[]
      */
-    public static function getDeleteableAttachment()
+    public static function getDeleteableAttachment(): array
     {
-        return array(
+        return [
             self::ATTACHMENT_FIELD_GALLERY,
             self::ATTACHMENT_FIELD_PAGE,
-            self::ATTACHMENT_FIELD_VIDEO
-        );
+            self::ATTACHMENT_FIELD_VIDEO,
+        ];
     }
 
     /**
      * setIdentifier from rest api response
-     *
-     * @param string $identifier
-     * @return void
      */
-    public function setId($identifier)
+    public function setId(string $identifier): void
     {
         $this->identifier = $identifier;
     }
 
     /**
      * getIdentifier set before
-     *
-     * @return string
      */
-    public function getId()
+    public function getId(): string
     {
         return $this->identifier;
     }
 
     /**
      * check if this object has attachment assigned to it
-     *
-     * @param string $field
-     * @return boolean
      */
-    public function hasAttachment($field)
+    public function hasAttachment(string $field): bool
     {
         return isset($this->attachment[$field]);
     }
 
     /**
      * getAttachment based on fields
-     *
-     * @param string $field
-     * @return array
      */
-    public function getAttachmentByField($field)
+    public function getAttachmentByField(string $field): array
     {
         if (isset($this->attachment[$field])) {
             return $this->attachment[$field];
         }
 
-        return array();
+        return [];
     }
 
     /**
      * get ALL attachment assigned to this object
-     *
-     * @return array|null
      */
-    public function getAttachments()
+    public function getAttachments(): ?array
     {
         return $this->attachment;
     }
 
     /**
      * add attach an attachment to this model
-     *
-     * @param string $field
-     * @param Model $item
-     * @return Article
      */
-    public function attach($field, Model $item)
+    public function attach(string $field, Model $item): self
     {
         $this->attachment[$field][] = $item;
 
@@ -250,11 +252,8 @@ class Article extends Model
 
     /**
      * Attach Photo Attachment to article
-     *
-     * @param Photo $photo
-     * @return self
      */
-    public function attachPhoto(Photo $photo)
+    public function attachPhoto(Photo $photo): self
     {
         return $this->attach(
             self::ATTACHMENT_FIELD_PHOTO,
@@ -264,11 +263,8 @@ class Article extends Model
 
     /**
      * Attach Paging
-     *
-     * @param Page $page
-     * @return self
      */
-    public function attachPage(Page $page)
+    public function attachPage(Page $page): self
     {
         return $this->attach(
             self::ATTACHMENT_FIELD_PAGE,
@@ -281,11 +277,8 @@ class Article extends Model
 
     /**
      * Attach gallery here
-     *
-     * @param Gallery $gallery
-     * @return self
      */
-    public function attachGallery(Gallery $gallery)
+    public function attachGallery(Gallery $gallery): self
     {
         return $this->attach(
             self::ATTACHMENT_FIELD_GALLERY,
@@ -298,11 +291,8 @@ class Article extends Model
 
     /**
      * attach Video
-     *
-     * @param Video $video
-     * @return self
      */
-    public function attachVideo(Video $video)
+    public function attachVideo(Video $video): self
     {
         return $this->attach(
             self::ATTACHMENT_FIELD_VIDEO,
@@ -315,12 +305,8 @@ class Article extends Model
 
     /**
      * ensuring order
-     *
-     * @param Model $attachment
-     * @param string $type
-     * @return Model
      */
-    private function ensureOrder($attachment, $type)
+    private function ensureOrder(Model $attachment, string $type): Model
     {
         $attachmentOrder = $attachment->get('order');
 

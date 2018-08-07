@@ -1,15 +1,16 @@
-<?php 
+<?php declare(strict_types=1);
 
 namespace One\Http;
 
-use One\Http\Message;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
 
 class Response extends Message implements ResponseInterface
 {
-
-    /** @var array Map of standard HTTP status code/reason phrases */
+    /**
+     * array Map of standard HTTP status code/reason phrases
+     * @var array<string>
+     */
     private static $phrases = [
         100 => 'Continue',
         101 => 'Switching Protocols',
@@ -70,11 +71,13 @@ class Response extends Message implements ResponseInterface
         508 => 'Loop Detected',
         511 => 'Network Authentication Required',
     ];
-    
+
     /** @var string */
     private $reasonPhrase = '';
+
     /** @var int */
     private $statusCode = 200;
+
     /**
      * @param int                                  $status  Status code
      * @param array                                $headers Response headers
@@ -83,10 +86,10 @@ class Response extends Message implements ResponseInterface
      * @param string|null                          $reason  Reason phrase (when empty a default will be used based on the status code)
      */
     public function __construct(
-        $status = 200,
+        int $status = 200,
         array $headers = [],
         $body = null,
-        $version = '1.1',
+        string $version = '1.1',
         $reason = null
     ) {
         $this->statusCode = (int) $status;
@@ -94,7 +97,7 @@ class Response extends Message implements ResponseInterface
             $this->stream = \One\stream_for($body);
         }
         $this->setHeaders($headers);
-        if ($reason == '' && isset(self::$phrases[$this->statusCode])) {
+        if (empty($reason) && isset(self::$phrases[$this->statusCode])) {
             $this->reasonPhrase = self::$phrases[$this->statusCode];
         } else {
             $this->reasonPhrase = (string) $reason;
@@ -117,7 +120,7 @@ class Response extends Message implements ResponseInterface
     {
         return $this->reasonPhrase;
     }
-  
+
     /**
      * @inheritdoc
      */
@@ -125,7 +128,7 @@ class Response extends Message implements ResponseInterface
     {
         $new = clone $this;
         $new->statusCode = (int) $code;
-        if ($reasonPhrase == '' && isset(self::$phrases[$new->statusCode])) {
+        if ($reasonPhrase === '' && isset(self::$phrases[$new->statusCode])) {
             $reasonPhrase = self::$phrases[$new->statusCode];
         }
         $new->reasonPhrase = $reasonPhrase;

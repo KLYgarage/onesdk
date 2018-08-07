@@ -1,8 +1,7 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace One\Model;
 
-use Psr\Http\Message\UriInterface;
 use One\Collection;
 
 class Video extends Model
@@ -10,14 +9,13 @@ class Video extends Model
     /**
      * constructor
      *
-     * @param string $body
      * @param \Psr\Http\Message\UriInterface|string $source
      * @param integer $order
      * @param \Psr\Http\Message\UriInterface|string $cover
      * @param string $lead
      */
     public function __construct(
-        $body,
+        string $body,
         $source,
         $order,
         $cover = null,
@@ -25,7 +23,7 @@ class Video extends Model
     ) {
         $source = $this->filterUriInstance($source);
 
-        if (!empty($cover)) {
+        if (! empty($cover)) {
             $cover = $this->filterUriInstance($cover);
         }
 
@@ -37,13 +35,13 @@ class Video extends Model
         $body = $this->filterStringInstance($body);
 
         $this->collection = new Collection(
-            array(
-                'lead' =>  $lead,
+            [
+                'lead' => $lead,
                 'body' => $body,
                 'source' => $source,
                 'order' => $order,
-                'cover' => $cover
-            )
+                'cover' => $cover,
+            ]
         );
     }
 }

@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types=1);
+
 namespace One;
 
 /**
@@ -11,30 +12,24 @@ namespace One;
  * @method validateInteger
  * @method validateString
  * @method checkData
- *
  */
 class FactoryUri
 {
-
     /**
      * function Create Uri
-     *
-     * @param String $string
-     * @return object Uri
      */
-    public static function create($string = null)
+    public static function create(string $string = ''): \One\Uri
     {
-        if (!empty($string)) {
-            return self::createFromString($string);
+        if (empty($string)) {
+            $string = '/';
         }
-        return self::createFromServer();
+        return self::createFromString($string);
     }
 
     /**
      * function for Create Uri From Server
-     *
      */
-    public static function createFromString($uri)
+    public static function createFromString(string $uri): \One\Uri
     {
         $data = parse_url($uri);
         $scheme = self::validateString((string) self::checkData($data, 'scheme', ''));
@@ -49,20 +44,9 @@ class FactoryUri
     }
 
     /**
-     * functionality to check whether a variable is set or not.
-     *
-     * @return array
-     */
-    private static function checkData($data, $key, $default = '')
-    {
-        return isset($data[$key]) ? $data[$key] : $default;
-    }
-
-    /**
      * function for Create Uri From Server
-     *
      */
-    public static function createFromServer()
+    public static function createFromServer(): \One\Uri
     {
         $scheme = self::validateString((string) self::checkData($_SERVER, 'HTTPS', 'http://'));
         $host = self::validateString((string) self::checkData($_SERVER, 'HTTP_HOST', isset($_SERVER['SERVER_NAME'])));
@@ -73,26 +57,27 @@ class FactoryUri
         $path = self::validateString(parse_url('http://www.foobar.com/' . $path, PHP_URL_PATH));
         $query = self::validateString((string) self::checkData($_SERVER, 'QUERY_STRING', ''));
         $fragment = '';
-        if (empty($user) && empty($pass) && !empty($_SERVER['HTTP_AUTHORIZATION'])) {
-            list($user, $password) = explode(':', base64_decode(substr($_SERVER['HTTP_AUTHORIZATION'], 6)));
+        if (empty($user) && empty($pass) && ! empty($_SERVER['HTTP_AUTHORIZATION'])) {
+            [$user, $password] = explode(':', base64_decode(substr($_SERVER['HTTP_AUTHORIZATION'], 6), true));
         }
         return self::createUri($scheme, $host, $port, $user, $pass, $path, $query, $fragment);
     }
 
     /**
-     * Create Uri Object
-     *
-     * @param String $string
-     * @param string $scheme
-     * @param string $host
-     * @param string $user
-     * @param string $password
-     * @param string $path
-     * @param string $query
-     * @param string $fragment
-     * @return Uri Object
+     * functionality to check whether a variable is set or not.
+     * @param  mixed $key
+     * @param  string $default
+     * @return mixed
      */
-    private static function createUri($scheme, $host, $port, $user, $password, $path, $query, $fragment)
+    private static function checkData(array $data, $key, $default = '')
+    {
+        return $data[$key] ?? $default;
+    }
+
+    /**
+     * Create Uri Object
+     */
+    private static function createUri(string $scheme, string $host, ?int $port, string $user, string $password, string $path, string $query, string $fragment): \One\Uri
     {
         return new Uri(
             $scheme,
@@ -108,15 +93,14 @@ class FactoryUri
 
     /**
      * functionality validity for string variables
-     *
-     * @param String $var
-     * @return String
+     * @param mixed $var
+     * @throws \Exception
      */
-    private static function validateString($var)
+    private static function validateString($var): string
     {
-        if (gettype($var) === "string") {
+        if (gettype($var) === 'string') {
             return $var;
         }
-        throw new \Exception("The variable type must String :" . $var);
+        throw new \Exception('The variable type must String :' . $var);
     }
 }

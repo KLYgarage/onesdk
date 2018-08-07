@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace One\Http;
 
@@ -20,37 +20,27 @@ use Psr\Http\Message\StreamInterface;
  * @property string $_fn_read Contains function name as value
  * @property string $_fn_getContents Contains function name as value
  * @property string $_fn_getMetadata Contains function name as value
- * @property string[] $methods
  * @property string[] $slots An array that store list of function name
  */
 class FnStream implements StreamInterface
 {
-    private $methods;
-
+    /**
+     * Slots
+     * @var array<string>
+     */
     private static $slots = ['__toString', 'close', 'detach', 'rewind',
         'getSize', 'tell', 'eof', 'isSeekable', 'seek', 'isWritable', 'write',
-        'isReadable', 'read', 'getContents', 'getMetadata'];
+        'isReadable', 'read', 'getContents', 'getMetadata', ];
 
     /**
      * @param array $methods Hash of method name to a callable.
      */
     public function __construct(array $methods)
     {
-        $this->methods = $methods;
         // Create the functions on the class
         foreach ($methods as $name => $fn) {
             $this->{'_fn_' . $name} = $fn;
         }
-    }
-
-    /**
-     * Lazily determine which methods are not implemented.
-     * @throws \BadMethodCallException
-     */
-    public function __get($name)
-    {
-        throw new \BadMethodCallException(str_replace('_fn_', '', $name)
-            . '() is not implemented in the FnStream');
     }
 
     /**
@@ -64,12 +54,30 @@ class FnStream implements StreamInterface
     }
 
     /**
+     * Lazily determine which methods are not implemented.
+     * @throws \BadMethodCallException
+     */
+    public function __get(string $name): void
+    {
+        throw new \BadMethodCallException(str_replace('_fn_', '', $name)
+            . '() is not implemented in the FnStream');
+    }
+
+    /**
      * An unserialize would allow the __destruct to run when the unserialized value goes out of scope.
      * @throws \LogicException
      */
-    public function __wakeup()
+    public function __wakeup(): void
     {
         throw new \LogicException('FnStream should never be unserialized');
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function __toString()
+    {
+        return call_user_func($this->_fn___toString);
     }
 
     /**
@@ -78,10 +86,8 @@ class FnStream implements StreamInterface
      *
      * @param StreamInterface $stream  Stream to decorate
      * @param array           $methods Hash of method name to a closure
-     *
-     * @return FnStream
      */
-    public static function decorate(StreamInterface $stream, array $methods)
+    public static function decorate(StreamInterface $stream, array $methods): self
     {
         // If any of the required methods were not provided, then simply
         // proxy to the decorated stream.
@@ -90,15 +96,7 @@ class FnStream implements StreamInterface
         }
         return new self($methods);
     }
-  
-    /**
-     * @inheritDoc
-     */
-    public function __toString()
-    {
-        return call_user_func($this->_fn___toString);
-    }
-  
+
     /**
      * @inheritDoc
      */
@@ -106,7 +104,7 @@ class FnStream implements StreamInterface
     {
         return call_user_func($this->_fn_close);
     }
-  
+
     /**
      * @inheritDoc
      */
@@ -114,7 +112,7 @@ class FnStream implements StreamInterface
     {
         return call_user_func($this->_fn_detach);
     }
-  
+
     /**
      * @inheritDoc
      */
@@ -122,7 +120,7 @@ class FnStream implements StreamInterface
     {
         return call_user_func($this->_fn_getSize);
     }
-  
+
     /**
      * @inheritDoc
      */
@@ -130,7 +128,7 @@ class FnStream implements StreamInterface
     {
         return call_user_func($this->_fn_tell);
     }
-  
+
     /**
      * @inheritDoc
      */
@@ -150,7 +148,7 @@ class FnStream implements StreamInterface
     /**
      * @inheritDoc
      */
-    public function rewind()
+    public function rewind(): void
     {
         call_user_func($this->_fn_rewind);
     }
@@ -158,7 +156,7 @@ class FnStream implements StreamInterface
     /**
      * @inheritDoc
      */
-    public function seek($offset, $whence = SEEK_SET)
+    public function seek($offset, $whence = SEEK_SET): void
     {
         call_user_func($this->_fn_seek, $offset, $whence);
     }

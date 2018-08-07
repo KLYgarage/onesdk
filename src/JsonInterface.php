@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace One;
 
@@ -12,17 +12,12 @@ interface JsonInterface
 {
     /**
      * convert collections as Json
-     *
-     * @return string
      */
-    public function toJson();
+    public function toJson(): string;
 
     /**
      * create object from json stream string input
      * immutable, return new object instead the old one
-     *
-     * @param string $stream
-     * @return self
      */
-    public static function fromJson($stream);
+    public static function fromJson(string $stream): self;
 }

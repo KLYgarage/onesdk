@@ -1,10 +1,9 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace One\Test\Unit;
 
 use One\Uri;
 use function One\createUriFromString;
-use BadMethodCallException;
 
 class UriTest extends \PHPUnit\Framework\TestCase
 {
@@ -32,8 +31,7 @@ class UriTest extends \PHPUnit\Framework\TestCase
      * @covers Uri::filterQuery
      * @covers Uri::hasStandardPort
      */
-
-    public function testMethods()
+    public function testMethods(): void
     {
         $string = 'https://username:password@www.example.com:85/kerap/254?page=1#idkomentar';
 
@@ -41,26 +39,26 @@ class UriTest extends \PHPUnit\Framework\TestCase
 
         $this->assertInstanceOf(Uri::class, $uri);
 
-        $this->assertEquals('https', $uri->getScheme());
-        $this->assertEquals('username:password', $uri->getUserInfo());
-        $this->assertEquals('www.example.com', $uri->getHost());
-        $this->assertEquals('85', $uri->getPort());
-        $this->assertEquals('/kerap/254', $uri->getPath());
-        $this->assertEquals('page=1', $uri->getQuery());
-        $this->assertEquals('idkomentar', $uri->getFragment());
-        $this->assertEquals('https://username:password@www.example.com:85', $uri->getBaseUrl());
-        $this->assertEquals($string, (string) $uri);
+        $this->assertSame('https', $uri->getScheme());
+        $this->assertSame('username:password', $uri->getUserInfo());
+        $this->assertSame('www.example.com', $uri->getHost());
+        $this->assertSame(85, $uri->getPort());
+        $this->assertSame('/kerap/254', $uri->getPath());
+        $this->assertSame('page=1', $uri->getQuery());
+        $this->assertSame('idkomentar', $uri->getFragment());
+        $this->assertSame('https://username:password@www.example.com:85', $uri->getBaseUrl());
+        $this->assertSame($string, (string) $uri);
 
         $uri2 = $uri->withHost('www.phpunit.de')
-                    ->withUserInfo('user2:pass2')
-                    ->withPort(80)
-                    ->withScheme('http')
-                    ->withPath('/path/kerap/258')
-                    ->withQuery('content=false&delimiter=default')
-                    ->withFragment('bodynya');
+            ->withUserInfo('user2:pass2')
+            ->withPort(80)
+            ->withScheme('http')
+            ->withPath('/path/kerap/258')
+            ->withQuery('content=false&delimiter=default')
+            ->withFragment('bodynya');
 
-        $this->assertNotEquals($uri, $uri2);
+        $this->assertNotSame($uri, $uri2);
 
-        $this->assertEquals('http://user2:pass2@www.phpunit.de/path/kerap/258?content=false&delimiter=default#bodynya', (string) $uri2);
+        $this->assertSame('http://user2:pass2@www.phpunit.de/path/kerap/258?content=false&delimiter=default#bodynya', (string) $uri2);
     }
 }

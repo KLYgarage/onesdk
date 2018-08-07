@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types=1);
+
 namespace One;
 
 use One\Model\Article;
@@ -13,17 +14,13 @@ use One\Model\Article;
  * @method validateInteger
  * @method validateString
  * @method checkData
- *
  */
 class FactoryArticle
 {
-
     /**
-     * Create Article from array
-     *
-     * @return object Article
+     * Create article
      */
-    public static function create($data)
+    public static function create(array $data): \One\Model\Article
     {
         $data = self::validateArray($data);
         $title = self::validateString((string) self::checkData($data, 'title', ''));
@@ -41,33 +38,11 @@ class FactoryArticle
     }
 
     /**
-     * functionality to check whether a variable is set or not.
-     *
-     * @param array $parts
-     * @return array
-     */
-    private static function checkData($data, $key, $default = '')
-    {
-        return isset($data[$key]) ? $data[$key] : $default;
-    }
-
-    /**
      * Create Article Object
      *
-     * @param String $title
-     * @param string $body
-     * @param string $source
-     * @param string $uniqueId
-     * @param int $typeId
-     * @param int $categoryId
-     * @param string $reporter
-     * @param string $lead
-     * @param string $tags
-     * @param string $publishedAt
-     * @param int $identifier
      * @return Article Object
      */
-    public static function createArticle($title, $body, $source, $uniqueId, $typeId, $categoryId, $reporter, $lead, $tags, $publishedAt, $identifier)
+    public static function createArticle(String $title, string $body, string $source, string $uniqueId, int $typeId, int $categoryId, string $reporter, string $lead, string $tags, string $publishedAt, int $identifier): Article
     {
         return new Article(
             $title,
@@ -85,58 +60,57 @@ class FactoryArticle
     }
 
     /**
-     * functionality validity for array variables
-     *
-     * @param array $var
-     * @return array
+     * functionality to check whether a variable is set or not.
+     * @param mixed $key
+     * @param string $default
+     * @return mixed
      */
-    private static function validateArray($var)
+    private static function checkData(array $data, $key, $default = '')
     {
-        if (gettype($var) === "array") {
+        return $data[$key] ?? $default;
+    }
+
+    /**
+     * functionality validity for array variables
+     */
+    private static function validateArray(array $var): array
+    {
+        if (gettype($var) === 'array') {
             return $var;
         }
-        throw new \Exception("The variable type must Array :");
+        throw new \Exception('The variable type must Array :');
     }
 
     /**
      * Make Sure Url in string with correct url format
-     *
-     * @param String $string
-     * @return string
      */
-    private static function validateUrl($var)
+    private static function validateUrl(string $var): string
     {
         if (filter_var($var, FILTER_VALIDATE_URL) === false) {
-            throw new \Exception("Invalid url : $var");
+            throw new \Exception("Invalid url : ${var}");
         }
         return $var;
     }
 
     /**
      * functionality validity for int variables
-     *
-     * @param int $var
-     * @return int
      */
-    private static function validateInteger($var)
+    private static function validateInteger(int $var): int
     {
         if (filter_var($var, FILTER_VALIDATE_INT) === false) {
-            throw new \Exception("The variable type must Integer :" . $var);
+            throw new \Exception('The variable type must Integer :' . $var);
         }
         return $var;
     }
 
     /**
      * functionality validity for string variables
-     *
-     * @param String $var
-     * @return String
      */
-    private static function validateString($var)
+    private static function validateString(String $var): String
     {
-        if (gettype($var) === "string") {
+        if (gettype($var) === 'string') {
             return $var;
         }
-        throw new \Exception("The variable type must String :" . $var);
+        throw new \Exception('The variable type must String :' . $var);
     }
 }

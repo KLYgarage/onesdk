@@ -1,8 +1,7 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace One\Model;
 
-use Psr\Http\Message\UriInterface;
 use One\Collection;
 
 /**
@@ -13,15 +12,13 @@ class Gallery extends Model
     /**
      * constructor
      *
-     * @param string $body
-     * @param integer $order
      * @param \Psr\Http\Message\UriInterface|string $photo
      * @param \Psr\Http\Message\UriInterface|string $source
      * @param string $lead
      */
     public function __construct(
-        $body,
-        $order,
+        string $body,
+        int $order,
         $photo,
         $source,
         $lead = ''
@@ -37,13 +34,13 @@ class Gallery extends Model
         $body = $this->filterStringInstance($body);
 
         $this->collection = new Collection(
-            array(
-                'lead' =>  $lead,
+            [
+                'lead' => $lead,
                 'body' => $body,
                 'source' => $source,
                 'order' => $order,
-                'photo' => $photo
-            )
+                'photo' => $photo,
+            ]
         );
     }
 
@@ -52,11 +49,10 @@ class Gallery extends Model
      *
      * @param \Psr\Http\Message\UriInterface|string $source
      * @param \Psr\Http\Message\UriInterface|string $photo
-     * @return string
      */
-    private function fillSource($source, $photo)
+    private function fillSource($source, $photo): string
     {
-        if (!empty($source)) {
+        if (! empty($source)) {
             return $this->filterUriInstance($source);
         }
 

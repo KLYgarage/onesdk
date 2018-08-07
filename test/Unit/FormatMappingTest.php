@@ -1,28 +1,36 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace One\Test\Unit;
 
 use One\FormatMapping;
 use One\Model\Article;
-use One\Model\Gallery;
-use One\Model\Page;
-use One\Model\Photo;
-use One\Model\Video;
 use One\Publisher;
 
 class FormatMappingTest extends \PHPUnit\Framework\TestCase
 {
-    protected $formatMapping;
+    /**
+     * Format mapping
+     * @var \One\FormatMapping
+     */
+    private $formatMapping;
 
+    /**
+     * Publisher
+     * @var \One\Publisher
+     */
     private $publisher;
 
+    /**
+     * Article
+     * @var \One\Model\Article
+     */
     private $article;
 
-    public function setUp()
+    protected function setUp(): void
     {
         $env = \loadTestEnv();
         if (empty($env)) {
-            $this->markTestSkipped("no .env defined. Need client ID and secret to continue this test, modify .env.example to .env to run test");
+            $this->markTestSkipped('no .env defined. Need client ID and secret to continue this test, modify .env.example to .env to run test');
         }
 
         $this->publisher = new Publisher(
@@ -33,13 +41,13 @@ class FormatMappingTest extends \PHPUnit\Framework\TestCase
         $this->formatMapping = new FormatMapping();
     }
 
-    public function testArticleAttachment()
+    public function testArticleAttachment(): void
     {
-        $newArticleId = 10998;
+        $newArticleId = (string) 10998;
 
-        $jsonArticle = $this->publisher->getArticle($newArticleId);
+        $jsonArticle = $this->publisher->getArticle((string) $newArticleId);
 
-        if (is_null($jsonArticle) && empty($jsonArticle)) {
+        if ($jsonArticle === null && empty($jsonArticle)) {
             $this->markTestSkipped('Test skipped');
         }
 
@@ -49,7 +57,7 @@ class FormatMappingTest extends \PHPUnit\Framework\TestCase
 
         $this->assertNotNull($this->article);
 
-        $this->assertEquals($newArticleId, $this->article->getId());
+        $this->assertSame((string) $newArticleId, $this->article->getId());
 
         $this->assertTrue($this->article->hasAttachment(Article::ATTACHMENT_FIELD_PHOTO));
         $this->assertFalse($this->article->hasAttachment(Article::ATTACHMENT_FIELD_PAGE));
