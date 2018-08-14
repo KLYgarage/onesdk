@@ -7,6 +7,7 @@ use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Psr7\MultipartStream;
 use One\Model\Article;
 use One\Model\Model;
+use One\Model\Photo;
 use Psr\Http\Message\RequestInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
@@ -103,9 +104,12 @@ class Publisher implements LoggerAwareInterface
 
     /**
      * submitting article here, return new Object cloned from original
+     * @return \One\Model\Article|array
      */
-    public function submitArticle(Article $article): \One\Model\Article
+    public function submitArticle(Article $article)
     {
+        $validator = $this->options->offsetGet('validator');
+
         $responseArticle = $this->post(
             self::ARTICLE_ENDPOINT,
             $this->normalizePayload(
@@ -118,6 +122,16 @@ class Publisher implements LoggerAwareInterface
 
         foreach ($article->getPossibleAttachment() as $field) {
             if ($article->hasAttachment($field)) {
+                if (! empty($validator) && $field === Article::ATTACHMENT_FIELD_PHOTO) {
+                    $validator->setValue($article->getAttachmentByField($field));
+                    $validator->checkHasRatio(Photo::RATIO_VERTICAL);
+                    if (! $validator->validate()) {
+                        return [
+                            'error_message' => $validator->getErrorMessage(),
+                        ];
+                    }
+                }
+
                 foreach ($article->getAttachmentByField($field) as $attachment) {
                     $this->submitAttachment(
                         $article->getId(),

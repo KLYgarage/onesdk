@@ -8,6 +8,7 @@ use One\Model\Gallery;
 use One\Model\Page;
 use One\Model\Photo;
 use One\Model\Video;
+use One\Validator\PhotoAttachmentsValidator;
 
 class PublisherTest extends \PHPUnit\Framework\TestCase
 {
@@ -24,10 +25,14 @@ class PublisherTest extends \PHPUnit\Framework\TestCase
         if (empty($env)) {
             $this->markTestSkipped('no .env defined. Need client ID and secret to continue this test, modify .env.example to .env on test/.env to run test');
         }
+        $options = [
+            'validator' => new PhotoAttachmentsValidator(),
+        ];
 
         $this->publisher = new Publisher(
             $env['CLIENT_ID'],
-            $env['CLIENT_SECRET']
+            $env['CLIENT_SECRET'],
+            $options
         );
     }
 
@@ -111,11 +116,7 @@ class PublisherTest extends \PHPUnit\Framework\TestCase
 
         $resultingArticle = $this->publisher->submitArticle($article);
 
-        $this->assertTrue(! empty($resultingArticle->getId()));
-
-        $this->assertTrue(! empty($this->publisher->getArticle($resultingArticle->getId())));
-
-        $this->assertTrue(! empty($this->publisher->deleteArticle($resultingArticle->getId())));
+        $this->assertArrayHasKey('error_message', $resultingArticle);
     }
 
     public function testSubmitArticleWithoutAttachment(): void

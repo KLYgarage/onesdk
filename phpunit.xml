@@ -27,5 +27,8 @@
     <testsuite name="request">
       <file>./test/Unit/RequestTest.php</file>
     </testsuite>
+    <testsuite name="photo_validator">
+      <file>./test/Unit/PhotoAttachmentsValidatorTest.php</file>
+    </testsuite>
   </testsuites>
 </phpunit>

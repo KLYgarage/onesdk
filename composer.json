@@ -34,6 +34,7 @@
         "test:publisher":"phpunit --configuration=phpunit.xml --testsuite publisher",
         "test:response":"phpunit --configuration=phpunit.xml --testsuite response",
         "test:request":"phpunit --configuration=phpunit.xml --testsuite request",
+        "test:photo_validator":"phpunit --configuration=phpunit.xml --testsuite photo_validator",
         "cs-check": "ecs check src test",
         "cs-fix": "ecs check src test --fix"
     },
