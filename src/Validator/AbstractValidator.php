@@ -2,7 +2,7 @@
 
 namespace One\Validator;
 
-abstract class AbstractValidator
+abstract class AbstractValidator implements ValidatorInterface
 {
     /**
      * value

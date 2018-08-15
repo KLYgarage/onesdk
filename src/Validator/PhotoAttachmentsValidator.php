@@ -4,7 +4,7 @@ namespace One\Validator;
 
 use One\Model\Photo;
 
-class PhotoAttachmentsValidator extends AbstractValidator implements ValidatorInterface
+class PhotoAttachmentsValidator extends AbstractValidator
 {
     /**
      * Check if photo has

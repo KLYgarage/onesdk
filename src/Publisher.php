@@ -80,7 +80,7 @@ class Publisher implements LoggerAwareInterface
 
     /**
      * Validator
-     * @var \One\Validator
+     * @var \One\Validator\AbstractValidator
      */
     private $validator;
 
