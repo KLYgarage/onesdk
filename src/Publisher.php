@@ -8,6 +8,7 @@ use GuzzleHttp\Psr7\MultipartStream;
 use One\Model\Article;
 use One\Model\Model;
 use One\Model\Photo;
+use One\Validator\PhotoAttachmentsValidator;
 use Psr\Http\Message\RequestInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
@@ -27,6 +28,8 @@ class Publisher implements LoggerAwareInterface
     public const ARTICLE_CHECK_ENDPOINT = '/api/article';
 
     public const ARTICLE_ENDPOINT = '/api/publisher/article';
+
+    public const PHOTO_ATTACHMENT_VALIDATOR = 'photo_attachments_validator';
 
     /**
      * attachment url destination
@@ -76,6 +79,12 @@ class Publisher implements LoggerAwareInterface
     private $httpClient;
 
     /**
+     * Validator
+     * @var \One\Validator\ValidatorInterface
+     */
+    private $validator;
+
+    /**
      * constructor
      */
     public function __construct(string $clientId, string $clientSecret, array $options = [])
@@ -108,7 +117,9 @@ class Publisher implements LoggerAwareInterface
      */
     public function submitArticle(Article $article)
     {
-        $validator = $this->options->offsetGet('validator');
+        $validatorType = $this->options->offsetGet('validator');
+
+        $this->createValidator($validatorType);
 
         $responseArticle = $this->post(
             self::ARTICLE_ENDPOINT,
@@ -122,12 +133,12 @@ class Publisher implements LoggerAwareInterface
 
         foreach ($article->getPossibleAttachment() as $field) {
             if ($article->hasAttachment($field)) {
-                if (! empty($validator) && $field === Article::ATTACHMENT_FIELD_PHOTO) {
-                    $validator->setValue($article->getAttachmentByField($field));
-                    $validator->checkHasRatio(Photo::RATIO_VERTICAL);
-                    if (! $validator->validate()) {
+                if ($field === Article::ATTACHMENT_FIELD_PHOTO) {
+                    $this->validator->setValue($article->getAttachmentByField($field));
+                    $this->validator->checkHasRatio(Photo::RATIO_VERTICAL);
+                    if (! $this->validator->validate()) {
                         return [
-                            'error_message' => $validator->getErrorMessage(),
+                            'error_message' => $this->validator->getErrorMessage(),
                         ];
                     }
                 }
@@ -490,5 +501,30 @@ class Publisher implements LoggerAwareInterface
     private function hasLogger(): bool
     {
         return isset($this->logger) && $this->logger !== null;
+    }
+
+    /**
+     * Check if validator instance existance
+     */
+    private function hasValidator(string $validatorType = ''): bool
+    {
+        return ! empty($this->validator)
+            &&
+            is_a($this->validator, $validatorType);
+    }
+
+    /**
+     * Create validator instance
+     * Based on type
+     * */
+    private function createValidator(string $validatorType = ''): void
+    {
+        if ($validatorType === self::PHOTO_ATTACHMENT_VALIDATOR) {
+            if (! $this->hasValidator($validatorType)) {
+                $this->validator = new PhotoAttachmentsValidator();
+            }
+        } else {
+            throw new \Exception('Unknown validator type', 1);
+        }
     }
 }

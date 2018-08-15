@@ -8,7 +8,6 @@ use One\Model\Gallery;
 use One\Model\Page;
 use One\Model\Photo;
 use One\Model\Video;
-use One\Validator\PhotoAttachmentsValidator;
 
 class PublisherTest extends \PHPUnit\Framework\TestCase
 {
@@ -26,7 +25,7 @@ class PublisherTest extends \PHPUnit\Framework\TestCase
             $this->markTestSkipped('no .env defined. Need client ID and secret to continue this test, modify .env.example to .env on test/.env to run test');
         }
         $options = [
-            'validator' => new PhotoAttachmentsValidator(),
+            'validator' => Publisher::PHOTO_ATTACHMENT_VALIDATOR,
         ];
 
         $this->publisher = new Publisher(
