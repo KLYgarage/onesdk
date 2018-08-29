@@ -67,11 +67,13 @@ class Model
      */
     protected function filterStringInstance($string)
     {
-        if (! empty($string)) {
-            return htmlentities(
-                $this->convertNonAscii($string)
-            );
+        if (empty($string)) {
+            return '';
         }
+
+        return $this->convertNonAscii(
+            $string
+        );
     }
 
     /**
