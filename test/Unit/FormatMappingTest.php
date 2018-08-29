@@ -35,7 +35,7 @@ class FormatMappingTest extends \PHPUnit\Framework\TestCase
 
     public function testArticleAttachment()
     {
-        $newArticleId = 10998;
+        $newArticleId = 26066;
 
         $jsonArticle = $this->publisher->getArticle($newArticleId);
 

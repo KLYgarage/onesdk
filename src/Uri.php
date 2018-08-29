@@ -294,7 +294,7 @@ class Uri implements UriInterface
             'https' => true,
             'http' => true,
         );
-        
+
         $scheme = str_replace('://', '', strtolower($scheme));
         if (!isset($valid[$scheme])) {
             throw new InvalidArgumentException('Uri scheme must be one of: "", "https", "http"');
@@ -331,7 +331,7 @@ class Uri implements UriInterface
     protected function filterPath($path)
     {
         return preg_replace_callback(
-            '/(?:[^a-zA-Z0-9_\-\.~:@&=\+\$,\/;%]+|%(?![A-Fa-f0-9]{2}))/',
+            '/(?:[^a-zA-Z0-9_\-\.~:@&=\+\$,\(\)\/;%]+|%(?![A-Fa-f0-9]{2}))/',
             function ($match) {
                 return rawurlencode($match[0]);
             },
