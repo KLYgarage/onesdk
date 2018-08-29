@@ -63,15 +63,15 @@ class Model
      * Clean non parseable char from string
      *
      * @param mixed $string
-     * @return mixed
+     * @return string
      */
     protected function filterStringInstance($string)
     {
-        if (! empty($string)) {
-            return htmlentities(
-                $this->convertNonAscii($string)
-            );
+        if (empty($string)) {
+            return '';
         }
+        
+        return htmlentities($this->convertNonAscii($string));
     }
 
     /**
