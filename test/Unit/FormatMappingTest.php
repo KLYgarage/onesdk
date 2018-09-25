@@ -41,9 +41,12 @@ class FormatMappingTest extends \PHPUnit\Framework\TestCase
         $this->formatMapping = new FormatMapping();
     }
 
+    /**
+     * @expectedException \Guzzle\Http\Exception\ClientErrorResponseException
+     */
     public function testArticleAttachment(): void
     {
-        $newArticleId = (string) 10998;
+        $newArticleId = (string) 26066;
 
         $jsonArticle = $this->publisher->getArticle((string) $newArticleId);
 

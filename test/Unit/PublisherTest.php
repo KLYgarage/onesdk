@@ -46,6 +46,9 @@ class PublisherTest extends \PHPUnit\Framework\TestCase
         $this->assertArrayHasKey('meta', $data);
     }
 
+    /**
+     * @expectedException \Guzzle\Http\Exception\ClientErrorResponseException
+     */
     public function testRecycleToken(): void
     {
         $env = \loadTestEnv();
