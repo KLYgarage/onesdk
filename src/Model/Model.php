@@ -81,7 +81,7 @@ class Model
             return (string) \One\createUriFromString($uri);
         }
 
-        return (string) \One\createuriFromServer();
+        return "";
     }
 
     /**
