@@ -8,8 +8,8 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-          - v1-dependencies-{{ checksum "composer.json" }}
-          - v1-dependencies-
+          - php-5x-dependencies-{{ checksum "composer.json" }}
+          - php-5x-dependencies-
       - run: composer install -n --prefer-dist
       - run:
             name: Update PATH and Define Environment Variable at Runtime
@@ -21,6 +21,6 @@ jobs:
       - save_cache:
           paths:
             - ./vendor
-          key: v1-dependencies-{{ checksum "composer.json" }}
+          key: php-5x-dependencies-{{ checksum "composer.json" }}
       - run: composer run cs-fix
       - run: composer run test
