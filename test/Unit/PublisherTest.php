@@ -47,7 +47,7 @@ class PublisherTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @expectedException \Guzzle\Http\Exception\ClientErrorResponseException
+     * @expectedException \GuzzleHttp\Exception\ClientException
      */
     public function testRecycleToken(): void
     {
