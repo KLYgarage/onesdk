@@ -91,7 +91,7 @@ class Model
             return (string) \One\createUriFromString($uri);
         }
 
-        return "";
+        return '';
     }
 
     /**

@@ -129,14 +129,12 @@ class FormatMapping
     {
         $copyListAttributes = $this->listAttributes;
 
-        $lists = array_map(function ($singleConst) use ($copyListAttributes) {
+        return array_map(function ($singleConst) use ($copyListAttributes) {
             $res = $copyListAttributes[$singleConst];
             return array_map(function ($str) use ($singleConst) {
                 return $singleConst . $str;
             }, $res);
         }, $articleConstant);
-
-        return $lists;
     }
 
     /**
@@ -345,9 +343,9 @@ class FormatMapping
      */
     private function handleString($str): string
     {
-        return (is_string($str) &&
+        return is_string($str) &&
             strlen($str) > 0
-            && $str !== null) ? $str : '';
+            && $str !== null ? $str : '';
     }
 
     /**

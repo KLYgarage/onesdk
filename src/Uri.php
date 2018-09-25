@@ -41,7 +41,7 @@ class Uri implements UriInterface
     /**
      * Uri port number
      *
-     * @var null|int
+     * @var int|null
      */
     protected $port;
 
@@ -318,7 +318,7 @@ class Uri implements UriInterface
      * Filter allowable port to minimize risk
      *
      * @access protected
-     * @return null|integer $port
+     * @return integer|null $port
      * @throws InvalidArgumentException for incorrect port assigned
      */
     protected function filterPort(?int $port): ?int
