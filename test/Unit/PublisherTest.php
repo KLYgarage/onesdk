@@ -39,6 +39,9 @@ class PublisherTest extends \PHPUnit\Framework\TestCase
         $this->assertArrayHasKey('meta', $data);
     }
 
+    /**
+     * @expectedException \Guzzle\Http\Exception\ClientErrorResponseException
+     */
     public function testRecycleToken()
     {
         $env = \loadTestEnv();
@@ -110,7 +113,7 @@ class PublisherTest extends \PHPUnit\Framework\TestCase
 
         $this->assertTrue(!empty($this->publisher->deleteArticle($resultingArticle->getId())));
     }
-  
+
     public function testSubmitArticleWithoutAttachment()
     {
         $article = new Article(
@@ -177,7 +180,7 @@ class PublisherTest extends \PHPUnit\Framework\TestCase
                 case 1:
                     $ratio = Photo::RATIO_COVER;
                     break;
-                
+
                 case 2:
                     $ratio = Photo::RATIO_VERTICAL;
                     break;
@@ -417,7 +420,7 @@ class PublisherTest extends \PHPUnit\Framework\TestCase
 
         $article->attachVideo($video);
         $article->attachVideo($video2);
-        
+
         $articleCreated = $this->publisher->submitArticle($article);
         $articleCreatedId = $articleCreated->getId();
 
