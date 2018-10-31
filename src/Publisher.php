@@ -19,7 +19,7 @@ class Publisher implements LoggerAwareInterface
 {
     const DEFAULT_MAX_ATTEMPT = 4;
 
-    const REST_SERVER = 'https://dev.one.co.id';
+    const REST_SERVER = 'https://www.one.co.id';
     const AUTHENTICATION = '/oauth/token';
     const ARTICLE_CHECK_ENDPOINT = '/api/article';
     const ARTICLE_ENDPOINT = '/api/publisher/article';
