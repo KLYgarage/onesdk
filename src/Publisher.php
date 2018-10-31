@@ -19,7 +19,7 @@ class Publisher implements LoggerAwareInterface
 {
     public const DEFAULT_MAX_ATTEMPT = 4;
 
-    public const REST_SERVER = 'https://dev.one.co.id';
+    public const REST_SERVER = 'https://www.one.co.id';
 
     public const AUTHENTICATION = '/oauth/token';
 
