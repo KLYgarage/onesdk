@@ -77,7 +77,7 @@ class Publisher implements LoggerAwareInterface
     /**
      * token saver storage
      *
-     * @var Closure
+     * @var \Closure
      */
     private $tokenSaver = null;
 
@@ -110,11 +110,19 @@ class Publisher implements LoggerAwareInterface
         );
     }
 
+    /**
+     * set Token Saver
+     */
     public function setTokenSaver(\Closure $tokenSaver): self
     {
         $this->tokenSaver = $tokenSaver;
 
         return $this;
+    }
+
+    public function getTokenSaver(): \Closure
+    {
+        return $this->tokenSaver;
     }
 
     /**
@@ -434,7 +442,9 @@ class Publisher implements LoggerAwareInterface
         }
 
         if (! empty($this->tokenSaver)) {
-            $this->tokenSaver($token['access_token']);
+            $this->getTokenSaver()(
+                $token['access_token']
+            );
         }
 
         return $this->setAuthorizationHeader(
@@ -468,7 +478,6 @@ class Publisher implements LoggerAwareInterface
     private function getAttachmentEndPoint(string $idArticle, string $field): string
     {
         return $this->replaceEndPointId(
-
             $idArticle,
             $this->attachmentUrl[$field]
         );
