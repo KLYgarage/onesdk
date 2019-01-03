@@ -22,5 +22,5 @@ jobs:
           paths:
             - ./vendor
           key: master-branch-dependencies-{{ checksum "composer.json" }}
-      - run: composer run cs-check
+      - run: composer run cs:check
       - run: composer run test
