@@ -292,6 +292,11 @@ class Publisher implements LoggerAwareInterface
         $this->logger = $logger;
     }
 
+    public function getRestServer(): string
+    {
+        return $this->options->get('rest_server');
+    }
+
     /**
      * assessing and custom option
      */
@@ -357,7 +362,8 @@ class Publisher implements LoggerAwareInterface
             )
         );
 
-        return (string) $this->httpClient->send($request, $options)->getBody();
+        return (string) $this->sendRequest($request);
+        //(string) $this->httpClient->send($request, $options)->getBody();
     }
 
     private function prepareMultipartData(array $data = []): array
@@ -383,7 +389,19 @@ class Publisher implements LoggerAwareInterface
         }
 
         try {
-            $response = $this->httpClient->send($request);
+            $response = $this->httpClient->send(
+                $request,
+                [
+                    'allow_redirects' => false,
+                    'synchronous' => true,
+                    'curl' => [
+                        CURLOPT_FORBID_REUSE => true,
+                        CURLOPT_MAXCONNECTS => 30,
+                        CURLOPT_SSL_VERIFYPEER => false,
+                        CURLOPT_SSL_VERIFYSTATUS => false,
+                    ],
+                ]
+            );
             if ($response->getStatusCode() === 200) {
                 return $response->getBody();
             }
