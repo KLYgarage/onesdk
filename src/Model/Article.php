@@ -28,6 +28,7 @@ class Article extends Model
     const CATEGORY_UNIK = 16;
     const CATEGORY_EVENT = 17;
     const CATEGORY_KOMUNITAS = 18;
+    const CATEGORY_E_SPORTS = 19;
 
     const TYPE_TEXT = 1;
     const TYPE_PHOTO = 2;

@@ -69,6 +69,13 @@ class Publisher implements LoggerAwareInterface
     private $httpClient;
 
     /**
+     * token saver storage
+     *
+     * @var \Closure
+     */
+    private $tokenSaver = null;
+
+    /**
      * constructor
      *
      * @param string $clientId
@@ -103,6 +110,23 @@ class Publisher implements LoggerAwareInterface
     }
 
     /**
+     * set Token Saver
+     */
+    public function setTokenSaver(\Closure $tokenSaver): self
+    {
+        $this->tokenSaver = $tokenSaver;
+        return $this;
+    }
+
+    /**
+     * get Token Saver
+     */
+    public function getTokenSaver(): \Closure
+    {
+        return $this->tokenSaver;
+    }
+
+    /**
      * assessing and custom option
      *
      * @param array $options
@@ -128,6 +152,18 @@ class Publisher implements LoggerAwareInterface
 
         if (isset($options['access_token'])) {
             $this->setAuthorizationHeader($options['access_token']);
+        }
+
+        if (isset($options['recyle_token']) && is_callable($options['recyle_token'])) {
+            $this->recycleToken(
+                $options['recyle_token']
+            );
+        }
+
+        if (isset($options['token_saver']) && is_callable($options['token_saver'])) {
+            $this->setTokenSaver(
+                $options['token_saver']
+            );
         }
 
         $this->httpClient = new Client(
@@ -227,6 +263,12 @@ class Publisher implements LoggerAwareInterface
 
         if (empty($token)) {
             throw new \Exception("Access token request return empty response");
+        }
+
+        if (! empty($this->tokenSaver)) {
+            $this->getTokenSaver()(
+                $token['access_token']
+            );
         }
 
         return $this->setAuthorizationHeader(
