@@ -113,6 +113,7 @@ class Article extends Model
             self::CATEGORY_UNIK,
             self::CATEGORY_EVENT,
             self::CATEGORY_KOMUNITAS,
+            self::CATEGORY_E_SPORTS
         ];
 
         if (! in_array($categoryId, $allowedCategory, true)) {
