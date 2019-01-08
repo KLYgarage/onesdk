@@ -10,53 +10,32 @@ use One\Collection;
 class Article extends Model
 {
     public const CATEGORY_NASIONAL = 1;
-
     public const CATEGORY_INTERNASIONAL = 2;
-
     public const CATEGORY_BISNIS = 3;
-
     public const CATEGORY_SEPAK_BOLA = 4;
-
     public const CATEGORY_OLAHRAGA = 5;
-
     public const CATEGORY_HIBURAN = 6;
-
     public const CATEGORY_TEKNOLOGI = 7;
-
     public const CATEGORY_TRAVEL = 8;
-
     public const CATEGORY_LIFESTYLE = 9;
-
     public const CATEGORY_WANITA = 10;
-
     public const CATEGORY_HIJAB = 11;
-
     public const CATEGORY_KULINER = 12;
-
     public const CATEGORY_SEHAT = 13;
-
     public const CATEGORY_OTOMOTIF = 14;
-
     public const CATEGORY_INSPIRASI = 15;
-
     public const CATEGORY_UNIK = 16;
-
     public const CATEGORY_EVENT = 17;
-
     public const CATEGORY_KOMUNITAS = 18;
+    public const CATEGORY_E_SPORTS = 19;
 
     public const TYPE_TEXT = 1;
-
     public const TYPE_PHOTO = 2;
-
     public const TYPE_VIDEO = 3;
 
     public const ATTACHMENT_FIELD_PHOTO = 'photo';
-
     public const ATTACHMENT_FIELD_PAGE = 'page';
-
     public const ATTACHMENT_FIELD_VIDEO = 'video';
-
     public const ATTACHMENT_FIELD_GALLERY = 'gallery';
 
     /**
