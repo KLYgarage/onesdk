@@ -10,32 +10,55 @@ use One\Collection;
 class Article extends Model
 {
     public const CATEGORY_NASIONAL = 1;
+
     public const CATEGORY_INTERNASIONAL = 2;
+
     public const CATEGORY_BISNIS = 3;
+
     public const CATEGORY_SEPAK_BOLA = 4;
+
     public const CATEGORY_OLAHRAGA = 5;
+
     public const CATEGORY_HIBURAN = 6;
+
     public const CATEGORY_TEKNOLOGI = 7;
+
     public const CATEGORY_TRAVEL = 8;
+
     public const CATEGORY_LIFESTYLE = 9;
+
     public const CATEGORY_WANITA = 10;
+
     public const CATEGORY_HIJAB = 11;
+
     public const CATEGORY_KULINER = 12;
+
     public const CATEGORY_SEHAT = 13;
+
     public const CATEGORY_OTOMOTIF = 14;
+
     public const CATEGORY_INSPIRASI = 15;
+
     public const CATEGORY_UNIK = 16;
+
     public const CATEGORY_EVENT = 17;
+
     public const CATEGORY_KOMUNITAS = 18;
+
     public const CATEGORY_E_SPORTS = 19;
 
     public const TYPE_TEXT = 1;
+
     public const TYPE_PHOTO = 2;
+
     public const TYPE_VIDEO = 3;
 
     public const ATTACHMENT_FIELD_PHOTO = 'photo';
+
     public const ATTACHMENT_FIELD_PAGE = 'page';
+
     public const ATTACHMENT_FIELD_VIDEO = 'video';
+
     public const ATTACHMENT_FIELD_GALLERY = 'gallery';
 
     /**
@@ -77,20 +100,7 @@ class Article extends Model
         $publishedAt = null,
         $identifier = null
     ) {
-        $source = $this->filterUriInstance($source);
-        $publishedAt = $this->filterDateInstance($publishedAt);
-
-        if (empty($lead)) {
-            $lead = $this->createLeadFromBody($body);
-        }
-
-        $allowedType = [
-            self::TYPE_PHOTO,
-            self::TYPE_TEXT,
-            self::TYPE_VIDEO,
-        ];
-
-        if (! in_array($typeId, $allowedType, true)) {
+        if (! in_array($typeId, [self::TYPE_PHOTO, self::TYPE_TEXT, self::TYPE_VIDEO], true)) {
             throw new \InvalidArgumentException("Invalid typeId : ${typeId}, allowed typeId are " . implode(', ', $allowedType));
         }
 
@@ -113,33 +123,25 @@ class Article extends Model
             self::CATEGORY_UNIK,
             self::CATEGORY_EVENT,
             self::CATEGORY_KOMUNITAS,
-            self::CATEGORY_E_SPORTS
+            self::CATEGORY_E_SPORTS,
         ];
 
         if (! in_array($categoryId, $allowedCategory, true)) {
             throw new \InvalidArgumentException("Invalid categoryId : ${categoryId}, allowed category are " . implode(', ', $allowedCategory));
         }
 
-        $title = $this->filterStringInstance($title);
-        $reporter = $this->filterStringInstance($reporter);
-        $lead = $this->filterStringInstance($lead);
-        $body = $this->filterStringInstance($body);
-        $tags = $this->filterStringInstance($tags);
-
-        $this->collection = new Collection(
-            [
-                'title' => $title,
-                'reporter' => $reporter,
-                'lead' => $lead,
-                'body' => $body,
-                'source' => $source,
-                'uniqueId' => $uniqueId,
-                'type_id' => $typeId,
-                'category_id' => $categoryId,
-                'tags' => $tags,
-                'published_at' => $publishedAt,
-            ]
-        );
+        $this->collection = new Collection([
+            'title' => $this->filterStringInstance($title),
+            'reporter' => $this->filterStringInstance($reporter),
+            'lead' => empty($lead) ? $this->createLeadFromBody($body) : $this->filterStringInstance($lead),
+            'body' => $this->filterStringInstance($body),
+            'source' => $this->filterUriInstance($source),
+            'uniqueId' => $uniqueId,
+            'type_id' => $typeId,
+            'category_id' => $categoryId,
+            'tags' => $this->filterStringInstance($tags),
+            'published_at' => $this->filterDateInstance($publishedAt),
+        ]);
 
         if ($identifier) {
             $this->setId((string) $identifier);
