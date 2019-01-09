@@ -27,21 +27,16 @@ class Photo extends Model
         $description = '',
         $information = ''
     ) {
-        $url = $this->filterUriInstance($url);
-
-        if (!in_array($ratio, $this->getAvailableRatios())) {
+        if (! in_array($ratio, $this->getAvailableRatios())) {
             throw new \Exception("ratio $ratio not allowed, allowed ratio are " . implode(', ', $this->getAvailableRatios()));
         }
 
-        $description = $this->filterStringInstance($description);
-        $information = $this->filterStringInstance($information);
-
         $this->collection = new Collection(
             array(
-                'url' => $url,
+                'url' => $this->filterUriInstance($url),
                 'ratio' => $ratio,
-                'description' => $description,
-                'information' => $information,
+                'description' => $this->filterStringInstance($description),
+                'information' => $this->filterStringInstance($information),
             )
         );
     }

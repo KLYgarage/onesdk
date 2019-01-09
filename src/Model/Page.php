@@ -22,29 +22,24 @@ class Page extends Model
         $body,
         $source,
         $order,
-        $cover,
+        source$cover,
         $lead = ''
     ) {
-        $cover = $this->filterUriInstance($cover);
-        $source = $this->filterUriInstance($source);
+        $properties = array(
+            'title' => $this->filterStringInstance($title),
+            'lead' => empty($lead) ? $this->createLeadFromBody($body) : $this->filterStringInstance($lead),
+            'body' => $this->filterStringInstance($body),
+            'order' => $order
+        );
 
-        if (empty($lead)) {
-            $lead = $this->createLeadFromBody($body);
+        if (! empty($cover)) {
+            $properties['cover'] = $this->filterUriInstance($cover);
         }
 
-        $title  = $this->filterStringInstance($title);
-        $lead   = $this->filterStringInstance($lead);
-        $body   = $this->filterStringInstance($body);
+        if (! empty($source)) {
+            $properties['source'] = $this->filterUriInstance($source);
+        }
 
-        $this->collection = new Collection(
-            array(
-                'title' => $title,
-                'lead' => $lead,
-                'body' => $body,
-                'source' => $source,
-                'order' => $order,
-                'cover' => $cover
-            )
-        );
+        $this->collection = new Collection($properties);
     }
 }

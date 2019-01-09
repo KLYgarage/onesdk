@@ -80,13 +80,6 @@ class Article extends Model
         $publishedAt = null,
         $identifier = null
     ) {
-        $source = $this->filterUriInstance($source);
-        $publishedAt = $this->filterDateInstance($publishedAt);
-
-        if (empty($lead)) {
-            $lead = $this->createLeadFromBody($body);
-        }
-
         $allowedType = array(
             self::TYPE_PHOTO,
             self::TYPE_TEXT,
@@ -123,24 +116,18 @@ class Article extends Model
             throw new \InvalidArgumentException("Invalid categoryId : $categoryId, allowed category are " . implode(', ', $allowedCategory));
         }
 
-        $title    = $this->filterStringInstance($title);
-        $reporter = $this->filterStringInstance($reporter);
-        $lead     = $this->filterStringInstance($lead);
-        $body     = $this->filterStringInstance($body);
-        $tags     = $this->filterStringInstance($tags);
-
         $this->collection = new Collection(
             array(
-                'title' => $title,
-                'reporter' => $reporter,
-                'lead' => $lead,
-                'body' => $body,
-                'source' => $source,
+                'title' => $this->filterStringInstance($title),
+                'reporter' => $this->filterStringInstance($reporter),
+                'lead' => $this->filterStringInstance($lead),
+                'body' => $this->filterStringInstance($body),
+                'source' => $this->filterUriInstance($source),
                 'uniqueId' => $uniqueId,
                 'type_id' => $typeId,
                 'category_id' => $categoryId,
-                'tags' => $tags,
-                'published_at' => $publishedAt
+                'tags' => $this->filterStringInstance($tags),
+                'published_at' => $this->filterDateInstance($publishedAt)
             )
         );
 

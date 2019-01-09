@@ -24,10 +24,12 @@ class FactoryUri
      */
     public static function create($string = null)
     {
-        if (!empty($string)) {
-            return self::createFromString($string);
+        if (empty($string)) {
+            return "";
         }
-        return self::createFromServer();
+
+        return self::createFromString($string);
+        //return self::createFromServer();
     }
 
     /**
