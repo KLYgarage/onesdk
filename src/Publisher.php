@@ -112,7 +112,7 @@ class Publisher implements LoggerAwareInterface
     /**
      * set Token Saver
      */
-    public function setTokenSaver(\Closure $tokenSaver): self
+    public function setTokenSaver(\Closure $tokenSaver)
     {
         $this->tokenSaver = $tokenSaver;
         return $this;
@@ -121,7 +121,7 @@ class Publisher implements LoggerAwareInterface
     /**
      * get Token Saver
      */
-    public function getTokenSaver(): \Closure
+    public function getTokenSaver()
     {
         return $this->tokenSaver;
     }
@@ -266,7 +266,8 @@ class Publisher implements LoggerAwareInterface
         }
 
         if (! empty($this->tokenSaver)) {
-            $this->getTokenSaver()(
+            $tokenSaver = $this->getTokenSaver();
+            $tokenSaver(
                 $token['access_token']
             );
         }

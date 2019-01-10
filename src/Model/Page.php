@@ -22,7 +22,7 @@ class Page extends Model
         $body,
         $source,
         $order,
-        source$cover,
+        $cover = '',
         $lead = ''
     ) {
         $properties = array(
