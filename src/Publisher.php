@@ -154,9 +154,9 @@ class Publisher implements LoggerAwareInterface
             $this->setAuthorizationHeader($options['access_token']);
         }
 
-        if (isset($options['recyle_token']) && is_callable($options['recyle_token'])) {
+        if (isset($options['recycle_token']) && is_callable($options['recycle_token'])) {
             $this->recycleToken(
-                $options['recyle_token']
+                $options['recycle_token']
             );
         }
 
