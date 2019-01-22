@@ -23,25 +23,13 @@ class Gallery extends Model
         $source,
         $lead = ''
     ) {
-        $photo = $this->filterUriInstance($photo);
-        $source = $this->fillSource($source, $photo);
-
-        if (empty($lead)) {
-            $lead = $this->createLeadFromBody($body);
-        }
-
-        $lead = $this->filterStringInstance($lead);
-        $body = $this->filterStringInstance($body);
-
-        $this->collection = new Collection(
-            [
-                'lead' => $lead,
-                'body' => $body,
-                'source' => $source,
-                'order' => $order,
-                'photo' => $photo,
-            ]
-        );
+        $this->collection = new Collection([
+            'lead' => empty($lead) ? $this->createLeadFromBody($body) : $this->filterStringInstance($lead),
+            'body' => $this->filterStringInstance($body),
+            'source' => $this->fillSource($source, $photo),
+            'order' => $order,
+            'photo' => $this->filterUriInstance($photo),
+        ]);
     }
 
     /**

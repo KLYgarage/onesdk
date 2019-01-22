@@ -67,11 +67,13 @@ class Model
      */
     protected function filterStringInstance($string)
     {
-        if (! empty($string)) {
-            return htmlentities(
-                $this->convertNonAscii($string)
-            );
+        if (empty($string)) {
+            return '';
         }
+
+        return $this->convertNonAscii(
+            $string
+        );
     }
 
     /**
@@ -89,7 +91,7 @@ class Model
             return (string) \One\createUriFromString($uri);
         }
 
-        return (string) \One\createuriFromServer();
+        return '';
     }
 
     /**

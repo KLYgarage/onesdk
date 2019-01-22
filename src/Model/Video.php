@@ -21,27 +21,20 @@ class Video extends Model
         $cover = null,
         $lead = ''
     ) {
-        $source = $this->filterUriInstance($source);
+        $properties = [
+            'lead' => empty($lead) ? $this->createLeadFromBody($body) : $this->filterStringInstance($lead),
+            'body' => $this->filterStringInstance($body),
+            'order' => $order,
+        ];
+
+        if (! empty($source)) {
+            $properties['source'] = $this->filterUriInstance($source);
+        }
 
         if (! empty($cover)) {
-            $cover = $this->filterUriInstance($cover);
+            $properties['cover'] = $this->filterUriInstance($cover);
         }
 
-        if (empty($lead)) {
-            $lead = $this->createLeadFromBody($body);
-        }
-
-        $lead = $this->filterStringInstance($lead);
-        $body = $this->filterStringInstance($body);
-
-        $this->collection = new Collection(
-            [
-                'lead' => $lead,
-                'body' => $body,
-                'source' => $source,
-                'order' => $order,
-                'cover' => $cover,
-            ]
-        );
+        $this->collection = new Collection($properties);
     }
 }

@@ -37,3 +37,4 @@ parameters:
         SlevomatCodingStandard\Sniffs\TypeHints\TypeHintDeclarationSniff.UselessDocComment: ~
         SlevomatCodingStandard\Sniffs\TypeHints\TypeHintDeclarationSniff.MissingTraversableReturnTypeHintSpecification: ~
         SlevomatCodingStandard\Sniffs\TypeHints\TypeHintDeclarationSniff.MissingTraversableParameterTypeHintSpecification: ~
+        SlevomatCodingStandard\Sniffs\Variables\UnusedVariableSniff.UnusedVariable: ~

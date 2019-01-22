@@ -19,7 +19,7 @@ class Publisher implements LoggerAwareInterface
 {
     public const DEFAULT_MAX_ATTEMPT = 4;
 
-    public const REST_SERVER = 'https://dev.one.co.id';
+    public const REST_SERVER = 'https://www.one.co.id';
 
     public const AUTHENTICATION = '/oauth/token';
 
@@ -75,6 +75,13 @@ class Publisher implements LoggerAwareInterface
     private $httpClient;
 
     /**
+     * token saver storage
+     *
+     * @var \Closure
+     */
+    private $tokenSaver = null;
+
+    /**
      * constructor
      */
     public function __construct(string $clientId, string $clientSecret, array $options = [])
@@ -98,7 +105,24 @@ class Publisher implements LoggerAwareInterface
      */
     public function recycleToken(\Closure $tokenProducer): self
     {
-        return $this->setAuthorizationHeader($tokenProducer());
+        return $this->setAuthorizationHeader(
+            $tokenProducer()
+        );
+    }
+
+    /**
+     * set Token Saver
+     */
+    public function setTokenSaver(\Closure $tokenSaver): self
+    {
+        $this->tokenSaver = $tokenSaver;
+
+        return $this;
+    }
+
+    public function getTokenSaver(): \Closure
+    {
+        return $this->tokenSaver;
     }
 
     /**
@@ -268,6 +292,11 @@ class Publisher implements LoggerAwareInterface
         $this->logger = $logger;
     }
 
+    public function getRestServer(): string
+    {
+        return $this->options->get('rest_server');
+    }
+
     /**
      * assessing and custom option
      */
@@ -291,6 +320,18 @@ class Publisher implements LoggerAwareInterface
 
         if (isset($options['access_token'])) {
             $this->setAuthorizationHeader($options['access_token']);
+        }
+
+        if (isset($options['recycle_token']) && is_callable($options['recycle_token'])) {
+            $this->recycleToken(
+                $options['recycle_token']
+            );
+        }
+
+        if (isset($options['token_saver']) && is_callable($options['token_saver'])) {
+            $this->setTokenSaver(
+                $options['token_saver']
+            );
         }
 
         $this->httpClient = new Client([
@@ -321,7 +362,8 @@ class Publisher implements LoggerAwareInterface
             )
         );
 
-        return (string) $this->httpClient->send($request, $options)->getBody();
+        return (string) $this->sendRequest($request);
+        //(string) $this->httpClient->send($request, $options)->getBody();
     }
 
     private function prepareMultipartData(array $data = []): array
@@ -347,7 +389,19 @@ class Publisher implements LoggerAwareInterface
         }
 
         try {
-            $response = $this->httpClient->send($request);
+            $response = $this->httpClient->send(
+                $request,
+                [
+                    'allow_redirects' => false,
+                    'synchronous' => true,
+                    'curl' => [
+                        CURLOPT_FORBID_REUSE => true,
+                        CURLOPT_MAXCONNECTS => 30,
+                        CURLOPT_SSL_VERIFYPEER => false,
+                        CURLOPT_SSL_VERIFYSTATUS => false,
+                    ],
+                ]
+            );
             if ($response->getStatusCode() === 200) {
                 return $response->getBody();
             }
@@ -355,6 +409,11 @@ class Publisher implements LoggerAwareInterface
             return $this->sendRequest($request, $attempt++);
         } catch (ClientException $err) {
             if ($err->getResponse()->getStatusCode() === 429) {
+                usleep(600);
+                return $this->sendRequest($err->getRequest(), $attempt++);
+            }
+
+            if ($err->getResponse()->getStatusCode() === 401) {
                 $this->renewAuthToken();
                 return $this->sendRequest($err->getRequest(), $attempt++);
             }
@@ -405,6 +464,12 @@ class Publisher implements LoggerAwareInterface
             throw new \Exception('Access token request return empty response');
         }
 
+        if (! empty($this->tokenSaver)) {
+            $this->getTokenSaver()(
+                $token['access_token']
+            );
+        }
+
         return $this->setAuthorizationHeader(
             $token['access_token']
         );
@@ -436,7 +501,6 @@ class Publisher implements LoggerAwareInterface
     private function getAttachmentEndPoint(string $idArticle, string $field): string
     {
         return $this->replaceEndPointId(
-
             $idArticle,
             $this->attachmentUrl[$field]
         );
