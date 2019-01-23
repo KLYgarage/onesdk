@@ -1,3 +1,0 @@
-User-agent: *
-Disallow:
-Sitemap: https://klygarage.github.io/onesdk/docs/sitemap.xml
