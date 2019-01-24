@@ -11,9 +11,9 @@ use One\Uri;
 class Request extends Message implements \Psr\Http\Message\RequestInterface
 {
     private $method;
-   
+
     private $requestTarget;
-    
+
     private $uri;
 
     /**
@@ -120,6 +120,10 @@ class Request extends Message implements \Psr\Http\Message\RequestInterface
      */
     private function updateHostFromUri()
     {
+        if (! $this->uri instanceof Uri) {
+            return;
+        }
+
         $host = $this->uri->getHost();
         if ($host == '') {
             return;
@@ -133,7 +137,7 @@ class Request extends Message implements \Psr\Http\Message\RequestInterface
             $header                    = 'Host';
             $this->headerNames['host'] = 'Host';
         }
-       
+
         $this->headers = [$header => [$host]] + $this->headers;
     }
 }
