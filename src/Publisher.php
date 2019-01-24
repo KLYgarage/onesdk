@@ -363,7 +363,6 @@ class Publisher implements LoggerAwareInterface
         );
 
         return (string) $this->sendRequest($request);
-        //(string) $this->httpClient->send($request, $options)->getBody();
     }
 
     private function prepareMultipartData(array $data = []): array
