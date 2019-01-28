@@ -407,9 +407,9 @@ class Publisher implements LoggerAwareInterface
 
             return $this->sendRequest($request, $attempt++);
         } catch (ClientException $err) {
-            if ($err->getResponse()->getStatusCode() === 401) {
+            if ($err->getResponse()->getStatusCode() === 401 && $request->getRequestTarget() !== self::AUTHENTICATION) {
                 $this->renewAuthToken();
-                return $this->sendRequest($err->getRequest(), $attempt++);
+                return $this->sendRequest($request, $attempt++);
             }
 
             throw $err;
