@@ -23,18 +23,54 @@ class FactoryArticle
     public static function create(array $data): \One\Model\Article
     {
         $data = self::validateArray($data);
-        $title = self::validateString((string) self::checkData($data, 'title', ''));
-        $body = self::validateString((string) self::checkData($data, 'body', ''));
-        $source = self::validateUrl((string) self::checkData($data, 'source', ''));
-        $uniqueId = self::validateString((string) self::checkData($data, 'unique_id', ''));
-        $typeId = self::validateInteger((int) self::checkData($data, 'type_id', ''));
-        $categoryId = self::validateInteger((int) self::checkData($data, 'category_id', ''));
-        $reporter = self::validateString((string) self::checkData($data, 'reporter', ''));
-        $lead = self::validateString((string) self::checkData($data, 'lead', ''));
-        $tags = self::validateString((string) self::checkData($data, 'tags', ''));
-        $publishedAt = self::validateString((string) self::checkData($data, 'published_at', ''));
-        $identifier = self::validateInteger((int) self::checkData($data, 'identifier', null));
-        return self::createArticle($title, $body, $source, $uniqueId, $typeId, $categoryId, $reporter, $lead, $tags, $publishedAt, $identifier);
+        $title = self::validateString(
+            (string) self::checkData($data, 'title', '')
+        );
+        $body = self::validateString(
+            (string) self::checkData($data, 'body', '')
+        );
+        $source = self::validateUrl(
+            (string) self::checkData($data, 'source', '')
+        );
+        $uniqueId = self::validateString(
+            (string) self::checkData($data, 'unique_id', '')
+        );
+        $typeId = self::validateInteger(
+            (int) self::checkData($data, 'type_id', '')
+        );
+        $categoryId = self::validateInteger(
+            (int) self::checkData($data, 'category_id', '')
+        );
+        $reporter = self::validateString(
+            (string) self::checkData($data, 'reporter', '')
+        );
+        $lead = self::validateString(
+            (string) self::checkData($data, 'lead', '')
+        );
+        $tags = self::validateString(
+            (string) self::checkData($data, 'tags', '')
+        );
+        $publishedAt = self::validateString(
+            (string) self::checkData($data, 'published_at', '')
+        );
+        $headline = (bool) self::checkData($data, 'headline', false);
+        $identifier = self::validateInteger(
+            (int) self::checkData($data, 'identifier', null)
+        );
+        return self::createArticle(
+            $title,
+            $body,
+            $source,
+            $uniqueId,
+            $typeId,
+            $categoryId,
+            $reporter,
+            $lead,
+            $tags,
+            $publishedAt,
+            $headline,
+            $identifier
+        );
     }
 
     /**
@@ -42,8 +78,20 @@ class FactoryArticle
      *
      * @return Article Object
      */
-    public static function createArticle(String $title, string $body, string $source, string $uniqueId, int $typeId, int $categoryId, string $reporter, string $lead, string $tags, string $publishedAt, int $identifier): Article
-    {
+    public static function createArticle(
+        string $title,
+        string $body,
+        string $source,
+        string $uniqueId,
+        int $typeId,
+        int $categoryId,
+        string $reporter,
+        string $lead,
+        string $tags,
+        string $publishedAt,
+        bool $headline,
+        int $identifier
+    ): Article {
         return new Article(
             $title,
             $body,
@@ -55,7 +103,8 @@ class FactoryArticle
             $lead,
             $tags,
             $publishedAt,
-            $identifier
+            $identifier,
+            $headline
         );
     }
 

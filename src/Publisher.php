@@ -128,7 +128,7 @@ class Publisher implements LoggerAwareInterface
     /**
      * submitting article here, return new Object cloned from original
      */
-    public function submitArticle(Article $article): \One\Model\Article
+    public function submitArticle(Article $article): Article
     {
         $responseArticle = $this->post(
             self::ARTICLE_ENDPOINT,

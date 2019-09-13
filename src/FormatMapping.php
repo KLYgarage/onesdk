@@ -60,7 +60,6 @@ class FormatMapping
             $dataArticle = json_decode($singleJsonArticle, true)['data'];
 
             $article = new Article(
-
                 $this->filterString(
                     $this->getValue('title', $dataArticle)
                 ),
@@ -301,7 +300,6 @@ class FormatMapping
     private function createVideo(string $body, string $source, int $order, string $cover, string $lead): \One\Model\Video
     {
         return new Video(
-
             $body,
             $source,
             $order,

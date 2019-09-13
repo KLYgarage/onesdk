@@ -295,7 +295,6 @@ class Uri implements UriInterface
      * filter scheme given to only allow certain scheme, no file:// or ftp:// or other scheme because its http message uri interface
      *
      * @access protected
-     * @return string $scheme
      * @throws InvalidArgumentException if not corret scheme is present
      */
     protected function filterScheme(string $scheme): string
@@ -318,7 +317,6 @@ class Uri implements UriInterface
      * Filter allowable port to minimize risk
      *
      * @access protected
-     * @return integer|null $port
      * @throws InvalidArgumentException for incorrect port assigned
      */
     protected function filterPort(?int $port): ?int

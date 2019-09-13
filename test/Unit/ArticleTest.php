@@ -2,6 +2,7 @@
 
 namespace One\Test\Unit;
 
+use DateTime;
 use One\Model\Article;
 use One\Model\Gallery;
 use One\Model\Model;
@@ -23,7 +24,8 @@ class ArticleTest extends \PHPUnit\Framework\TestCase
             'Recusandae natus soluta similique molestiae.',
             'Tenetur doloremque impedit id quaerat beatae. Nulla labore earum. Perspiciatis odio nostrum molestias voluptatem quidem error. Laudantium mollitia voluptate velit. Fuga nesciunt in repudiandae voluptate harum quia. Voluptatibus quasi iusto officia omnis nulla illo possimus.',
             'http://example.com/url-detail.html',
-            'dummy-1'
+            'dummy-1',
+            Article::TYPE_TEXT
         );
     }
 
@@ -36,6 +38,30 @@ class ArticleTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf('One\Collection', $collection);
 
         $this->assertSame($collection->toJson(), $this->dummy->toJson());
+    }
+
+    public function testSetHeadline(): void
+    {
+        $this->assertFalse($this->dummy->isHeadline());
+        $this->dummy->setHeadline();
+        $this->assertTrue($this->dummy->isHeadline());
+
+        $article = new Article(
+            'title',
+            'body',
+            'http://example.com/url-detail.html',
+            'test-uniqueid',
+            Article::TYPE_TEXT,
+            Article::CATEGORY_INTERNASIONAL,
+            'reporter',
+            'lead',
+            'tags,tags',
+            new DateTime('now'),
+            123,
+            true
+        );
+
+        $this->assertTrue($article->isHeadline());
     }
 
     /**

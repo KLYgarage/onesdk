@@ -2,14 +2,14 @@
 
 namespace One\Test\Unit;
 
-use One\Model\Article;
-use One\Model\Photo;
-use One\Uri;
 use function One\createArticleFromArray;
 use function One\createAttachmentGallery;
 use function One\createAttachmentPhoto;
 use function One\createUriFromServer;
 use function One\createUriFromString;
+use One\Model\Article;
+use One\Model\Photo;
+use One\Uri;
 
 class FactoryTest extends \PHPUnit\Framework\TestCase
 {

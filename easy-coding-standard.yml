@@ -1,40 +1,45 @@
 imports:
-    - { resource: 'vendor/symplify/easy-coding-standard/config/common.yml' }
-    - { resource: 'vendor/symplify/easy-coding-standard/config/clean-code.yml' }
-    - { resource: 'vendor/symplify/easy-coding-standard/config/psr2.yml' }
-    - { resource: 'vendor/symplify/easy-coding-standard/config/php71.yml' }
+  - { resource: 'vendor/symplify/easy-coding-standard/config/set/common.yaml' }
+  - { resource: 'vendor/symplify/easy-coding-standard/config/set/clean-code.yaml' }
+  - { resource: 'vendor/symplify/easy-coding-standard/config/set/psr2.yaml' }
+  - { resource: 'vendor/symplify/easy-coding-standard/config/set/php71.yaml' }
 services:
-    # array(    );
-    PhpCsFixer\Fixer\ArrayNotation\ArraySyntaxFixer:
-        syntax: short
+  # array(    );
+  PhpCsFixer\Fixer\ArrayNotation\ArraySyntaxFixer:
+    syntax: short
 
-    # new methods
-    PhpCsFixer\Fixer\Alias\RandomApiMigrationFixer:
-        mt_rand: random_int
-        rand: random_int
+  # new methods
+  PhpCsFixer\Fixer\Alias\RandomApiMigrationFixer:
+    mt_rand: random_int
+    rand: random_int
 
-    # ?? operator
-    PhpCsFixer\Fixer\Operator\TernaryToNullCoalescingFixer: ~
+  # ?? operator
+  PhpCsFixer\Fixer\Operator\TernaryToNullCoalescingFixer: ~
 
-    # strict types
-    PhpCsFixer\Fixer\Strict\DeclareStrictTypesFixer: ~
-    Symplify\CodingStandard\Fixer\Strict\BlankLineAfterStrictTypesFixer: ~
-    PhpCsFixer\Fixer\LanguageConstruct\DeclareEqualNormalizeFixer: ~
+  # strict types
+  PhpCsFixer\Fixer\Strict\DeclareStrictTypesFixer: ~
+  Symplify\CodingStandard\Fixer\Strict\BlankLineAfterStrictTypesFixer: ~
+  PhpCsFixer\Fixer\LanguageConstruct\DeclareEqualNormalizeFixer: ~
 
-    # typehints
-    PhpCsFixer\Fixer\FunctionNotation\ReturnTypeDeclarationFixer: ~
-    SlevomatCodingStandard\Sniffs\TypeHints\TypeHintDeclarationSniff:
-        enableEachParameterAndReturnInspection: true
-        enableVoidTypeHint: true
-        enableNullableTypeHints: true
-
-    # throwable
-    SlevomatCodingStandard\Sniffs\Exceptions\ReferenceThrowableOnlySniff: ~
+  # typehints
+  PhpCsFixer\Fixer\FunctionNotation\ReturnTypeDeclarationFixer: ~
+  SlevomatCodingStandard\Sniffs\TypeHints\TypeHintDeclarationSniff:
+    enableEachParameterAndReturnInspection: true
+    allAnnotationsAreUseful: true
+    enableObjectTypeHint: true
 
 parameters:
-    skip:
-        # disable random annotation removal of this Sniff
-        SlevomatCodingStandard\Sniffs\TypeHints\TypeHintDeclarationSniff.UselessDocComment: ~
-        SlevomatCodingStandard\Sniffs\TypeHints\TypeHintDeclarationSniff.MissingTraversableReturnTypeHintSpecification: ~
-        SlevomatCodingStandard\Sniffs\TypeHints\TypeHintDeclarationSniff.MissingTraversableParameterTypeHintSpecification: ~
-        SlevomatCodingStandard\Sniffs\Variables\UnusedVariableSniff.UnusedVariable: ~
+  cache_directory: storage/logs/.ecs.cache
+  exclude_files:
+    - 'tests/Acceptance/**/*.*'
+  skip:
+    # disable random annotation removal of this Sniff
+    Symplify\CodingStandard\Fixer\Commenting\RemoveUselessDocBlockFixer: ~
+    SlevomatCodingStandard\Sniffs\Exceptions\ReferenceThrowableOnlySniff: ~
+    PhpCsFixer\Fixer\FunctionNotation\VoidReturnFixer: ~
+    SlevomatCodingStandard\Sniffs\TypeHints\TypeHintDeclarationSniff.UselessDocComment: ~
+    SlevomatCodingStandard\Sniffs\TypeHints\TypeHintDeclarationSniff.MissingParameterTypeHint: ~
+    SlevomatCodingStandard\Sniffs\TypeHints\TypeHintDeclarationSniff.UselessParameterAnnotation: ~
+    SlevomatCodingStandard\Sniffs\TypeHints\TypeHintDeclarationSniff.MissingTraversableReturnTypeHintSpecification: ~
+    SlevomatCodingStandard\Sniffs\TypeHints\TypeHintDeclarationSniff.MissingTraversablePropertyTypeHintSpecification: ~
+    SlevomatCodingStandard\Sniffs\TypeHints\TypeHintDeclarationSniff.MissingTraversableParameterTypeHintSpecification: ~

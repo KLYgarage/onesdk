@@ -10,34 +10,59 @@ use One\Collection;
 class Article extends Model
 {
     public const CATEGORY_NASIONAL = 1;
+
     public const CATEGORY_INTERNASIONAL = 2;
+
     public const CATEGORY_BISNIS = 3;
+
     public const CATEGORY_SEPAK_BOLA = 4;
+
     public const CATEGORY_OLAHRAGA = 5;
+
     public const CATEGORY_HIBURAN = 6;
+
     public const CATEGORY_TEKNOLOGI = 7;
+
     public const CATEGORY_TRAVEL = 8;
+
     public const CATEGORY_LIFESTYLE = 9;
+
     public const CATEGORY_WANITA = 10;
+
     public const CATEGORY_HIJAB = 11;
+
     public const CATEGORY_KULINER = 12;
+
     public const CATEGORY_SEHAT = 13;
+
     public const CATEGORY_OTOMOTIF = 14;
+
     public const CATEGORY_INSPIRASI = 15;
+
     public const CATEGORY_UNIK = 16;
+
     public const CATEGORY_EVENT = 17;
+
     public const CATEGORY_KOMUNITAS = 18;
+
     public const CATEGORY_E_SPORTS = 19;
+
     public const CATEGORY_DANGDUT = 20;
+
     public const CATEGORY_RAMADAN = 21;
 
     public const TYPE_TEXT = 1;
+
     public const TYPE_PHOTO = 2;
+
     public const TYPE_VIDEO = 3;
 
     public const ATTACHMENT_FIELD_PHOTO = 'photo';
+
     public const ATTACHMENT_FIELD_PAGE = 'page';
+
     public const ATTACHMENT_FIELD_VIDEO = 'video';
+
     public const ATTACHMENT_FIELD_GALLERY = 'gallery';
 
     /**
@@ -77,7 +102,8 @@ class Article extends Model
         $lead = '',
         $tags = '',
         $publishedAt = null,
-        $identifier = null
+        $identifier = null,
+        $headline = false
     ) {
         if (! in_array($typeId, [self::TYPE_PHOTO, self::TYPE_TEXT, self::TYPE_VIDEO], true)) {
             throw new \InvalidArgumentException("Invalid typeId : ${typeId}, allowed typeId are " . implode(', ', $allowedType));
@@ -104,7 +130,7 @@ class Article extends Model
             self::CATEGORY_KOMUNITAS,
             self::CATEGORY_E_SPORTS,
             self::CATEGORY_DANGDUT,
-            self::CATEGORY_RAMADAN
+            self::CATEGORY_RAMADAN,
         ];
 
         if (! in_array($categoryId, $allowedCategory, true)) {
@@ -122,6 +148,7 @@ class Article extends Model
             'category_id' => $categoryId,
             'tags' => $this->filterStringInstance($tags),
             'published_at' => $this->filterDateInstance($publishedAt),
+            'headline' => $headline,
         ]);
 
         if ($identifier) {
@@ -173,6 +200,22 @@ class Article extends Model
     public function getId(): string
     {
         return $this->identifier;
+    }
+
+    /**
+     * set as headline
+     */
+    public function setHeadline(bool $headline = true): void
+    {
+        $this->collection['headline'] = $headline;
+    }
+
+    /**
+     * check is headline
+     */
+    public function isHeadline(): bool
+    {
+        return $this->collection['headline'];
     }
 
     /**

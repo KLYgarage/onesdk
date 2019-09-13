@@ -2,11 +2,11 @@
 
 namespace One\Test\Unit;
 
+use function One\createUriFromString;
 use One\Http\FnStream;
 use One\Http\Request;
-use One\Uri;
-use function One\createUriFromString;
 use function One\stream_for;
+use One\Uri;
 
 class RequestTest extends \PHPUnit\Framework\TestCase
 {

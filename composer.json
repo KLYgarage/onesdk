@@ -12,13 +12,15 @@
     },
     "require-dev": {
         "phpunit/phpunit": "^7.2",
-        "symplify/easy-coding-standard": "^4.5"
+        "symplify/easy-coding-standard": "^6.0"
     },
     "autoload": {
         "psr-4": {
             "One\\": "src/"
         },
-        "files": ["src/helpers.php"]
+        "files": [
+            "src/helpers.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {
@@ -27,16 +29,16 @@
     },
     "scripts": {
         "test": "phpunit --bootstrap ./test/bootstrap.php ./test/",
-        "test:article":"phpunit --configuration=phpunit.xml --testsuite article",
-        "test:collection":"phpunit --configuration=phpunit.xml --testsuite collection",
-        "test:factory":"phpunit --configuration=phpunit.xml --testsuite factory",
-        "test:format_mapping":"phpunit --configuration=phpunit.xml --testsuite format_mapping",
-        "test:model":"phpunit --configuration=phpunit.xml --testsuite model",
-        "test:publisher":"phpunit --configuration=phpunit.xml --testsuite publisher",
-        "test:response":"phpunit --configuration=phpunit.xml --testsuite response",
-        "test:request":"phpunit --configuration=phpunit.xml --testsuite request",
+        "test:article": "phpunit --configuration=phpunit.xml --testsuite article",
+        "test:collection": "phpunit --configuration=phpunit.xml --testsuite collection",
+        "test:factory": "phpunit --configuration=phpunit.xml --testsuite factory",
+        "test:format_mapping": "phpunit --configuration=phpunit.xml --testsuite format_mapping",
+        "test:model": "phpunit --configuration=phpunit.xml --testsuite model",
+        "test:publisher": "phpunit --configuration=phpunit.xml --testsuite publisher",
+        "test:response": "phpunit --configuration=phpunit.xml --testsuite response",
+        "test:request": "phpunit --configuration=phpunit.xml --testsuite request",
         "cs:check": "ecs check src test",
-        "cs:fix": "ecs check src test --fix"
+        "cs:fix": "ecs check src --fix"
     },
     "authors": [
         {

@@ -2,8 +2,8 @@
 
 namespace One\Test\Unit;
 
-use One\Uri;
 use function One\createUriFromString;
+use One\Uri;
 
 class UriTest extends \PHPUnit\Framework\TestCase
 {

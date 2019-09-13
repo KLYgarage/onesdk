@@ -58,7 +58,16 @@ class FactoryUri
         $query = self::validateString((string) self::checkData($_SERVER, 'QUERY_STRING', ''));
         $fragment = '';
         if (empty($user) && empty($pass) && ! empty($_SERVER['HTTP_AUTHORIZATION'])) {
-            [$user, $password] = explode(':', base64_decode(substr($_SERVER['HTTP_AUTHORIZATION'], 6), true));
+            [$user] = explode(
+                ':',
+                base64_decode(
+                    substr(
+                        $_SERVER['HTTP_AUTHORIZATION'],
+                        6
+                    ),
+                    true
+                )
+            );
         }
         return self::createUri($scheme, $host, $port, $user, $pass, $path, $query, $fragment);
     }

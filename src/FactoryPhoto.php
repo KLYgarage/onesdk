@@ -43,7 +43,7 @@ class FactoryPhoto
 
     /**
      * functionality to check whether a variable is set or not
-     * @param array<mixed>
+     * @param array<mixed> $data
      * @param mixed $key
      * @param string $default
      */
