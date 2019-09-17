@@ -103,8 +103,8 @@ class FactoryArticle
             $lead,
             $tags,
             $publishedAt,
-            $identifier,
-            $headline
+            $headline,
+            $identifier
         );
     }
 
