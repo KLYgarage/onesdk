@@ -51,6 +51,10 @@ class Article extends Model
 
     public const CATEGORY_RAMADAN = 21;
 
+    public const CATEGORY_CEK_FAKTA = 25;
+
+    public const CATEGORY_HAJI = 26;
+
     public const TYPE_TEXT = 1;
 
     public const TYPE_PHOTO = 2;
@@ -131,6 +135,8 @@ class Article extends Model
             self::CATEGORY_E_SPORTS,
             self::CATEGORY_DANGDUT,
             self::CATEGORY_RAMADAN,
+            self::CATEGORY_CEK_FAKTA,
+            self::CATEGORY_HAJI
         ];
 
         if (! in_array($categoryId, $allowedCategory, true)) {
