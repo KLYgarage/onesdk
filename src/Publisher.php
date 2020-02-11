@@ -19,13 +19,20 @@ class Publisher implements LoggerAwareInterface
 {
     public const DEFAULT_MAX_ATTEMPT = 4;
 
-    public const REST_SERVER = 'https://www.one.co.id';
-
     public const AUTHENTICATION = '/oauth/token';
 
     public const ARTICLE_CHECK_ENDPOINT = '/api/article';
 
     public const ARTICLE_ENDPOINT = '/api/publisher/article';
+
+    public const PUBLISHER_ENDPOINT = '/api/article/publisher';
+
+    /**
+     *  base url REST API
+     * @var array<string>
+     */
+    private $restServer = 'https://www.one.co.id';
+
 
     /**
      * attachment url destination
@@ -84,10 +91,14 @@ class Publisher implements LoggerAwareInterface
     /**
      * constructor
      */
-    public function __construct(string $clientId, string $clientSecret, array $options = [])
+    public function __construct(string $clientId, string $clientSecret, array $options = [], bool $development = false)
     {
         $this->clientId = $clientId;
         $this->clientSecret = $clientSecret;
+
+        if ($development) {
+            $this->restServer = 'https://dev.one.co.id';
+        }
 
         $this->assessOptions($options);
 
@@ -192,6 +203,23 @@ class Publisher implements LoggerAwareInterface
     {
         return $this->get(
             self::ARTICLE_ENDPOINT
+        );
+    }
+
+    /**
+     * get list visual story by publisher
+     *
+     * @return string json
+     */
+    public function listStories(int $page = 1): string
+    {
+        $params = [
+            'filter[type_id]' => 4,
+            'page' => $page
+        ];
+
+        return $this->get(
+            self::PUBLISHER_ENDPOINT.'/'. $this->clientId .'/?'. http_build_query($params)
         );
     }
 
@@ -303,7 +331,7 @@ class Publisher implements LoggerAwareInterface
     private function assessOptions(array $options): void
     {
         $defaultOptions = [
-            'rest_server' => self::REST_SERVER,
+            'rest_server' => $this->restServer,
             'auth_url' => self::AUTHENTICATION,
             'max_attempt' => self::DEFAULT_MAX_ATTEMPT,
             'default_headers' => [

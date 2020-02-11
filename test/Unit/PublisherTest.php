@@ -74,6 +74,7 @@ class PublisherTest extends \PHPUnit\Framework\TestCase
     public function testRestCall(): void
     {
         $this->assertTrue(! empty($this->publisher->listArticle()));
+        $this->assertTrue(! empty($this->publisher->listStories()));
     }
 
     /**
