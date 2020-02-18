@@ -7,6 +7,7 @@ use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Psr7\MultipartStream;
 use One\Model\Article;
 use One\Model\Model;
+use One\Model\Headline;
 use Psr\Http\Message\RequestInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
@@ -26,6 +27,8 @@ class Publisher implements LoggerAwareInterface
     public const ARTICLE_ENDPOINT = '/api/publisher/article';
 
     public const PUBLISHER_ENDPOINT = '/api/article/publisher';
+
+    public const POST_HEADLINE_ENDPOINT = '/api/publisher/headline';
 
     /**
      *  base url REST API
@@ -134,6 +137,30 @@ class Publisher implements LoggerAwareInterface
     public function getTokenSaver(): \Closure
     {
         return $this->tokenSaver;
+    }
+
+    /**
+     * submitting headline here, return new Object cloned from original
+     */
+    public function submitHeadline(Headline $headline): Headline
+    {
+        $responseHeadline = $this->post(
+            self::POST_HEADLINE_ENDPOINT,
+            $this->normalizePayload(
+                $headline->getCollection()
+            )
+        );
+
+        $responseHeadline = json_decode($responseHeadline, true);
+        $id = isset($responseHeadline['data']['headline_id']) ?
+            $responseHeadline['data']['headline_id'] : null;
+
+        $id = isset($responseHeadline['data'][0]['headline_id']) ?
+            $responseHeadline['data'][0]['headline_id'] : $id;
+
+        $headline->setId((string) $id);
+
+        return $headline;
     }
 
     /**
@@ -564,3 +591,4 @@ class Publisher implements LoggerAwareInterface
         return isset($this->logger) && $this->logger !== null;
     }
 }
+
