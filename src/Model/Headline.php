@@ -34,7 +34,7 @@ class Headline extends Model
             'title' => $this->filterStringInstance($title),
             'content' => $this->filterStringInstance($content),
             'url' => $this->filterUriInstance($url),
-            'active' => $active ? 1 : 0,
+            'show' => $active ? 1 : 0,
             'uniqueId' => $uniqueId
         ];
 
