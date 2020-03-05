@@ -242,7 +242,8 @@ class Publisher implements LoggerAwareInterface
     {
         $params = [
             'filter[type_id]' => 4,
-            'page' => $page
+            'page' => $page,
+            'apps' => 0
         ];
 
         return $this->get(
