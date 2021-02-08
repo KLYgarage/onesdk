@@ -54,6 +54,7 @@ class FactoryArticle
             (string) self::checkData($data, 'published_at', '')
         );
         $headline = (bool) self::checkData($data, 'headline', false);
+        $headlineLip6 = (bool) self::checkData($data, 'headline_lip6', false);
         $identifier = self::validateInteger(
             (int) self::checkData($data, 'identifier', null)
         );
@@ -69,6 +70,7 @@ class FactoryArticle
             $tags,
             $publishedAt,
             $headline,
+            $headlineLip6,
             $identifier
         );
     }
@@ -90,6 +92,7 @@ class FactoryArticle
         string $tags,
         string $publishedAt,
         bool $headline,
+        bool $headlineLip6,
         int $identifier
     ): Article {
         return new Article(
@@ -104,7 +107,8 @@ class FactoryArticle
             $tags,
             $publishedAt,
             $identifier,
-            $headline
+            $headline,
+            $headlineLip6
         );
     }
 

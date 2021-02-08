@@ -94,6 +94,9 @@ class Article extends Model
      * @param string $lead
      * @param string $tags
      * @param \DateTimeInterface|string $publishedAt
+     * @param string $identifier
+     * @param boolean $headline
+     * @param boolean $headline_lip6
      */
     public function __construct(
         string $title,
@@ -107,7 +110,8 @@ class Article extends Model
         $tags = '',
         $publishedAt = null,
         $identifier = null,
-        $headline = false
+        $headline = false,
+        $headlineLip6 = false
     ) {
         if (! in_array($typeId, [self::TYPE_PHOTO, self::TYPE_TEXT, self::TYPE_VIDEO], true)) {
             throw new \InvalidArgumentException("Invalid typeId : ${typeId}, allowed typeId are " . implode(', ', $allowedType));
@@ -155,6 +159,7 @@ class Article extends Model
             'tags' => $this->filterStringInstance($tags),
             'published_at' => $this->filterDateInstance($publishedAt),
             'headline' => $headline,
+            'headline_lip6' => $headlineLip6 ? 1 : 0
         ]);
 
         if ($identifier) {
@@ -222,6 +227,16 @@ class Article extends Model
     public function isHeadline(): bool
     {
         return $this->collection['headline'];
+    }
+
+    public function setHeadlineLip6(bool $headline = true): void
+    {
+        $this->collection['headline_lip6'] = $headline;
+    }
+
+    public function isHeadlineLip6(): bool
+    {
+        return $this->collection['headline_lip6'];
     }
 
     /**
