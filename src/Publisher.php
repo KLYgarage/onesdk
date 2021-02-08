@@ -2,12 +2,13 @@
 
 namespace One;
 
-use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Psr7\MultipartStream;
+use GuzzleHttp\Client;
+use One\Model\Headline;
 use One\Model\Article;
 use One\Model\Model;
-use One\Model\Headline;
+use One\Model\Tag;
 use Psr\Http\Message\RequestInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
@@ -27,6 +28,8 @@ class Publisher implements LoggerAwareInterface
     public const ARTICLE_ENDPOINT = '/api/publisher/article';
 
     public const PUBLISHER_ENDPOINT = '/api/article/publisher';
+
+    public const TAG_ENDPOINT = '/api/publisher/tag';
 
     public const POST_HEADLINE_ENDPOINT = '/api/publisher/headline';
 
@@ -209,6 +212,32 @@ class Publisher implements LoggerAwareInterface
         );
     }
 
+    /**
+     * submit tag here
+     */
+    public function submitTag(Tag $tag): Tag
+    {
+        $responseTag = $this->post(
+            self::TAG_ENDPOINT,
+            $this->normalizePayload(
+                $tag->getCollection()
+            )
+        );
+
+        $responseTag = json_decode($responseTag, true);
+
+        $id = isset($responseTag['data']['tag_id']) ?
+            $responseTag['data']['tag_id'] : null;
+
+        $id = isset($responseTag['data'][0]['tag_id']) ?
+            $responseTag['data'][0]['tag_id'] : $id;
+
+        $tag->setId((string) $id);
+
+        return $tag;
+    }
+
+    
     /**
      * get article from rest API
      *
