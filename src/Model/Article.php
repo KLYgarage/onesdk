@@ -55,7 +55,7 @@ class Article extends Model
 
     public const CATEGORY_HAJI = 26;
     
-    public const CATEGORY_LAIN_LAIN = 136;
+    public const CATEGORY_LAIN_LAIN = 47;
 
     public const TYPE_TEXT = 1;
 
