@@ -55,7 +55,11 @@ class Article extends Model
 
     public const CATEGORY_HAJI = 26;
     
+    public const CATEGORY_PICTURE_FIRST = 46;
+    
     public const CATEGORY_LAIN_LAIN = 47;
+    
+    public const CATEGORY_PICTURE_FIRST_STAGING = 137;
 
     public const TYPE_TEXT = 1;
 
@@ -143,6 +147,8 @@ class Article extends Model
             self::CATEGORY_RAMADAN,
             self::CATEGORY_CEK_FAKTA,
             self::CATEGORY_HAJI,
+            self::CATEGORY_PICTURE_FIRST,
+            self::CATEGORY_PICTURE_FIRST_STAGING,
             self::CATEGORY_LAIN_LAIN
         ];
 
