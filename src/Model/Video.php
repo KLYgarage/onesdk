@@ -19,12 +19,14 @@ class Video extends Model
         $source,
         $order,
         $cover = null,
-        $lead = ''
+        $lead = '',
+        $duration = null
     ) {
         $properties = [
             'lead' => empty($lead) ? $this->createLeadFromBody($body) : $this->filterStringInstance($lead),
             'body' => $this->filterStringInstance($body),
             'order' => $order,
+            'duration' => $duration
         ];
 
         if (! empty($source)) {
