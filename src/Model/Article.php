@@ -58,8 +58,24 @@ class Article extends Model
     public const CATEGORY_PICTURE_FIRST = 46;
     
     public const CATEGORY_LAIN_LAIN = 47;
+
+    public const CATEGORY_CRYPTO = 49;
+
+    public const CATEGORY_JATIM = 50;
+
+    public const CATEGORY_JATENG = 51;
+
+    public const CATEGORY_SAHAM = 52;
     
     public const CATEGORY_PICTURE_FIRST_STAGING = 137;
+
+    public const CATEGORY_CRYPTO_STAGING = 139;
+
+    public const CATEGORY_JATIM_STAGING = 140;
+
+    public const CATEGORY_JATENG_STAGING = 141;
+
+    public const CATEGORY_SAHAM_STAGING = 142;
 
     public const TYPE_TEXT = 1;
 
@@ -149,6 +165,14 @@ class Article extends Model
             self::CATEGORY_HAJI,
             self::CATEGORY_PICTURE_FIRST,
             self::CATEGORY_PICTURE_FIRST_STAGING,
+            self::CATEGORY_JATIM,
+            self::CATEGORY_JATIM_STAGING,
+            self::CATEGORY_JATENG,
+            self::CAETGORY_JATENG_STAGING,
+            self::CATEGORY_CRYPTO,
+            self::CATEGORY_CRYPTO_STAGING,
+            self::CATEGORY_SAHAM,
+            self::CATEGORY_SAHAM_STAGING,
             self::CATEGORY_LAIN_LAIN
         ];
 
