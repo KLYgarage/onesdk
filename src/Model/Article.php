@@ -168,7 +168,7 @@ class Article extends Model
             self::CATEGORY_JATIM,
             self::CATEGORY_JATIM_STAGING,
             self::CATEGORY_JATENG,
-            self::CAETGORY_JATENG_STAGING,
+            self::CATEGORY_JATENG_STAGING,
             self::CATEGORY_CRYPTO,
             self::CATEGORY_CRYPTO_STAGING,
             self::CATEGORY_SAHAM,
