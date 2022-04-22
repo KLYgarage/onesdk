@@ -133,7 +133,11 @@ class Article extends Model
         $publishedAt = null,
         $identifier = null,
         $headline = false,
-        $headlineLip6 = false
+        $headlineLip6 = false,
+        $seo = false,
+        $photographer = '',
+        $category = '',
+        $editor = ''
     ) {
         if (! in_array($typeId, [self::TYPE_PHOTO, self::TYPE_TEXT, self::TYPE_VIDEO], true)) {
             throw new \InvalidArgumentException("Invalid typeId : ${typeId}, allowed typeId are " . implode(', ', $allowedType));
@@ -192,8 +196,16 @@ class Article extends Model
             'tags' => $this->filterStringInstance($tags),
             'published_at' => $this->filterDateInstance($publishedAt),
             'headline' => $headline,
-            'headline_lip6' => $headlineLip6 ? 1 : 0
+            'headline_lip6' => $headlineLip6 ? 1 : 0,
+            'seo' => $seo ? 1 : 0,
+            'category' => $this->filterStringInstance($category),
+            'editor' => $this->filterStringInstance($editor)
         ]);
+
+        if (!empty($this->filterStringInstance($photographer))) {
+            $this->collection->offsetSet('photographer', $this->filterStringInstance($photographer));
+        }
+
 
         if ($identifier) {
             $this->setId((string) $identifier);
