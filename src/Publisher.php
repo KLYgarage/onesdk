@@ -5,6 +5,7 @@ namespace One;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Psr7\MultipartStream;
 use GuzzleHttp\Client;
+use One\Model\Livestreaming;
 use One\Model\Headline;
 use One\Model\Article;
 use One\Model\Model;
@@ -32,6 +33,8 @@ class Publisher implements LoggerAwareInterface
     public const TAG_ENDPOINT = '/api/publisher/tag';
 
     public const POST_HEADLINE_ENDPOINT = '/api/publisher/headline';
+
+    public const POST_LIVESTREAMING_ENDPOINT = '/api/publisher/livestreaming';
 
     /**
      *  base url REST API
@@ -140,6 +143,32 @@ class Publisher implements LoggerAwareInterface
     public function getTokenSaver(): \Closure
     {
         return $this->tokenSaver;
+    }
+
+
+    /**
+     * submitting article here, return new Object cloned from original
+     */
+    public function submitLivestreaming(Livestreaming $livestreaming): Livestreaming
+    {
+        $responseLivestreaming = $this->post(
+            self::POST_LIVESTREAMING_ENDPOINT,
+            $this->normalizePayload(
+                $article->getCollection()
+            )
+        );
+
+        $responseLivestreaming = json_decode($responseLivestreaming, true);
+        
+        $id = isset($responseLivestreaming['data']['livestreaming_id']) ?
+            $responseLivestreaming['data']['livestreaming_id'] : null;
+
+        $id = isset($responseLivestreaming['data'][0]['livestreaming_id']) ?
+            $responseLivestreaming['data'][0]['livestreaming_id'] : $id;
+
+        $livestreaming->setId((string) $id);
+
+        return $livestreaming;
     }
 
     /**
