@@ -154,7 +154,7 @@ class Publisher implements LoggerAwareInterface
         $responseLivestreaming = $this->post(
             self::POST_LIVESTREAMING_ENDPOINT,
             $this->normalizePayload(
-                $article->getCollection()
+                $livestreaming->getCollection()
             )
         );
 

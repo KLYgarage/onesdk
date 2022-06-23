@@ -51,9 +51,12 @@ class FactoryLivestreaming
     public static function createLivestreaming(
         string $uniqueId,
         string $title,
-        string $content,
-        string $url,
-        bool $active,
+        string $desc,
+        string $urlLive,
+        string $urlThumbnail,
+        string $publishedAt,
+        string $endAt,
+        bool $publishStatus,
         int $identifier
     ): Livestreaming {
         return new Livestreaming(
