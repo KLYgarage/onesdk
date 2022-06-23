@@ -72,3 +72,4 @@ class Livestreaming extends Model
         return $this->identifier;
     }
 }
+
