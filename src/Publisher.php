@@ -160,12 +160,9 @@ class Publisher implements LoggerAwareInterface
 
         $responseLivestreaming = json_decode($responseLivestreaming, true);
         
-        $id = isset($responseLivestreaming['data']['livestreaming_id']) ?
-            $responseLivestreaming['data']['livestreaming_id'] : null;
-
-        $id = isset($responseLivestreaming['data'][0]['livestreaming_id']) ?
-            $responseLivestreaming['data'][0]['livestreaming_id'] : $id;
-
+        $id = isset($responseLivestreaming['data'][0]['id']) ?
+            $responseLivestreaming['data'][0]['id'] : null;
+            
         $livestreaming->setId((string) $id);
 
         return $livestreaming;
