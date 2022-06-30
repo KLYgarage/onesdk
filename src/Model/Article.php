@@ -198,14 +198,16 @@ class Article extends Model
             'headline' => $headline,
             'headline_lip6' => $headlineLip6 ? 1 : 0,
             'seo' => $seo ? 1 : 0,
-            'category' => $this->filterStringInstance($category),
-            'editor' => $this->filterStringInstance($editor)
+            'category' => $this->filterStringInstance($category)
         ]);
 
         if (!empty($this->filterStringInstance($photographer))) {
             $this->collection->offsetSet('photographer', $this->filterStringInstance($photographer));
         }
 
+        if (!empty($this->filterStringInstance($editor))) {
+            $this->collection->offsetSet('editor', $this->filterStringInstance($editor));
+        }
 
         if ($identifier) {
             $this->setId((string) $identifier);
