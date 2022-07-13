@@ -66,6 +66,8 @@ class Article extends Model
     public const CATEGORY_JATENG = 51;
 
     public const CATEGORY_SAHAM = 52;
+
+    public const CATEGORY_ISLAMI = 34;
     
     public const CATEGORY_PICTURE_FIRST_STAGING = 137;
 
@@ -76,6 +78,8 @@ class Article extends Model
     public const CATEGORY_JATENG_STAGING = 141;
 
     public const CATEGORY_SAHAM_STAGING = 142;
+
+    public const CATEGORY_ISLAMI_STAGING = 122;
 
     public const TYPE_TEXT = 1;
 
@@ -177,6 +181,8 @@ class Article extends Model
             self::CATEGORY_CRYPTO_STAGING,
             self::CATEGORY_SAHAM,
             self::CATEGORY_SAHAM_STAGING,
+            self::CATEGORY_ISLAMI,
+            self::CATEGORY_ISLAMI_STAGING,
             self::CATEGORY_LAIN_LAIN
         ];
 
