@@ -68,6 +68,8 @@ class Article extends Model
     public const CATEGORY_SAHAM = 52;
 
     public const CATEGORY_ISLAMI = 34;
+
+    public const CATEGORY_PIALA_DUNIA = 53;
     
     public const CATEGORY_PICTURE_FIRST_STAGING = 137;
 
@@ -80,6 +82,8 @@ class Article extends Model
     public const CATEGORY_SAHAM_STAGING = 142;
 
     public const CATEGORY_ISLAMI_STAGING = 122;
+
+    public const CATEGORY_PIALA_DUNIA_STAGING = 130;
 
     public const TYPE_TEXT = 1;
 
@@ -183,6 +187,8 @@ class Article extends Model
             self::CATEGORY_SAHAM_STAGING,
             self::CATEGORY_ISLAMI,
             self::CATEGORY_ISLAMI_STAGING,
+            self::CATEGORY_PIALA_DUNIA,
+            self::CATEGORY_PIALA_DUNIA_STAGING,
             self::CATEGORY_LAIN_LAIN
         ];
 
