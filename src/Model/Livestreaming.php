@@ -46,7 +46,7 @@ class Livestreaming extends Model
             'published_at' => $this->filterDateInstance($publishedAt),
             'end_at' => $this->filterDateInstance($endAt),
             'publish_status' => $publishStatus ? 1 : 0,
-            'unique_id' => $uniqueId
+            'uniqueId' => $uniqueId
         ];
 
         $this->collection = new Collection($properties);
