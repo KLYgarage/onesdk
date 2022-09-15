@@ -145,7 +145,8 @@ class Article extends Model
         $seo = false,
         $photographer = '',
         $category = '',
-        $editor = ''
+        $editor = '',
+        $videoRatio = ''
     ) {
         if (! in_array($typeId, [self::TYPE_PHOTO, self::TYPE_TEXT, self::TYPE_VIDEO], true)) {
             throw new \InvalidArgumentException("Invalid typeId : ${typeId}, allowed typeId are " . implode(', ', $allowedType));
@@ -210,7 +211,8 @@ class Article extends Model
             'headline' => $headline,
             'headline_lip6' => $headlineLip6 ? 1 : 0,
             'seo' => $seo ? 1 : 0,
-            'category' => $this->filterStringInstance($category)
+            'category' => $this->filterStringInstance($category),
+            'video_ratio' => $this->filterStringInstance($videoRatio)
         ]);
 
         if (!empty($this->filterStringInstance($photographer))) {
