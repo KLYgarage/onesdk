@@ -20,7 +20,8 @@ class Video extends Model
         $order,
         $cover = null,
         $lead = '',
-        $duration = null
+        $duration = null,
+        $ratio = ''
     ) {
         $properties = [
             'lead' => empty($lead) ? $this->createLeadFromBody($body) : $this->filterStringInstance($lead),
@@ -35,6 +36,10 @@ class Video extends Model
 
         if (! empty($cover)) {
             $properties['cover'] = $this->filterUriInstance($cover);
+        }
+
+        if (! empty($ratio)) {
+            $properties['ratio'] = $this->filterStringInstance($ratio);
         }
 
         $this->collection = new Collection($properties);
