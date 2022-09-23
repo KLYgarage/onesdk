@@ -85,6 +85,8 @@ class Article extends Model
 
     public const CATEGORY_PIALA_DUNIA_STAGING = 130;
 
+    public const CATEGORY_LAIN_LAIN_STAGING = 315;
+
     public const TYPE_TEXT = 1;
 
     public const TYPE_PHOTO = 2;
@@ -189,7 +191,8 @@ class Article extends Model
             self::CATEGORY_ISLAMI_STAGING,
             self::CATEGORY_PIALA_DUNIA,
             self::CATEGORY_PIALA_DUNIA_STAGING,
-            self::CATEGORY_LAIN_LAIN
+            self::CATEGORY_LAIN_LAIN,
+            self::CATEGORY_LAIN_LAIN_STAGING
         ];
 
         if (! in_array($categoryId, $allowedCategory, true)) {
