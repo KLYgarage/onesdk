@@ -51,6 +51,8 @@ class Article extends Model
 
     public const CATEGORY_RAMADAN = 21;
 
+    public const CATEGORY_PEMILU = 22;
+
     public const CATEGORY_CEK_FAKTA = 25;
 
     public const CATEGORY_HAJI = 26;
@@ -175,6 +177,7 @@ class Article extends Model
             self::CATEGORY_E_SPORTS,
             self::CATEGORY_DANGDUT,
             self::CATEGORY_RAMADAN,
+            self::CATEGORY_PEMILU,
             self::CATEGORY_CEK_FAKTA,
             self::CATEGORY_HAJI,
             self::CATEGORY_PICTURE_FIRST,
