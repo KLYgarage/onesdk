@@ -56,6 +56,8 @@ class Article extends Model
     public const CATEGORY_CEK_FAKTA = 25;
 
     public const CATEGORY_HAJI = 26;
+
+    public const CATEGORY_PHOTO = 29;
     
     public const CATEGORY_PICTURE_FIRST = 46;
     
@@ -180,6 +182,7 @@ class Article extends Model
             self::CATEGORY_PEMILU,
             self::CATEGORY_CEK_FAKTA,
             self::CATEGORY_HAJI,
+            self::CATEGORY_PHOTO,
             self::CATEGORY_PICTURE_FIRST,
             self::CATEGORY_PICTURE_FIRST_STAGING,
             self::CATEGORY_JATIM,
