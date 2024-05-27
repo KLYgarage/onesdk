@@ -151,7 +151,11 @@ class Article extends Model
         $seo = false,
         $photographer = '',
         $category = '',
-        $editor = ''
+        $editor = '',
+        $curated = false,
+        $pin = '',
+        $recommendation = false,
+        $timeless = false
     ) {
         if (! in_array($typeId, [self::TYPE_PHOTO, self::TYPE_TEXT, self::TYPE_VIDEO], true)) {
             throw new \InvalidArgumentException("Invalid typeId : ${typeId}, allowed typeId are " . implode(', ', $allowedType));
@@ -219,7 +223,10 @@ class Article extends Model
             'headline' => $headline,
             'headline_lip6' => $headlineLip6 ? 1 : 0,
             'seo' => $seo ? 1 : 0,
-            'category' => $this->filterStringInstance($category)
+            'category' => $this->filterStringInstance($category),
+            'curated' => $curated ? 1 : 0,
+            'recommendation' => $recommendation ? 1 : 0,
+            'timeless' => $timeless ? 1 : 0
         ]);
 
         if (!empty($this->filterStringInstance($photographer))) {
@@ -228,6 +235,10 @@ class Article extends Model
 
         if (!empty($this->filterStringInstance($editor))) {
             $this->collection->offsetSet('editor', $this->filterStringInstance($editor));
+        }
+
+        if (!empty($this->filterStringInstance($pin))) {
+            $this->collection->offsetSet('pin', $this->filterStringInstance($pin));
         }
 
         if ($identifier) {
