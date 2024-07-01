@@ -5,6 +5,7 @@ namespace One;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Psr7\MultipartStream;
 use GuzzleHttp\Client;
+use One\Model\Breakingnews;
 use One\Model\Livestreaming;
 use One\Model\Headline;
 use One\Model\Article;
@@ -33,6 +34,8 @@ class Publisher implements LoggerAwareInterface
     public const TAG_ENDPOINT = '/api/publisher/tag';
 
     public const POST_HEADLINE_ENDPOINT = '/api/publisher/headline';
+
+    public const POST_BREAKINGNEWS_ENDPOINT = '/api/publisher/breaking_news';
 
     public const POST_LIVESTREAMING_ENDPOINT = '/api/publisher/livestreaming';
 
@@ -190,6 +193,30 @@ class Publisher implements LoggerAwareInterface
         $headline->setId((string) $id);
 
         return $headline;
+    }
+
+    /**
+     * submitting breaking news here, return new Object cloned from original
+     */
+    public function submitBreakingnews(BreakingNews $breakingNews): BreakingNews 
+    {
+        $responseBreakingnews = $this->post(
+            self::POST_BREAKINGNEWS_ENDPOINT,
+            $this->normalizePayload(
+                $breakingNews->getCollection()
+            )
+        );
+
+        $responseBreakingnews = json_decode($responseBreakingnews, true);
+        $id = isset($responseBreakingnews['data']['id']) ? 
+            $responseBreakingnews['data']['id'] : null;
+        
+        $id = isset($responseBreakingnews['data'][0]['id']) ? 
+            $responseBreakingnews['data'][0]['id'] : $id;
+
+        $breakingNews->setId((string) $id);
+
+        return $breakingNews;
     }
 
     /**
