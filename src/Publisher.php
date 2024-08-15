@@ -7,6 +7,7 @@ use GuzzleHttp\Psr7\MultipartStream;
 use GuzzleHttp\Client;
 use One\Model\Breakingnews;
 use One\Model\Livestreaming;
+use One\Model\Livereport;
 use One\Model\Headline;
 use One\Model\Article;
 use One\Model\Model;
@@ -38,6 +39,8 @@ class Publisher implements LoggerAwareInterface
     public const POST_BREAKINGNEWS_ENDPOINT = '/api/publisher/breaking_news';
 
     public const POST_LIVESTREAMING_ENDPOINT = '/api/publisher/livestreaming';
+
+    public const POST_LIVEREPORT_ENDPOINT = '/api/publisher/live_report';
 
     /**
      *  base url REST API
@@ -150,7 +153,7 @@ class Publisher implements LoggerAwareInterface
 
 
     /**
-     * submitting article here, return new Object cloned from original
+     * submitting livestreaming here, return new Object cloned from original
      */
     public function submitLivestreaming(Livestreaming $livestreaming): Livestreaming
     {
@@ -169,6 +172,31 @@ class Publisher implements LoggerAwareInterface
         $livestreaming->setId((string) $id);
 
         return $livestreaming;
+    }
+
+    /**
+     * submitting livereport here, return new Object cloned from original
+     */
+    public function submitLivereport(Livereport $livereport): Livereport
+    {
+        $responseLivereport = $this->post(
+            self::POST_LIVEREPORT_ENDPOINT,
+            $this->normalizePayload(
+                $livereport->getCollection()
+            )
+        );
+
+        $responseLivereport = json_decode($responseLivereport, true);
+        
+        $id = isset($responseLivereport['data']['id']) ?
+            $responseLivereport['data']['id'] : null;
+
+        $id = isset($responseLivereport['data'][0]['id']) ?
+            $responseLivereport['data'][0]['id'] : $id;
+            
+        $livereport->setId((string) $id);
+
+        return $livereport;
     }
 
     /**
