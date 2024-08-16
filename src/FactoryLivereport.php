@@ -109,5 +109,15 @@ class FactoryLivereport
         throw new \Exception('The variable type must String :' . $var);
     }
 
+    /**
+     * functionality validity for int variables
+     */
+    private static function validateInteger(int $var): int
+    {
+        if (filter_var($var, FILTER_VALIDATE_INT) === false) {
+            throw new \Exception('The variable type must Integer :' . $var);
+        }
+        return $var;
+    }
 }
 

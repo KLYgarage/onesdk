@@ -42,8 +42,9 @@ class Livereport extends Model
 
     ) {
         $properties = [
+            'unique_id' => $uniqueId,
             'title' => $this->filterStringInstance($title),
-            'short_desc' => $this->filterStringInstance($desc),
+            'short_desc' => $this->filterStringInstance($shortDesc),
             'publish_date' => $this->filterDateInstance($publishDate),
             'end_date' => $this->filterDateInstance($endDate),
             'tag' => $this->filterStringInstance($tag),
