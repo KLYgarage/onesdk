@@ -55,6 +55,9 @@ class FactoryArticle
         );
         $headline = (bool) self::checkData($data, 'headline', false);
         $headlineLip6 = (bool) self::checkData($data, 'headline_lip6', false);
+        $aiType = self::validateInteger(
+            (int) self::checkData($data, 'ai_type', 0)
+        );
         $identifier = self::validateInteger(
             (int) self::checkData($data, 'identifier', null)
         );
@@ -71,6 +74,7 @@ class FactoryArticle
             $publishedAt,
             $headline,
             $headlineLip6,
+            $aiType,
             $identifier
         );
     }
@@ -93,6 +97,7 @@ class FactoryArticle
         string $publishedAt,
         bool $headline,
         bool $headlineLip6,
+        int $aiType,
         int $identifier
     ): Article {
         return new Article(
@@ -108,7 +113,8 @@ class FactoryArticle
             $publishedAt,
             $identifier,
             $headline,
-            $headlineLip6
+            $headlineLip6,
+            $aiType
         );
     }
 

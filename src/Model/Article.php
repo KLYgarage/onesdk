@@ -144,6 +144,7 @@ class Article extends Model
      * @param boolean $recommendation
      * @param boolean $timeless
      * @param boolean $headlineCategory
+     * @param integer $aiSource
      */
     public function __construct(
         string $title,
@@ -167,7 +168,8 @@ class Article extends Model
         $pin = '',
         $recommendation = false,
         $timeless = false,
-        $headlineCategory = false
+        $headlineCategory = false, 
+        $aiType = 0
     ) {
         if (! in_array($typeId, [self::TYPE_PHOTO, self::TYPE_TEXT, self::TYPE_VIDEO], true)) {
             throw new \InvalidArgumentException("Invalid typeId : ${typeId}, allowed typeId are " . implode(', ', $allowedType));
@@ -240,7 +242,8 @@ class Article extends Model
             'curated' => $curated ? 1 : 0,
             'recommendation' => $recommendation ? 1 : 0,
             'timeless' => $timeless ? 1 : 0,
-            'headline_category' => $headlineCategory ? 1 : 0
+            'headline_category' => $headlineCategory ? 1 : 0,
+            'ai_type' => $aiType
         ]);
 
         if (!empty($this->filterStringInstance($photographer))) {
