@@ -60,7 +60,7 @@ class Livereport extends Model
             'reporter_name' => $this->filterStringInstance($reporterName),
             'reporter_avatar' => $this->filterStringInstance($reporterAvatar),
             'editor_name' => $this->filterStringInstance($editorName),
-            'editor_avatar' => $this->filterStringInstacen($editorAvatar),
+            'editor_avatar' => $this->filterStringInstance($editorAvatar),
         ];
 
         $this->collection = new Collection($properties);
