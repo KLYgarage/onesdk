@@ -38,6 +38,11 @@ class Livereport extends Model
         $isHeadline = false,
         $published = false,
         string $livereportChild = null,
+        string $imageThumbnail,
+        string $reporterName,
+        string $reporterAvatar,
+        string $editorName,
+        string $editorAvatar,
         $identifier = null
 
     ) {
@@ -50,7 +55,12 @@ class Livereport extends Model
             'tag' => $this->filterStringInstance($tag),
             'is_headline' => $isHeadline ? 1 : 0,
             'published' => $published ? 1 : 0,
-            'livereport_child' => $this->filterStringInstance($livereportChild)
+            'livereport_child' => $this->filterStringInstance($livereportChild),
+            'image_thumbnail' => $this->filterStringInstance($imageThumbnail),
+            'reporter_name' => $this->filterStringInstance($reporterName),
+            'reporter_avatar' => $this->filterStringInstance($reporterAvatar),
+            'editor_name' => $this->filterStringInstance($editorName),
+            'editor_avatar' => $this->filterStringInstacen($editorAvatar),
         ];
 
         $this->collection = new Collection($properties);

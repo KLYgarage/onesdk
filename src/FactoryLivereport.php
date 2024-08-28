@@ -32,6 +32,21 @@ class FactoryLivereport
         $livereportChild = self::validateString(
             (string) self::checkData($data, 'livereport_child', '')
         );
+        $imageThumbnail = self::validateString(
+            (string) self::checkData($data, 'image_thumbnail', '')
+        );
+        $reporterName = self::validateString(
+            (string) self::checkData($data, 'reporter_name', '')
+        );
+        $reporterAvatar = self::validateString(
+            (string) self::checkData($data, 'reporter_avatar', '')
+        );
+        $editorName = self::validateString(
+            (string) self::checkData($data, 'editor_name', '')
+        );
+        $editorAvatar = self::validateString(
+            (string) self::checkData($data, 'editor_avatar', '')
+        );
         $identifier = self::validateInteger(
             (int) self::checkData($data, 'identifier', null)
         );
@@ -46,6 +61,11 @@ class FactoryLivereport
             $isHeadline,
             $published,
             $livereportChild,
+            $imageThumbnail,
+            $reporterName,
+            $reporterAvatar,
+            $editorName,
+            $editorAvatar,
             $identifier
         );
     }
@@ -60,6 +80,11 @@ class FactoryLivereport
         bool $isHeadline,
         bool $published,
         string $livereportChild,
+        string $imageThumbnail,
+        string $reporterName,
+        string $reporterAvatar,
+        string $editorName,
+        string $editorAvatar,
         int $identifier
     ): Livereport {
         return new Livereport(
@@ -72,6 +97,11 @@ class FactoryLivereport
             $isHeadline,
             $published,
             $livereportChild,
+            $imageThumbnail,
+            $reporterName,
+            $reporterAvatar,
+            $editorName,
+            $editorAvatar,
             $identifier
         );
     }
