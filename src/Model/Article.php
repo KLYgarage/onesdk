@@ -76,6 +76,8 @@ class Article extends Model
     public const CATEGORY_PIALA_DUNIA = 53;
 
     public const CATEGORY_TV = 324;
+
+    public const CATEGORY_FEEDS = 328;
     
     public const CATEGORY_PICTURE_FIRST_STAGING = 137;
 
@@ -92,6 +94,8 @@ class Article extends Model
     public const CATEGORY_PIALA_DUNIA_STAGING = 130;
 
     public const CATEGORY_LAIN_LAIN_STAGING = 315;
+
+    public const CATEGORY_FEEDS_STAGING = 336;
 
     public const TYPE_TEXT = 1;
 
@@ -217,7 +221,9 @@ class Article extends Model
             self::CATEGORY_PIALA_DUNIA_STAGING,
             self::CATEGORY_LAIN_LAIN,
             self::CATEGORY_LAIN_LAIN_STAGING,
-            self::CATEGORY_TV
+            self::CATEGORY_TV,
+            self::CATEGORY_FEEDS,
+            self::CATEGORY_FEEDS_STAGING
         ];
 
         if (! in_array($categoryId, $allowedCategory, true)) {
