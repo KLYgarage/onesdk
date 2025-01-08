@@ -103,7 +103,7 @@ class Article extends Model
 
     public const CATEGORY_VIDEO_STAGING = 350;
 
-    public const CATEGORY_VIDEO_MOTO_GP = 351;
+    public const CATEGORY_MOTO_GP_STAGING = 351;
 
     public const TYPE_TEXT = 1;
 
