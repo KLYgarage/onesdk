@@ -57,7 +57,11 @@ class Article extends Model
 
     public const CATEGORY_HAJI = 26;
 
+    public const CATEGORY_MOTO_GP = 28;
+
     public const CATEGORY_PHOTO = 29;
+
+    public const CATEGORY_VIDEO = 30;
     
     public const CATEGORY_PICTURE_FIRST = 46;
     
@@ -96,6 +100,10 @@ class Article extends Model
     public const CATEGORY_LAIN_LAIN_STAGING = 315;
 
     public const CATEGORY_FEEDS_STAGING = 336;
+
+    public const CATEGORY_VIDEO_STAGING = 350;
+
+    public const CATEGORY_VIDEO_MOTO_GP = 351;
 
     public const TYPE_TEXT = 1;
 
@@ -205,6 +213,8 @@ class Article extends Model
             self::CATEGORY_CEK_FAKTA,
             self::CATEGORY_HAJI,
             self::CATEGORY_PHOTO,
+            self::CATEGORY_VIDEO,
+            self::CATEGORY_VIDEO_STAGING,
             self::CATEGORY_PICTURE_FIRST,
             self::CATEGORY_PICTURE_FIRST_STAGING,
             self::CATEGORY_JATIM,
@@ -222,6 +232,8 @@ class Article extends Model
             self::CATEGORY_LAIN_LAIN,
             self::CATEGORY_LAIN_LAIN_STAGING,
             self::CATEGORY_TV,
+            self::CATEGORY_MOTO_GP,
+            self::CATEGORY_MOTO_GP_STAGING,
             self::CATEGORY_FEEDS,
             self::CATEGORY_FEEDS_STAGING
         ];
